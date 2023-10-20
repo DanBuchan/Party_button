@@ -1,6 +1,6 @@
 {% load static %}
 {% load crispy_forms_tags %}
-
+<!DOCTYPE html>
 <html>
 <head>
     <title>PARTY BUTTON</title>
@@ -15,8 +15,10 @@
     <div class="row">
         <div class="col">
         <h1>Welcome to PARTY BUTTON</h1>
-
-        <form action="{% url 'mp3_manager:upload' %}" method="post">
+        {% if form_errors %}
+            <div class="alert">{{ form_errors }}</div>
+        {% endif %}
+            <form action=""{% url 'mp3_manager:index' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form|crispy }}
             <input type="submit", value="Upload">
@@ -28,12 +30,14 @@
         <div class="col">
         <h1>Track List</h1>
         {% if tracks_list %}
-            <table>
-                <tr><th></th><th span="2">Start Time</th><th></th></tr>
-                <tr><th>Trak Name</th><th>Min</th><th>Sec</th><th></th></tr>
+            <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                <thead><tr><th></th><th colspan="2">Start Time</th><th></th></tr>
+                <tr><th>Track Name</th><th>Min</th><th>Sec</th><th></th></tr></thead>
+                <tbody>
                 {% for track in tracks_list %}
-                  <tr><td>{{ track.name }}</td><th>{{ track.minutes }}</th><th>{{ track.seconds }}</th><th>DELETE BUTTON</th></tr>
+                  <tr><td>{{ track.name }}</td><td>{{ track.minutes }}</td><td>{{ track.seconds }}</td><td><button type="button" class="btn btn-danger"><a href="{% url 'mp3_manager:delete_track' pk=track.pk %}">Delete</a></button></td></tr>
                 {% endfor %}
+                </tbody>
             </table>
         {% else %}
           <p><h2>No tracks available.</h2></p>
