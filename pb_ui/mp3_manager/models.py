@@ -8,13 +8,25 @@ class Track(models.Model):
                                                                        MaxValueValidator(600)])
     seconds = models.IntegerField(blank=False, null=False, validators=[MinValueValidator(0),
                                                                        MaxValueValidator(60)])
-    fix_track = models.BooleanField(blank=False, null=False, default=True)
+    solo = models.BooleanField(blank=False, null=False, default=False)
+
+    def save(self, *args, **kwargs):
+        if self.solo == True:
+            Track.objects.filter(solo=True).update(solo=False)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
 class Playtime(models.Model):
-    seconds = models.IntegerField(blank=False, null=False, validators=[MinValueValidator(0),
-                                                                       MaxValueValidator(600)])
+    playtime_seconds = models.IntegerField(blank=False, null=False,
+                                  default=20,
+                                  validators=[MinValueValidator(0),
+                                              MaxValueValidator(600)])
     def __str__(self):
-        return self.play_length
+        return str(self.playtime_seconds)
+    
+
+    def save(self, *args, **kwargs):
+       self.pk = '0'
+       super().save(*args, **kwargs)
