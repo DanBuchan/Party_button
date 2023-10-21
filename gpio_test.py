@@ -15,7 +15,6 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 django.setup()
 from mp3_manager.models import Track, Playtime
 
-play_time = Playtime.objects.all()[0].playtime_seconds
 all_tracks = Track.objects.all()
 
 def play_music(all_tracks, play_time, track_path):
@@ -47,6 +46,7 @@ def lets_party(relay_channel):
     print("DISCO BALL: on")
     print("DISCO LIGHT: on")
     print("MUSIC: on")
+    play_time = Playtime.objects.all()[0].playtime_seconds
     play_music(all_tracks, play_time, track_path)
     print("PARTY: off")
     print("MAIN LIGHTS: on")
