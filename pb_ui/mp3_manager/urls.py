@@ -7,6 +7,6 @@ urlpatterns = [
     path("solo/<int:pk>/", views.SoloView.as_view(), name='solo_track'), 
     path("playfull/<int:pk>/", views.FullView.as_view(), name='play_full'), 
     path("override/<int:pk>/", views.OverrideView.as_view(), name='override'), 
+    path("trackplaytime/", views.TrackPlaytimeView.as_view(), name='track_playtime'), 
     path("", views.IndexView.as_view(), name="index"),
-
 ]
