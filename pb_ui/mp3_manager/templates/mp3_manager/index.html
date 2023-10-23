@@ -43,8 +43,8 @@
         <h2>Track List</h2>
         {% if tracks_list %}
             <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                <thead><tr><th></th><th colspan="2">Start Time</th><th></th><th></th></tr>
-                <tr><th>Track Name</th><th>Min</th><th>Sec</th><th>Solo?</th><th>Remove</th></tr></thead>
+                <thead><tr><th></th><th colspan="2">Start Time</th><th colspan="4">Overrides</th><th></th></tr>
+                <tr><th>Track Name</th><th>Min</th><th>Sec</th><th>Solo?</th><th>Play Whole Track</th><th>Override global playtime</th><th>Track playtime (seconds)</th></th><th>Remove</th></tr></thead>
                 <tbody>
                 {% for track in tracks_list %}
                   <tr><td>{{ track.name }}</td>
@@ -56,6 +56,27 @@
                           {% else %}
                             <a href="{% url 'mp3_manager:solo_track' pk=track.pk %}"><button type="button" class="btn btn-primary">Solo</button></a>
                           {% endif %}
+                      </td>
+                      <td>
+                        {% if track.play_full == True %}
+                          <a href="{% url 'mp3_manager:play_full' pk=track.pk %}"><button type="button" class="btn btn-success">Using Whole Track</button></a>
+                        {% else %}
+                          <a href="{% url 'mp3_manager:play_full' pk=track.pk %}"><button type="button" class="btn btn-primary">Using Play Time Settings</button></a>
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if track.override_playtime == True %}
+                          <a href="{% url 'mp3_manager:override' pk=track.pk %}"><button type="button" class="btn btn-success">Using Track's Playtime</button></a>
+                        {% else %}
+                          <a href="{% url 'mp3_manager:override' pk=track.pk %}"><button type="button" class="btn btn-primary">Use Global Play Time</button></a>
+                        {% endif %}
+                      </td>
+                      <td>
+                        <form id="trackplaytime_form" id="trackplaytime_update" action=""{% url 'mp3_manager:index' %}" method="post" enctype="multipart/form-data" method="post">
+                          {% csrf_token %}
+                          <input type="textarea" id="playtime_seconds" name="playtime_seconds" value={{ track.playtime_seconds }}>
+                          <input type="hidden" id="pk" name="pk" value="{{ track.pk }}">
+                          <input type="submit" form="trackplaytime_form" value="Update" id="trackplaytime_update" name="trackplaytime_update"></input></form>
                       </td>
                       <td><a href="{% url 'mp3_manager:delete_track' pk=track.pk %}"><button type="button" class="btn btn-danger">Delete</button></a></td></tr>
                 {% endfor %}

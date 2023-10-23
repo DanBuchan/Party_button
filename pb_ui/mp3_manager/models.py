@@ -9,7 +9,16 @@ class Track(models.Model):
     seconds = models.IntegerField(blank=False, null=False, validators=[MinValueValidator(0),
                                                                        MaxValueValidator(60)])
     solo = models.BooleanField(blank=False, null=False, default=False)
-
+    play_full = models.BooleanField(blank=False, null=False, 
+                                    default=False)
+    override_playtime = models.BooleanField(blank=False, null=False,
+                                            default=False)
+    playtime_seconds = models.IntegerField(blank=False, null=False,
+                                           default=0,
+                                           validators=[MinValueValidator(0),
+                                                       MaxValueValidator(600)])
+    
+    
     def save(self, *args, **kwargs):
         if self.solo == True:
             Track.objects.filter(solo=True).update(solo=False)
@@ -23,9 +32,12 @@ class Playtime(models.Model):
                                   default=20,
                                   validators=[MinValueValidator(0),
                                               MaxValueValidator(600)])
+    play_full_override = models.BooleanField(blank=False, null=False, 
+                                             default=False)
+
+
     def __str__(self):
         return str(self.playtime_seconds)
-    
 
     def save(self, *args, **kwargs):
        self.pk = '0'
