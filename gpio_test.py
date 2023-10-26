@@ -38,9 +38,11 @@ def play_music(all_tracks, play_time, track_path):
         time.sleep(play_time)
         print("wait over")
         pygame.mixer.music.stop()
-        print("music stopped")
-    pygame.event.wait()
-    print("FINISHED PLAYING")
+        print("FINISHED PLAYING")
+        return()
+    print("FAILED TO PLAY CORRECTLY")
+    return()
+
 
 def lets_party(main_lights_channel, disco_lights_channel, spotlights_channel,
                discoball_channel):
