@@ -1,5 +1,4 @@
 import RPi.GPIO as GPIO
-import time
 import os
 import sys
 import django
@@ -57,7 +56,7 @@ def play_music(all_tracks, play_time, track_path):
         start_location = duration-play_duration
     
     song_segment = song[start_location:end_location]
-    play(song_segment)
+    play(song_segment.fade_in(1000).fade_out(1000))
     print("PLAY FINISHED")
     return()
 

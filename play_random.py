@@ -55,5 +55,5 @@ if start_location > duration:
     start_location = duration-play_duration
 
 song_segment = song[start_location:end_location]
-play(song_segment)
+play(song_segment.fade_in(1000).fade_out(1000))
 print("PLAY FINISHED")

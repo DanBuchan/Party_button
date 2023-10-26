@@ -37,8 +37,4 @@ Will add methods for starting system as services under systemctl
 
 ## TODO
 
-1. write services
-2. switch from pygame to pydub
-3. better handle full length of mp3
-4. fast fade at end
-5. probably should fast fade in the track and then turn off mains and turn on discos
+1. write services, gpio service should send STDOUT to /dev/null
