@@ -66,9 +66,7 @@ class IndexView(generic.ListView, FormMixin):
             print("Updating track playtime")
             thisform = TrackPlaytimeForm(request.POST)
             if thisform.is_valid():
-                print(request.POST)
                 track = Track.objects.filter(pk=request.POST["pk"])[0]
-                print(track)
                 track.playtime_seconds = request.POST["playtime_seconds"]
                 track.save()
                 

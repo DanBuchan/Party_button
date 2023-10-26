@@ -39,26 +39,35 @@ def play_music(all_tracks, play_time, track_path):
         pygame.mixer.music.stop()
     pygame.event.wait()
 
-def lets_party(relay_channel):
+def lets_party(main_lights_channel, disco_lights_channel, spotlights_channel,
+               discoball_channel):
     print("BUTTON: pressed")
     print("MAIN LIGHTS: off")
-    GPIO.output(relay_channel, GPIO.HIGH)
+    GPIO.output(main_lights_channel, GPIO.HIGH)
     print("DISCO BALL: on")
     print("DISCO LIGHT: on")
+    GPIO.output(disco_lights_channel, GPIO.HIGH)
     print("MUSIC: on")
     play_time = Playtime.objects.all()[0].playtime_seconds
     play_music(all_tracks, play_time, track_path)
     print("PARTY: off")
     print("MAIN LIGHTS: on")
-    GPIO.output(relay_channel, GPIO.LOW)
+    GPIO.output(disco_lights_channel, GPIO.LOW)
+    GPIO.output(main_lights_channel, GPIO.LOW)
     toggle=0
 
 
 GPIO.setmode(GPIO.BCM)
 input_channel = 17
-relay_channel = 22
+relay_channel = [22, 10]
+main_lights_channel = 22
+disco_lights_channel = 10
+spotlights_channel = None
+discoball_channel = None
 GPIO.setup(input_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(relay_channel, GPIO.OUT)
+GPIO.setup(main_lights_channel, GPIO.OUT)
+GPIO.setup(disco_lights_channel, GPIO.OUT)
+
 
 toggle = 0
 while True:
@@ -67,4 +76,5 @@ while True:
             print("BUTTON: released\n")
         toggle=1
     else:
-        lets_party(relay_channel)
+        lets_party(main_lights_channel, disco_lights_channel,
+                   spotlights_channel, discoball_channel)
