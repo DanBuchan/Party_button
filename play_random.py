@@ -2,8 +2,8 @@ import os
 import sys
 import django
 import random
-import pygame
-import time
+from pydub import AudioSegment
+from pydub.playback import play
 
 track_path = './pb_ui/'
 sys.path.append(track_path)
@@ -24,26 +24,36 @@ for track in all_tracks:
     if track.solo:
         play_track = track        
 
-if play_track.override_playtime:
-    play_time = play_track.playtime_seconds
-
 print(f"PLAYING: {play_track}")
-print(f"{play_track.mp3_file}\nSTART: {play_track.minutes}:{play_track.seconds}"
-      f"\nPLAY TIME: {play_time}")
-start_location = (int(play_track.minutes)*60) + int(play_track.seconds)
-if play_time_object.play_full_override or play_track.play_full:
+song = AudioSegment.from_mp3(track_path+str(play_track.mp3_file))
+duration = song.duration_seconds*1000
+print(play_track.name, play_track.mp3_file,
+      play_track.minutes, play_track.seconds)
+
+start_location = ((int(play_track.minutes)*60) + int(play_track.seconds))*1000
+play_duration = play_time*1000
+end_location = start_location+play_duration
+
+if play_time_object.play_full_override:
+    print("GLOBAL FULL TRACK OVERRIDE TRIGGERED")
+    end_location = duration
     start_location = 0
-print(f"START LOACTION: {start_location}")
-clock = pygame.time.Clock()
-pygame.mixer.pre_init(44100, -16, 2, 2048)
-pygame.init()
-pygame.mixer.init()
-pygame.mixer.music.load(track_path+str(play_track.mp3_file))
-pygame.mixer.music.play(start=start_location)
-while pygame.mixer.music.get_busy():
-    if play_time_object.play_full_override or play_track.play_full:
-        pass
-    else:
-        time.sleep(play_time)
-        pygame.mixer.music.stop()
-pygame.event.wait()
+
+if play_track.override_playtime:
+    print("PLAYING TRACK SPECIFIC PLAYTIME")
+    end_location = start_location+play_track.playtime_seconds*1000
+    print(f"PLAYING TRACK SPECIFIC PLAYTIME: {play_track.playtime_seconds}")
+
+if play_track.play_full:
+    print("PER TRACK FULL TRACK OVERRIDE TRIGGERED")
+    end_location = duration
+    start_location = 0
+
+if end_location > duration:
+    end_location = duration
+if start_location > duration:
+    start_location = duration-play_duration
+
+song_segment = song[start_location:end_location]
+play(song_segment)
+print("PLAY FINISHED")

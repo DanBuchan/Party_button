@@ -44,7 +44,7 @@
         {% if tracks_list %}
             <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead><tr><th></th><th colspan="2">Start Time</th><th colspan="4">Overrides</th><th></th></tr>
-                <tr><th>Track Name</th><th>Min</th><th>Sec</th><th>Solo?</th><th>Play Whole Track</th><th>Override global playtime</th><th>Track playtime (seconds)</th></th><th>Remove</th></tr></thead>
+                <tr><th>Track Name</th><th>Min</th><th>Sec</th><th>Solo?</th><th>Play Whole Track?</th><th>Override global playtime?</th><th>Track playtime (seconds)</th></th><th>Remove</th></tr></thead>
                 <tbody>
                 {% for track in tracks_list %}
                   <tr><td>{{ track.name }}</td>
@@ -68,7 +68,7 @@
                         {% if track.override_playtime == True %}
                           <a href="{% url 'mp3_manager:override' pk=track.pk %}"><button type="button" class="btn btn-success">Using Track's Playtime</button></a>
                         {% else %}
-                          <a href="{% url 'mp3_manager:override' pk=track.pk %}"><button type="button" class="btn btn-primary">Use Global Play Time</button></a>
+                          <a href="{% url 'mp3_manager:override' pk=track.pk %}"><button type="button" class="btn btn-primary">Using Global Play Time</button></a>
                         {% endif %}
                       </td>
                       <td>

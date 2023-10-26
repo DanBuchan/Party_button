@@ -17,7 +17,19 @@ python manage.py runserver
 4. Head to `127.0.0.1:8000/admin` and add a PlayTime record
 5. Head to `127.0.0.1` and add some example tracks
 
+### Install ffmpeg
+
+``` bash
+brew install ffmpeg
+```
+or
+
+``` bash
+sudo apt-get install ffpmeg
+```
+
 From here `play_random.py` will interact with the db to play tracks. `gpio.test.py` will recieve switch signals, control relays and play tracks
+
 
 ## Production mode
 
