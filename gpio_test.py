@@ -36,7 +36,9 @@ def play_music(all_tracks, play_time, track_path):
     pygame.mixer.music.play(start=start_location)
     while pygame.mixer.music.get_busy():
         time.sleep(play_time)
+        print("wait over")
         pygame.mixer.music.stop()
+        print("music stopped")
     pygame.event.wait()
     print("FINISHED PLAYING")
 
