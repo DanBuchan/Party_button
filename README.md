@@ -41,7 +41,7 @@ sudo apt-get install apache2
 sudo apt-get install ffmpeg
 sudo apt-get install apache2-dev
 sudo apt-get install libapache2-mod-wsgi-py3
-
+ENABLE SSH
 ```
 or OSX
 ``` bash
