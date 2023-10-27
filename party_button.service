@@ -16,4 +16,4 @@ WorkingDirectory=/home/dbuchan/party_button/
 ExecStart=/home/dbuchan/party_button/pb_venv/bin/python /home/dbuchan/party_button/gpio_test.py
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=multi-user.target sound.target
