@@ -1,7 +1,7 @@
 [Unit]
 Description=Party Button Service
-After=
-Requires=
+After=sys-devices-platform-soc-3f00b840.mailbox-bcm2835_audio-sound-card1-controlC1.device
+Requires=sys-devices-platform-soc-3f00b840.mailbox-bcm2835_audio-sound-card1-controlC1.deviceS
 StartLimitIntervalSec=0
 
 [Service]
@@ -12,6 +12,7 @@ User=dbuchan
 Group=audio
 Environment="XDG_RUNTIME_DIR=/run/user/1000"
 Environment="PULSE_RUNTIME_PATH=/run/user/1000/pulse/"
+StandardOutput=null
 StandardError=journal
 WorkingDirectory=/home/dbuchan/party_button/
 ExecStart=/home/dbuchan/party_button/pb_venv/bin/python /home/dbuchan/party_button/gpio_test.py
