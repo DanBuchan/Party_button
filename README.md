@@ -84,14 +84,6 @@ sudo systemctl enable party_button.service
 sudo systemctl start party_button.service
 ```
 
-6. edit ~/.profile
-to the end
-
-``` bash
-sudo /usr/bin/systemctl stop party_button.service
-sudo /usr/bin/systemctl start party_button.service
-```
-
 
 ## TODO
 
