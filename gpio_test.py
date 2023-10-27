@@ -29,7 +29,7 @@ def play_music(all_tracks, play_time_obj, track_path):
     pygame.mixer.music.load(track_path+str(play_track.mp3_file))
     
     start_location = ((int(play_track.minutes)*60) + int(play_track.seconds))
-    play_duration = play_time
+    play_duration = play_time_obj.playtime_seconds
     
     if play_time_obj.play_full_override:
         print("GLOBAL FULL TRACK OVERRIDE TRIGGERED")
