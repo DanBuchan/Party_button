@@ -37,7 +37,9 @@ Will add methods for starting system as services under systemctl
 
 1. Install apache
 ``` bash
-sudo apt-get httpd
+sudo apt-get install apache2
+sudo apt-get install ffmpeg
+sudo apt-get install apache2-dev
 ```
 or OSX
 ``` bash
@@ -62,8 +64,8 @@ cp Party_button/httpd.conf.osx /opt/homebrew/etc/httpd/httpd.conf
 
 4. Start apache
 ``` bash
-sudo systemctl enable httpd.service
-sudo systemctl start httpd.service
+sudo systemctl enable apache2.service
+sudo systemctl start apache2.service
 ```
 or OSX
 ``` bash
@@ -77,7 +79,6 @@ cp party_button.service /etc/systemd/system/
 systemctl enable party_button.service
 systemctl start party_button.service
 ```
-
 
 ## TODO
 
