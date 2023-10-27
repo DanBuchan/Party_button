@@ -84,7 +84,7 @@ sudo systemctl enable party_button.service
 sudo systemctl start party_button.service
 ```
 
-
 ## TODO
 
-1. Ensure service works
+1. Play All (randomly)
+2. Spotify integration
