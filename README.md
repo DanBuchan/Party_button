@@ -74,10 +74,12 @@ or OSX
 sudo /opt/homebrew/opt/httpd/bin/httpd -D FOREGROUND
 ```
 
+DON'T FORGET IN THE DJANGO APPLICATION THAT ALLOWED_HOSTS MUST REFLECT THE IP OF THE MACHINE
+
 5. Start GPIO listening service
 
 ``` bash
-cp party_button.service /etc/systemd/system/
+sudo cp party_button.service /etc/systemd/system/
 systemctl enable party_button.service
 systemctl start party_button.service
 ```
