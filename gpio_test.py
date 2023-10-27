@@ -21,8 +21,9 @@ def play_music(all_tracks, play_time_obj, track_path):
         if track.solo:
             play_track = track        
 
-    print(f"PLAYING: {play_track}")
+    print(f"LOADING: {play_track}")
     song = AudioSegment.from_mp3(track_path+str(play_track.mp3_file))
+    print(f"track loaded")
     duration = song.duration_seconds*1000
     print(play_track.name, play_track.mp3_file,
           play_track.minutes, play_track.seconds)

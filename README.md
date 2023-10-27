@@ -80,7 +80,7 @@ DON'T FORGET IN THE DJANGO APPLICATION THAT ALLOWED_HOSTS MUST REFLECT THE IP OF
 
 ``` bash
 sudo cp party_button.service /etc/systemd/system/
-systemctl enable party_button.service
+sudo systemctl enable party_button.service
 systemctl start party_button.service
 ```
 
