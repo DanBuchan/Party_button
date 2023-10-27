@@ -81,8 +81,17 @@ DON'T FORGET IN THE DJANGO APPLICATION THAT ALLOWED_HOSTS MUST REFLECT THE IP OF
 ``` bash
 sudo cp party_button.service /etc/systemd/system/
 sudo systemctl enable party_button.service
-systemctl start party_button.service
+sudo systemctl start party_button.service
 ```
+
+6. edit ~/.profile
+to the end
+
+``` bash
+sudo /usr/bin/systemctl stop party_button.service
+sudo /usr/bin/systemctl start party_button.service
+```
+
 
 ## TODO
 
