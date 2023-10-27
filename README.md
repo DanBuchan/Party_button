@@ -40,6 +40,8 @@ Will add methods for starting system as services under systemctl
 sudo apt-get install apache2
 sudo apt-get install ffmpeg
 sudo apt-get install apache2-dev
+sudo apt-get install libapache2-mod-wsgi-py3
+
 ```
 or OSX
 ``` bash
@@ -55,7 +57,7 @@ python manage.py collectstatic
 
 3. Copy httpd.conf
 ``` bash
-cp Party_button/httpd.conf.pi /etc/httpd/conf
+cp Party_button/000-deafult.conf.pi /etc/apache2/available-sites
 ```
 or OSX
 ``` bash
