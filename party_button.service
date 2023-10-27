@@ -2,14 +2,14 @@
 Description=Party Button Service
 After=network.target sound.target
 StartLimitIntervalSec=0
-User=dbuchan
-Environment=DISPLAY=:0
 
 [Service]
 Type=simple
 Restart=always
 RestartSec=1
 User=dbuchan
+Environment=DISPLAY=:0
+Group=Audio
 StandardError=journal
 WorkingDirectory=/home/dbuchan/party_button/
 ExecStart=/home/dbuchan/party_button/pb_venv/bin/python /home/dbuchan/party_button/gpio_test.py
