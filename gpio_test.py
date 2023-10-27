@@ -5,6 +5,7 @@ import django
 import random
 import pygame
 import time
+import signal
 
 print("Setting Up")
 track_path = './pb_ui/'
@@ -13,6 +14,11 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'pb_ui.settings')
 django.setup()
 from mp3_manager.models import Track, Playtime
+
+
+def signal_term_handler(sigNum, frame):
+    # on receiving a signal initiate a normal exit
+    GPIO.cleanup()
 
 def play_music(all_tracks, play_time_obj, track_path):
     play_track = random.choice(all_tracks)
@@ -93,6 +99,7 @@ if __name__ == '__main__':
     pygame.init()
     pygame.mixer.init()
     pygame.mixer.pre_init(44100, -16, 2, 2048)
+    signal.signal(signal.SIGTERM, signal_term_handler)
     while True:
         if GPIO.input(input_channel):
             if toggle == 0:
