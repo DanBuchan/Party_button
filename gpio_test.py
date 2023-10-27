@@ -18,6 +18,7 @@ from mp3_manager.models import Track, Playtime
 
 def signal_term_handler(sigNum, frame):
     # on receiving a signal initiate a normal exit
+    print(sigNum)
     GPIO.cleanup()
 
 def play_music(all_tracks, play_time_obj, track_path):
