@@ -9,6 +9,8 @@ Restart=always
 RestartSec=1
 User=dbuchan
 Group=audio
+Environment=DISPLAY=:0
+Environment="PULSE_RUNTIME_PATH=/run/user/1000/pulse/"
 StandardError=journal
 WorkingDirectory=/home/dbuchan/party_button/
 ExecStart=/home/dbuchan/party_button/pb_venv/bin/python /home/dbuchan/party_button/gpio_test.py
