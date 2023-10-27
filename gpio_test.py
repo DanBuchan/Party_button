@@ -101,6 +101,8 @@ if __name__ == '__main__':
     pygame.mixer.init()
     pygame.mixer.pre_init(44100, -16, 2, 2048)
     signal.signal(signal.SIGTERM, signal_term_handler)
+    signal.signal(signal.SIGKILL, signal_term_handler)
+    
     while True:
         if GPIO.input(input_channel):
             if toggle == 0:
