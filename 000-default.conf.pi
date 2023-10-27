@@ -1,0 +1,20 @@
+<VirtualHost *:80>
+
+    Alias /static/ /home/dbuchan/party_button/pb_ui/static/	
+	<Directory /home/dbuchan/party_button/pb_ui/static/>
+		Require all granted
+	</Directory>
+
+    <Directory /home/dbuchan/party_button/pb_ui/>
+        WSGIProcessGroup pb_ui
+        WSGIApplicationGroup %{GLOBAL}
+        WSGIScriptReloading On
+        <Files wsgi.py>
+           Require all granted
+        </Files>
+    </Directory>
+
+    WSGIDaemonProcess pb_ui user=dbuchan group=staff threads=5 python-path="/home/dbuchan/party_button/pb_ui/:/home/dbuchan/party_button/pb_venv/lib/python3.11/site-packages/"
+    WSGIScriptAlias / /home/dbuchan/party_button/pb_ui/pb_ui/wsgi.py
+
+</VirtualHost>
