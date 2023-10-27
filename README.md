@@ -81,4 +81,4 @@ systemctl start party_button.service
 
 ## TODO
 
-1. write party button services, gpio service should send STDOUT to /dev/null
+1. Ensure service works

@@ -3,10 +3,8 @@ import os
 import sys
 import django
 import random
-import time
 from pydub import AudioSegment
 from pydub.playback import play
-
 
 print("Setting Up")
 track_path = './pb_ui/'
@@ -16,9 +14,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 django.setup()
 from mp3_manager.models import Track, Playtime
 
-all_tracks = Track.objects.all()
-
-def play_music(all_tracks, play_time, track_path):
+def play_music(all_tracks, play_time_obj, track_path):
     play_track = random.choice(all_tracks)
     #override selection if one is soloing
     for track in all_tracks:
@@ -32,10 +28,10 @@ def play_music(all_tracks, play_time, track_path):
           play_track.minutes, play_track.seconds)
     
     start_location = ((int(play_track.minutes)*60) + int(play_track.seconds))*1000
-    play_duration = play_time*1000
+    play_duration = play_time_obj.playtime_seconds*1000
     end_location = start_location+play_duration
     
-    if play_time_object.play_full_override:
+    if play_time_obj.play_full_override:
         print("GLOBAL FULL TRACK OVERRIDE TRIGGERED")
         end_location = duration
         start_location = 0
@@ -70,33 +66,32 @@ def lets_party(main_lights_channel, disco_lights_channel, spotlights_channel,
     print("DISCO LIGHT: on")
     GPIO.output(disco_lights_channel, GPIO.HIGH)
     print("MUSIC: on")
-    play_time = Playtime.objects.all()[0].playtime_seconds
-    play_music(all_tracks, play_time, track_path)
+    play_time_obj = Playtime.objects.all()[0]
+    all_tracks = Track.objects.all()
+    play_music(all_tracks, play_time_obj, track_path)
     print("PARTY: off")
     print("MAIN LIGHTS: on")
     GPIO.output(disco_lights_channel, GPIO.LOW)
     GPIO.output(main_lights_channel, GPIO.LOW)
     toggle=0
 
-
-GPIO.setmode(GPIO.BCM)
-input_channel = 17
-relay_channel = [22, 10]
-main_lights_channel = 22
-disco_lights_channel = 10
-spotlights_channel = None
-discoball_channel = None
-GPIO.setup(input_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(main_lights_channel, GPIO.OUT)
-GPIO.setup(disco_lights_channel, GPIO.OUT)
-
-
-toggle = 0
-while True:
-    if GPIO.input(input_channel):
-        if toggle == 0:
-            print("BUTTON: released\n")
-        toggle=1
-    else:
-        lets_party(main_lights_channel, disco_lights_channel,
-                   spotlights_channel, discoball_channel)
+if __name__ == '__main__':
+    GPIO.setmode(GPIO.BCM)
+    input_channel = 17
+    main_lights_channel = 22
+    disco_lights_channel = 10
+    spotlights_channel = None
+    discoball_channel = None
+    GPIO.setup(input_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(main_lights_channel, GPIO.OUT)
+    GPIO.setup(disco_lights_channel, GPIO.OUT)
+    
+    toggle = 0
+    while True:
+        if GPIO.input(input_channel):
+            if toggle == 0:
+                print("BUTTON: released\n")
+            toggle=1
+        else:
+            lets_party(main_lights_channel, disco_lights_channel,
+                       spotlights_channel, discoball_channel)
