@@ -1,6 +1,7 @@
 [Unit]
 Description=Party Button Service
-After=network.target
+After=
+Requires=
 StartLimitIntervalSec=0
 
 [Service]
@@ -9,7 +10,7 @@ Restart=always
 RestartSec=1
 User=dbuchan
 Group=audio
-Environment=DISPLAY=:0
+Environment="XDG_RUNTIME_DIR=/run/user/1000"
 Environment="PULSE_RUNTIME_PATH=/run/user/1000/pulse/"
 StandardError=journal
 WorkingDirectory=/home/dbuchan/party_button/
