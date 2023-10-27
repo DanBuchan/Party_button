@@ -2,6 +2,9 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import FormMixin
+from django.conf import settings
+
+from pydub import AudioSegment
 
 from .models import Track, Playtime
 from .form import TrackForm, PlaytimeForm, TrackPlaytimeForm
@@ -47,9 +50,12 @@ class IndexView(generic.ListView, FormMixin):
         if "track_upload" in request.POST:
             print("Adding track to DB")
             form = self.get_form()
-
             if form.is_valid():
-                form.save()
+                record = form.save()
+                song = AudioSegment.from_mp3(f"{str(settings.BASE_DIR)}/{str(record.mp3_file)}")
+                duration = song.duration_seconds*1000
+                record.mp3_length = duration
+                record.save()
                 return render(request, self.template_name,
                               {"tracks_list": tracks_list,
                                "form": TrackForm(),

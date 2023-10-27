@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Track(models.Model):
     name = models.CharField(max_length=200, blank=False, null=False)
     mp3_file = models.FileField(upload_to="uploads", blank=False, null=False)
+    mp3_length = models.IntegerField(blank=True, null=True)
     minutes = models.IntegerField(blank=False, null=False, validators=[MinValueValidator(0),
                                                                        MaxValueValidator(600)])
     seconds = models.IntegerField(blank=False, null=False, validators=[MinValueValidator(0),
@@ -17,6 +18,7 @@ class Track(models.Model):
                                            default=0,
                                            validators=[MinValueValidator(0),
                                                        MaxValueValidator(600)])
+    
     
     def save(self, *args, **kwargs):
         if self.solo == True:
