@@ -1,0 +1,29 @@
+h1 {
+    color: green;
+}
+
+h2 {
+    color: maroon;
+}
+
+.alert {
+    color: red;
+    text-decoration: none;
+}
+
+a:link {
+    color: white;
+    text-decoration: none;
+}
+a:visited {
+    color: white;
+    text-decoration: none;
+}
+a:hover {
+    color: white;
+    text-decoration: none;
+}
+a:active {
+    color: white;
+    text-decoration: none;
+  }

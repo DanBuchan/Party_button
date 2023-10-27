@@ -5,6 +5,7 @@ Django==4.2.6
 django-bootstrap-v5==1.0.11
 django-cleanup==8.0.0
 django-crispy-forms==2.1
+mod-wsgi==4.9.4
 pydub==0.25.1
 pygame==2.5.2
 soupsieve==2.5
