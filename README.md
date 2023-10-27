@@ -44,17 +44,23 @@ or OSX
 brew install httpd
 ```
 
-2. Copy httpd.conf
+2. collect static assets
 
 ``` bash
-cp httpd.conf.pi /etc/httpd/conf
+cd Party_button/pb_ui
+python manage.py collectstatic
+```
+
+3. Copy httpd.conf
+``` bash
+cp Party_button/httpd.conf.pi /etc/httpd/conf
 ```
 or OSX
 ``` bash
-cp httpd.conf.osx /opt/homebrew/etc/httpd/httpd.conf
+cp Party_button/httpd.conf.osx /opt/homebrew/etc/httpd/httpd.conf
 ```
 
-3. Start apache
+4. Start apache
 ``` bash
 sudo systemctl enable httpd.service
 sudo systemctl start httpd.service
@@ -64,11 +70,15 @@ or OSX
 sudo /opt/homebrew/opt/httpd/bin/httpd -D FOREGROUND
 ```
 
-4. Start GPIO listening service
+5. Start GPIO listening service
 
-TBC
+``` bash
+cp party_button.service /etc/systemd/system/
+systemctl enable party_button.service
+systemctl start party_button.service
+```
 
 
 ## TODO
 
-1. write services, gpio service should send STDOUT to /dev/null
+1. write party button services, gpio service should send STDOUT to /dev/null

@@ -1,0 +1,14 @@
+[Unit]
+Description=Party Button Service
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=dbuchan
+WorkingDirectory=/home/dbuchan/Party_button/
+ExecStart=/home/dbuchan/Party_button/pb_venv/bin/python /home/dbuchan/Party_button/gpio_test.py
+
+[Install]
+WantedBy=multi-user.target
