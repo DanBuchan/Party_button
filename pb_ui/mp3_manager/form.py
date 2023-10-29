@@ -20,3 +20,8 @@ class TrackPlaytimeForm(ModelForm):
         model = Track
         fields = ["playtime_seconds"]
         exclude = ["name", "mp3_file", "minutes", "seconds"]
+
+class TrackStartForm(ModelForm):
+    class Meta:
+        model = Track
+        fields = [ "minutes", "seconds"]

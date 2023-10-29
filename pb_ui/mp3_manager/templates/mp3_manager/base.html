@@ -1,0 +1,25 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PARTY BUTTON</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>Welcome to PARTY BUTTON</h1>
+    </div>
+  </div>
+  <hr>
+  {% block content %}
+    <!-- default content text (typically empty) -->
+  {% endblock %}
+</div>
+</body>
+</html>

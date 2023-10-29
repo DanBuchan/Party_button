@@ -89,9 +89,7 @@ sudo systemctl start party_button.service
 1. Play All (randomly)
 2. Spotify integration
 3. Multiple, selectable playlists, tunes can belong to several
-4. Updata play start location for uploaded tunes
-5. Probably play list and play time selection on one tab, upload and track controls on anoter, and playlist management on a third
-6. Colour bulb 
+4. Colour bulb 
     - Philips HUE (£70-90) - https://github.com/Q42/hue-libs#python
     - Sylvania smart+ integration (can't find UK, maybe same as OSRAM smart) - pywemo pywemo
     - LIFX (£45-60) - lifxlan package, https://github.com/mclarkk/lifxlan

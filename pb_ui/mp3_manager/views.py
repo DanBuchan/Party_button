@@ -7,46 +7,27 @@ from django.conf import settings
 from pydub import AudioSegment
 
 from .models import Track, Playtime
-from .form import TrackForm, PlaytimeForm, TrackPlaytimeForm
+from .form import TrackForm, PlaytimeForm, TrackPlaytimeForm, TrackStartForm
 
-class IndexView(generic.ListView, FormMixin):
+class TrackManagement(generic.ListView, FormMixin):
     form_class = TrackForm
-    template_name = "mp3_manager/index.html"
+    template_name = "mp3_manager/track.html"
     context_object_name = "tracks_list"
- 
+    model = Track
+
     def get(self, request):
+        tracks_list = None
         print("Getting Track List")
         tracks_list = self.get_queryset()
-        playtime = Playtime.objects.all()[0]
         return render(request, self.template_name,
                       {"tracks_list": tracks_list,
                        "form": TrackForm(),
-                       "playtimeform": PlaytimeForm(instance=playtime),
-                       "trackplaytime": TrackPlaytimeForm()}) 
+                       "trackplaytime": TrackPlaytimeForm()})
 
     def post(self, request):
         print("Handling Track")
         tracks_list = self.get_queryset()
-        playtime = Playtime.objects.all()[0]
 
-        if "playtime_update" in request.POST:
-            print(f"Updating PlayTime")
-            form = PlaytimeForm(request.POST)
-            playtime.playtime_seconds = request.POST["playtime_seconds"]
-            if form.is_valid():
-                obj = form.save()
-                return render(request, self.template_name,
-                              {"tracks_list": tracks_list,
-                               "form": TrackForm(),
-                               "playtimeform": PlaytimeForm(instance=obj),
-                               "trackplaytime": TrackPlaytimeForm()})
-            else:
-                return render(request, self.template_name,
-                              {"tracks_list": tracks_list,
-                               "form": TrackForm(),
-                               "playtimeform": PlaytimeForm(instance=obj),
-                               "trackplaytime": TrackPlaytimeForm(),
-                               "form_errors": form.errors}) 
         if "track_upload" in request.POST:
             print("Adding track to DB")
             form = self.get_form()
@@ -59,13 +40,11 @@ class IndexView(generic.ListView, FormMixin):
                 return render(request, self.template_name,
                               {"tracks_list": tracks_list,
                                "form": TrackForm(),
-                               "playtimeform": PlaytimeForm(instance=playtime),
                                "trackplaytime": TrackPlaytimeForm()}) 
             else:
                 return render(request, self.template_name,
                               {"tracks_list": tracks_list,
                                "form": TrackForm(),
-                               "playtimeform": PlaytimeForm(instance=playtime),
                                "trackplaytime": TrackPlaytimeForm(),
                                "form_errors": form.errors})
         if [key for key in request.POST.keys() if 'trackplaytime_update' in key.lower()]:
@@ -79,27 +58,78 @@ class IndexView(generic.ListView, FormMixin):
                 return render(request, self.template_name,
                               {"tracks_list": tracks_list,
                                "form": TrackForm(),
-                               "playtimeform": PlaytimeForm(instance=playtime),
                                "trackplaytime": TrackPlaytimeForm()}) 
             else:
                 return render(request, self.template_name,
                               {"tracks_list": tracks_list,
                                "form": TrackForm(),
-                               "playtimeform": PlaytimeForm(instance=playtime),
                                "trackplaytime": TrackPlaytimeForm(),
-                               "form_errors": form.errors})
+                               "form_errors": thisform.errors})
+        if [key for key in request.POST.keys() if 'trackstart_update' in key.lower()]:
+            print("Updating track start")
+            thisform = TrackStartForm(request.POST)
+            if thisform.is_valid():
+                track = Track.objects.filter(pk=request.POST["pk"])[0]
+                track.minutes = request.POST["minutes"]
+                track.seconds = request.POST["seconds"]
+                track.save()
+                return render(request, self.template_name,
+                              {"tracks_list": tracks_list,
+                               "form": TrackForm(),
+                               "trackplaytime": TrackPlaytimeForm()}) 
+            else:
+                return render(request, self.template_name,
+                              {"tracks_list": tracks_list,
+                               "form": TrackForm(),
+                               "trackplaytime": TrackPlaytimeForm(),
+                               "form_errors": thisform.errors})
+
+        
+
+
+
+class PlaylistManagement(generic.ListView, FormMixin):
+    template_name = "mp3_manager/track.html"
+     
+    def get(self, request):
+         return render(request, self.template_name, {})
+
+
+class IndexView(generic.ListView, FormMixin):
+    form_class = PlaytimeForm
+    template_name = "mp3_manager/index.html"
+    context_object_name = "tracks_list"
+  
+    def get(self, request):
+        playtime = Playtime.objects.all()[0]
+        return render(request, self.template_name,
+                      {"playtimeform": PlaytimeForm(instance=playtime)}) 
+
+    def post(self, request):
+        print("Handling Playtime")
+        playtime = Playtime.objects.all()[0]
+        model = Playtime
+
+        if "playtime_update" in request.POST:
+            print(f"Updating PlayTime")
+            form = PlaytimeForm(request.POST)
+            playtime.playtime_seconds = request.POST["playtime_seconds"]
+            if form.is_valid():
+                obj = form.save()
+                return render(request, self.template_name,
+                              {"playtimeform": PlaytimeForm(instance=obj)})
+            else:
+                return render(request, self.template_name,
+                              {"playtimeform": PlaytimeForm(instance=obj),
+                               "form_errors": form.errors}) 
     
-    def get_queryset(self):
-        """Return the last five published questions."""
-        return Track.objects.order_by()
-    
-class DeleteView(generic.ListView, FormMixin):
+class DeleteTrackView(generic.ListView, FormMixin):
     def get(self, request, pk):
         print(f"DELETING: {pk}")
         Track.objects.filter(pk=pk).delete()
-        return redirect("/")
-    
-class SoloView(generic.ListView, FormMixin):
+        return redirect("/tracks")
+ 
+class SoloTrackView(generic.ListView, FormMixin):
     
     def get(self, request, pk):
         #get records set solo True and save.
@@ -110,9 +140,9 @@ class SoloView(generic.ListView, FormMixin):
         else: 
             track.solo = False
         track.save()
-        return redirect("/")
+        return redirect("/tracks")
 
-class FullView(generic.ListView, FormMixin):
+class FullTrackView(generic.ListView, FormMixin):
     
     def get(self, request, pk):
         #get records set solo True and save.
@@ -123,9 +153,9 @@ class FullView(generic.ListView, FormMixin):
         else: 
             track.play_full = False
         track.save()
-        return redirect("/")
+        return redirect("/tracks")
 
-class OverrideView(generic.ListView, FormMixin):
+class OverrideTrackView(generic.ListView, FormMixin):
     
     def get(self, request, pk):
         #get records set solo True and save.
@@ -136,7 +166,7 @@ class OverrideView(generic.ListView, FormMixin):
         else: 
             track.override_playtime = False
         track.save()
-        return redirect("/")
+        return redirect("/tracks")
 
 class TrackPlaytimeView(generic.ListView, FormMixin):
     
@@ -147,27 +177,4 @@ class TrackPlaytimeView(generic.ListView, FormMixin):
         print(request.POST)
         
         track = Track.objects.filter(pk=pk)[0]
-        return redirect("/")
-
-        if "trackplaytime_update" in request.POST:
-            print("Updating track playtime")
-            thisform = TrackPlaytimeForm(request.POST)
-            if thisform.is_valid():
-                print(request.POST)
-                track = Track.objects.filter(pk=request.POST["pk"])[0]
-                print(track)
-                track.playtime_seconds = request.POST["playtime_seconds"]
-                track.save()
-                
-                return render(request, self.template_name,
-                              {"tracks_list": tracks_list,
-                               "form": TrackForm(),
-                               "playtimeform": PlaytimeForm(instance=playtime),
-                               "trackplaytime": TrackPlaytimeForm()}) 
-            else:
-                return render(request, self.template_name,
-                              {"tracks_list": tracks_list,
-                               "form": TrackForm(),
-                               "playtimeform": PlaytimeForm(instance=playtime),
-                               "trackplaytime": TrackPlaytimeForm(),
-                               "form_errors": form.errors})
+        return redirect("/tracks")

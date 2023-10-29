@@ -3,10 +3,12 @@ from . import views
 
 app_name = "mp3_manager"
 urlpatterns = [
-    path("delete/<int:pk>/", views.DeleteView.as_view(), name='delete_track'), 
-    path("solo/<int:pk>/", views.SoloView.as_view(), name='solo_track'), 
-    path("playfull/<int:pk>/", views.FullView.as_view(), name='play_full'), 
-    path("override/<int:pk>/", views.OverrideView.as_view(), name='override'), 
+    path("deletetrack/<int:pk>/", views.DeleteTrackView.as_view(), name='delete_track'), 
+    path("solotrack/<int:pk>/", views.SoloTrackView.as_view(), name='solo_track'), 
+    path("playfulltrack/<int:pk>/", views.FullTrackView.as_view(), name='play_full'), 
+    path("overridetrack/<int:pk>/", views.OverrideTrackView.as_view(), name='override'), 
     path("trackplaytime/", views.TrackPlaytimeView.as_view(), name='track_playtime'), 
     path("", views.IndexView.as_view(), name="index"),
+    path("tracks/", views.TrackManagement.as_view(), name="tracks"),
+    path("playlists/", views.PlaylistManagement.as_view(), name="playlists"),
 ]
