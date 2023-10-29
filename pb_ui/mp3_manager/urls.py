@@ -11,4 +11,7 @@ urlpatterns = [
     path("", views.IndexView.as_view(), name="index"),
     path("tracks/", views.TrackManagement.as_view(), name="tracks"),
     path("playlists/", views.PlaylistManagement.as_view(), name="playlists"),
+    path("addplaylist/", views.PlaylistManagement.as_view(), name="addplaylist"),
+    path("removeplaylist/", views.PlaylistManagement.as_view(), name="removeplaylist"),
+    
 ]

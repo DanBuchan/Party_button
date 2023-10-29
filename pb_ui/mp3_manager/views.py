@@ -6,8 +6,9 @@ from django.conf import settings
 
 from pydub import AudioSegment
 
-from .models import Track, Playtime
+from .models import Track, Playtime, Playlist
 from .form import TrackForm, PlaytimeForm, TrackPlaytimeForm, TrackStartForm
+from .form import PlaylistForm
 
 class TrackManagement(generic.ListView, FormMixin):
     form_class = TrackForm
@@ -84,16 +85,40 @@ class TrackManagement(generic.ListView, FormMixin):
                                "trackplaytime": TrackPlaytimeForm(),
                                "form_errors": thisform.errors})
 
-        
-
-
-
 class PlaylistManagement(generic.ListView, FormMixin):
-    template_name = "mp3_manager/track.html"
-     
-    def get(self, request):
-         return render(request, self.template_name, {})
+    template_name = "mp3_manager/playlist.html"
+    context_object_name = "playlist_list"
+    model = Playlist
+    form_class = PlaylistForm
 
+    def get(self, request):
+        playlist_list = self.get_queryset()
+        return render(request, self.template_name,
+                      {"playlist_list": playlist_list,
+                       "playlistform": PlaylistForm})
+    
+    def post(self, request):
+        print("Handling playlist")
+        tracks_list = self.get_queryset()
+        print(request.POST)
+        if "addplaylist_submit" in request.POST:
+            form = self.get_form()
+            if form.is_valid():
+                form.save()
+                playlist_list = self.get_queryset()
+                return render(request, self.template_name,
+                              {"playlist_list": playlist_list,
+                              "playlistform": PlaylistForm})
+            else:
+                return render(request, self.template_name,
+                              {"playlist_list": playlist_list,
+                              "playlistform": PlaylistForm,
+                              "form_errors": form.errors})
+        if "removeplaylist_submit" in request.POST:
+            Playlist.objects.filter(pk=request.POST['playlist_selection'][0]).delete()
+            return redirect("/playlists")
+
+        
 
 class IndexView(generic.ListView, FormMixin):
     form_class = PlaytimeForm

@@ -86,10 +86,11 @@ sudo systemctl start party_button.service
 
 ## TODO
 
-1. Play All (randomly)
-2. Spotify integration
-3. Multiple, selectable playlists, tunes can belong to several
-4. Colour bulb 
+1. "Play All" added to model not done by frontend/gpio player
+2. Add playlist assignment and safe deleting of playlist and associations 
+3. Have frontend/gpio obey play full playlist and obey playlist selection
+4. Spotify integration
+5. Colour bulb 
     - Philips HUE (£70-90) - https://github.com/Q42/hue-libs#python
     - Sylvania smart+ integration (can't find UK, maybe same as OSRAM smart) - pywemo pywemo
     - LIFX (£45-60) - lifxlan package, https://github.com/mclarkk/lifxlan

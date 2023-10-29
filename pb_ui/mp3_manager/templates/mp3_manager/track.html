@@ -31,7 +31,7 @@
             <thead><tr><th></th><th colspan="3">Start Time</th><th colspan="5">Overrides</th><th></th></tr>
             <tr><th>Track Name</th><th>Min</th><th>Sec</th><th></th><th>Solo?</th><th>Play Whole Track?</th><th>Override global playtime?</th><th colspan="2">Track playtime (seconds)</th></th><th>Remove</th></tr></thead>
             <tbody>
-            {% for track in tracks_list %}
+              {% for track in tracks_list %}
               <tr>
                   <td>{{ track.name }}</td>
                   <form id="trackstart_form_{{ track.pk }}" id="trackstart_update_{{ track.pk }}" action={% url 'mp3_manager:tracks' %} method="post" enctype="multipart/form-data">
