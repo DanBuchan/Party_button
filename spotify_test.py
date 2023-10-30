@@ -38,6 +38,8 @@ for list in playlists['items']:
         
         # Open the Song in Web Browser
         # kinda clunky spoofing a webbrowser but doable
-        webbrowser.open(track_uri)
+        # webbrowser.open(track_uri)
+
+        # spoof being an android app to play the track
 
         # print(json.dumps(tracks, sort_keys=True, indent=4))
