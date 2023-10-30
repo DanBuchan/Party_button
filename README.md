@@ -86,9 +86,7 @@ sudo systemctl start party_button.service
 
 ## TODO
 
-1. "Play All" added to model not done by frontend/gpio player
-2. Add playlist assignment and safe deleting of playlist and associations 
-3. Have frontend/gpio obey play full playlist and obey playlist selection
+1. Update music player to obey playlist, play all in playlist
 4. Spotify integration
 5. Colour bulb 
     - Philips HUE (£70-90) - https://github.com/Q42/hue-libs#python

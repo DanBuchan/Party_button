@@ -166,6 +166,8 @@ class IndexView(generic.ListView, FormMixin):
             playtime.playtime_seconds = request.POST["playtime_seconds"]
             if form.is_valid():
                 obj = form.save()
+                obj.playlist_selection =  playtime.playlist_selection
+                obj.save()
                 return render(request, self.template_name,
                               {"playtime": playtime,
                                "playtimeform": PlaytimeForm(instance=obj),
