@@ -8,12 +8,25 @@
     </div>
   </div>
   <hr>
-
+  <div class="row">
+    <div class="col">
+      <h2>Current Playlist</h2>
+      <h3>{{ playtime.playlist_selection }}</h3>
+    </div>
+  </div>
+  <hr>
   <div class="row">
     <div class="col">
        <h2>Select Playlist</h2>
-       PUT A DROP DOWN HERE<br />
-       <input type="submit" form="playlist_form" value="Select" id="playlist_select" name="playlist_select"></input>
+       <form id="selectplaylist_form" id="selectplaylist_form" action={% url 'mp3_manager:selectplaylist' %} method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <select  class="form-select"  id="playlist_selection" name="playlist_selection">
+        {% for playlist in playlists %}
+          <option value="{{ playlist.pk }}">{{ playlist }}</option>
+        {% endfor %}
+        </select><br>
+        <input class="btn btn-secondary" type="submit" form="selectplaylist_form" value="Select" id="selectplaylist_submit" name="selectplaylist_submit"></input>
+       </form>
     </div>
   </div>
   <hr>
@@ -23,7 +36,7 @@
          <form id="playtime_form" id="name_form" action={% url 'mp3_manager:index' %} method="post" enctype="multipart/form-data">
           {% csrf_token %}
           {{ playtimeform|crispy }}
-         <input type="submit" form="playtime_form" value="Update" id="playtime_update" name="playtime_update"></input>
+         <input class="btn btn-secondary" type="submit" form="playtime_form" value="Update" id="playtime_update" name="playtime_update"></input>
          </form>
       </div>
   </div>

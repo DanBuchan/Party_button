@@ -18,7 +18,7 @@
         <form id="track_form" name="track_form" action={% url 'mp3_manager:tracks' %} method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
-        <input type="submit" form="track_form" value="Upload" id="track_upload" name="track_upload"></input>
+        <input class="btn btn-secondary" type="submit" form="track_form" value="Upload" id="track_upload" name="track_upload"></input>
         </form>
     </div>
 </div>
@@ -44,7 +44,7 @@
                   </td>
                   <td>
                     <input type="hidden" id="pk" name="pk" value="{{ track.pk }}">  
-                    <input type="submit" form="trackstart_form_{{ track.pk }}" value="Update" name="trackstart_update_{{ track.pk }}"></td>
+                    <input class="btn btn-secondary" type="submit" form="trackstart_form_{{ track.pk }}" value="Update" name="trackstart_update_{{ track.pk }}"></td>
                 </form>
                   <td>
                       {% if track.solo == True %}
@@ -74,7 +74,7 @@
                   </td>
                   <td>
                       <input type="hidden" id="pk" name="pk" value="{{ track.pk }}">
-                      <input type="submit" form="trackplaytime_form_{{ track.pk }}" value="Update" name="trackplaytime_update_{{ track.pk }}">
+                      <input class="btn btn-secondary" type="submit" form="trackplaytime_form_{{ track.pk }}" value="Update" name="trackplaytime_update_{{ track.pk }}">
                   </td>
                   </form>
                   <td><a href="{% url 'mp3_manager:delete_track' pk=track.pk %}"><button type="button" class="btn btn-danger">Delete</button></a></td></tr>

@@ -14,7 +14,7 @@
            <form id="addplaylist_form" id="addplaylist_form" action={% url 'mp3_manager:addplaylist' %} method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ playlistform|crispy }}
-            <input type="submit" form="addplaylist_form" value="Add" id="addplaylist_submi" name="addplaylist_submit"></input>
+            <input class="btn btn-secondary" type="submit" form="addplaylist_form" value="Add" id="addplaylist_submit" name="addplaylist_submit"></input>
            </form>
         </div>
     </div>
@@ -24,12 +24,12 @@
          <h2>Remove Playlist</h2>
          <form id="removeplaylist_form" id="removeplaylist_form" action={% url 'mp3_manager:removeplaylist' %} method="post" enctype="multipart/form-data">
           {% csrf_token %}
-          <select id="playlist_selection" name="playlist_selection">
+          <select  class="form-select"  id="playlist_selection" name="playlist_selection">
           {% for playlist in playlist_list %}
             <option value="{{ playlist.pk }}">{{ playlist }}</option>
           {% endfor %}
-          </select><br><br>
-        <input type="submit" form="removeplaylist_form" value="Delete" id="removeplaylist_submi" name="removeplaylist_submit"></input>
+          </select><br>
+        <input class="btn btn-danger" type="submit" form="removeplaylist_form" value="Delete" id="removeplaylist_submit" name="removeplaylist_submit"></input>
          </form>
       </div>
     </div>
@@ -37,16 +37,52 @@
     <div class="row">
         <div class="col">
           <h2>Assign Tracks To Playlists</h2>
-          playlist dropdown<br>
-          track dropdown<br>
-          submit button<br>
-        </div>
+          <form id="assignplaylist_form" id="assignplaylist_form" action={% url 'mp3_manager:assignplaylist' %} method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table>
+              <tr><th>Playlist</th><th>Track</th><th></th></tr>
+              <tr>
+                <td>
+                  <select class="form-select" id="playlist_selection" name="playlist_selection">
+                    {% for playlist in playlist_list %}
+                      <option value="{{ playlist.pk }}">{{ playlist }}</option>
+                    {% endfor %}
+                    </select>
+                </td>
+                <td>
+                  <select class="form-select" id="track_selection" name="track_selection">
+                    {% for track in tracklist %}
+                      <option value="{{ track.pk }}">{{ track }}</option>
+                    {% endfor %}
+                    </select>
+                </td>
+                <td><input class="btn btn-secondary" type="submit" form="assignplaylist_form" value="Assign" id="assignplaylist_submit" name="assignplaylist_submit"></input></td>
+              </tr>
+            </table>
+          </form>
+          </div>
     </div>
     <hr />
     <div class="row">
         <div class="col">
           <h2>Playlists</h2>
-          list all playlists<br>
+          {% for playlist in playlist_list %}
+            <table>
+              <tr><th colspan="2">{{ playlist }}</th></tr>
+                  {% for track in playlist.track_set.all %}
+                  <tr>
+                    <form id="unassignplaylist_form_{{ playlist.pk }}_{{ track.pk }}" id="unassignplaylist_update_{{ playlist.pk }}_{{ track.pk }}" action={% url 'mp3_manager:unassignplaylist' %} method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <td>{{ track }}</td>
+                    <td>
+                      <input type="hidden" id="playlist_pk" name="playlist_pk" value="{{ playlist.pk }}">  
+                      <input type="hidden" id="track_pk" name="track_pk" value="{{ track.pk }}">  
+                      <input class="btn btn-danger" type="submit" form="unassignplaylist_form_{{ playlist.pk }}_{{ track.pk }}" value="Remove" id="unassignplaylist_submit_{{ playlist.pk }}_{{ track.pk }}" name="unassignplaylist_submit_{{ playlist.pk }}_{{ track.pk }}"></input></td>  
+                    </form>
+                  </tr>
+                  {% endfor %}
+            </table>
+          {% endfor %}
         </div>
     </div>
 {% endblock %}

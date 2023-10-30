@@ -93,13 +93,16 @@ class PlaylistManagement(generic.ListView, FormMixin):
 
     def get(self, request):
         playlist_list = self.get_queryset()
+        tracklist = Track.objects.all()
         return render(request, self.template_name,
                       {"playlist_list": playlist_list,
+                       "tracklist": tracklist,
                        "playlistform": PlaylistForm})
     
     def post(self, request):
         print("Handling playlist")
-        tracks_list = self.get_queryset()
+        playlist_list = self.get_queryset()
+        tracklist = Track.objects.all()
         print(request.POST)
         if "addplaylist_submit" in request.POST:
             form = self.get_form()
@@ -108,33 +111,55 @@ class PlaylistManagement(generic.ListView, FormMixin):
                 playlist_list = self.get_queryset()
                 return render(request, self.template_name,
                               {"playlist_list": playlist_list,
+                              "tracklist": tracklist,
                               "playlistform": PlaylistForm})
             else:
                 return render(request, self.template_name,
                               {"playlist_list": playlist_list,
                               "playlistform": PlaylistForm,
+                              "tracklist": tracklist,
                               "form_errors": form.errors})
         if "removeplaylist_submit" in request.POST:
-            Playlist.objects.filter(pk=request.POST['playlist_selection'][0]).delete()
+            Playlist.objects.filter(pk=request.POST['playlist_selection']).delete()
             return redirect("/playlists")
-
+        if "assignplaylist_submit" in request.POST:
+            track = Track.objects.filter(pk=request.POST['track_selection'])[0]
+            playlist = Playlist.objects.filter(pk=request.POST['playlist_selection'])[0]
+            track.playlists.add(playlist)
+            track.save()
+            return render(request, self.template_name,
+                          {"playlist_list": playlist_list,
+                          "tracklist": tracklist,
+                          "playlistform": PlaylistForm})
+        if [key for key in request.POST.keys() if 'unassignplaylist_submit' in key.lower()]:
+            track = Track.objects.filter(pk=request.POST['track_pk'])[0]
+            playlist = Playlist.objects.filter(pk=request.POST['playlist_pk'])[0]
+            track.playlists.remove(playlist)
+            playlist_list = self.get_queryset()
+            return render(request, self.template_name,
+                          {"playlist_list": playlist_list,
+                          "tracklist": tracklist,
+                          "playlistform": PlaylistForm})
+            
         
-
 class IndexView(generic.ListView, FormMixin):
     form_class = PlaytimeForm
     template_name = "mp3_manager/index.html"
     context_object_name = "tracks_list"
   
     def get(self, request):
+        playlists = Playlist.objects.all()
         playtime = Playtime.objects.all()[0]
         return render(request, self.template_name,
-                      {"playtimeform": PlaytimeForm(instance=playtime)}) 
+                      {"playtime": playtime,
+                       "playtimeform": PlaytimeForm(instance=playtime),
+                       "playlists": playlists}) 
 
     def post(self, request):
         print("Handling Playtime")
         playtime = Playtime.objects.all()[0]
-        model = Playtime
-
+        playlists = Playlist.objects.all()
+        print(request.POST)
         if "playtime_update" in request.POST:
             print(f"Updating PlayTime")
             form = PlaytimeForm(request.POST)
@@ -142,11 +167,21 @@ class IndexView(generic.ListView, FormMixin):
             if form.is_valid():
                 obj = form.save()
                 return render(request, self.template_name,
-                              {"playtimeform": PlaytimeForm(instance=obj)})
+                              {"playtime": playtime,
+                               "playtimeform": PlaytimeForm(instance=obj),
+                               "playlists": playlists})
             else:
                 return render(request, self.template_name,
-                              {"playtimeform": PlaytimeForm(instance=obj),
-                               "form_errors": form.errors}) 
+                              {"playtime": playtime,
+                               "playtimeform": PlaytimeForm(instance=obj),
+                               "form_errors": form.errors,
+                               "playlists": playlists})
+        if "selectplaylist_submit" in request.POST:
+            playlist = Playlist.objects.filter(pk=request.POST['playlist_selection'])[0]
+            playtime.playlist_selection = playlist
+            playtime.save()
+            return redirect("/")
+            
     
 class DeleteTrackView(generic.ListView, FormMixin):
     def get(self, request, pk):
