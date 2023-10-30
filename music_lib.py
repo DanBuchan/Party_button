@@ -2,6 +2,7 @@ import sys
 import os
 import django
 import random
+import time
 
 track_path = './pb_ui/'
 sys.path.append(track_path)
@@ -73,3 +74,18 @@ def calculate_playing_coordinates(track, playtime_obj):
         start_location = track_duration-play_duration
 
     return(play_duration, start_location)
+
+def play_music(track_qset, playtime_obj, track_path, pygame):
+    play_tracks = decide_playing_set(track_qset, playtime_obj)
+    for track in play_tracks:
+        print(f"PLAYING: {track}")
+        print(f"FILE LOCATIONL: {track_path+str(track.mp3_file)}")
+        pygame.mixer.music.load(track_path+str(track.mp3_file))
+        play_duration, start_location = calculate_playing_coordinates(track, playtime_obj)
+        print(f"STARTING PLAYBACK AT: {start_location} secs")
+        print(f"PLAYING TRACK FOR: {play_duration} secs")
+        pygame.mixer.music.play(start=start_location)
+        time.sleep(play_duration)
+        pygame.mixer.music.stop()
+        print(f"PLAY FINISHED: {track}")
+    return()

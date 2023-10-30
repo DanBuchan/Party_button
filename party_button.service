@@ -16,7 +16,7 @@ Environment="PULSE_RUNTIME_PATH=/run/user/1000/pulse/"
 StandardOutput=null
 StandardError=journal
 WorkingDirectory=/home/dbuchan/party_button/
-ExecStart=/home/dbuchan/party_button/pb_venv/bin/python /home/dbuchan/party_button/gpio_test.py
+ExecStart=/home/dbuchan/party_button/pb_venv/bin/python /home/dbuchan/party_button/party_button.py
 
 [Install]
 WantedBy=multi-user.target
