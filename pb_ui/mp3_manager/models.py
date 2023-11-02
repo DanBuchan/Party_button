@@ -58,6 +58,11 @@ class Playtime(models.Model):
                                              default=False)
     playlist_selection = models.ForeignKey(Playlist, null=True,
                                            on_delete=models.PROTECT)
+    lights_only = models.BooleanField(blank=False, null=False, 
+                                             default=False)
+    music_only = models.BooleanField(blank=False, null=False, 
+                                             default=False)
+    
 
     def __str__(self):
         return str(self.playtime_seconds)

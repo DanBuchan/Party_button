@@ -183,6 +183,28 @@ class IndexView(generic.ListView, FormMixin):
             playtime.playlist_selection = playlist
             playtime.save()
             return redirect("/")
+        if "lightsctl_submit" in request.POST:
+            if playtime.lights_only == True:
+                playtime.lights_only = False
+                playtime.music_only = False
+            else:
+                playtime.lights_only = True
+                if playtime.music_only == True:
+                    playtime.music_only = False
+            playtime.save()
+            return redirect("/")
+        if "musicctl_submit" in request.POST:
+            print("hi")
+            if playtime.music_only == True:
+                playtime.music_only = False
+                playtime.lights_only = False
+            else:
+                playtime.music_only = True
+                if playtime.lights_only == True:
+                    playtime.lights_only = False
+            playtime.save()
+            return redirect("/")
+        
             
     
 class DeleteTrackView(generic.ListView, FormMixin):

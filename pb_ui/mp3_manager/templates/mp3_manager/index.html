@@ -40,4 +40,42 @@
          </form>
       </div>
   </div>
+  <hr>
+  <div class="row">
+    <div class="col">
+      <h2>Scene Control</h2>
+      <table>
+      <tr>
+      <td>
+      <form id="lightsctl_form" id="lightsctl_form" action={% url 'mp3_manager:index' %} method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if playtime.lights_only == True %}
+          <input type="submit" class="btn btn-success" value="Lights Only" form="lightsctl_form" id="lightsctl_submit" name="lightsctl_submit">
+        {% else %}
+          {% if playtime.music_only == True %}
+            <input type="submit" class="btn btn-danger" value="Lights Off" form="lightsctl_form" id="lightsctl_submit" name="lightsctl_submit">
+          {% else %}
+            <input type="submit" class="btn btn-info" value="Lights On" form="lightsctl_form" id="lightsctl_submit" name="lightsctl_submit">
+          {% endif %}  
+        {% endif %}
+      </form>
+      </td>
+      <td>
+        <form id="musicctl_form" id="musicctl_form" action={% url 'mp3_manager:index' %} method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% if playtime.music_only == True %}
+          &nbsp;<input type="submit" class="btn btn-success" value="Music Only" form="musicctl_form" id="musicctl_submit" name="musicctl_submit">
+        {% else %}
+          {% if playtime.lights_only == True %}
+          &nbsp;<input type="submit" class="btn btn-danger" value="Music Off" form="musicctl_form" id="musicctl_submit" name="musicctl_submit">
+          {% else %}
+          &nbsp;<input type="submit" class="btn btn-info" value="Music On" form="musicctl_form" id="musicctl_submit" name="musicctl_submit">
+          {% endif %} 
+        {% endif %}
+      </form>
+      </td>
+      </tr>
+      </table>
+    </div>
+</div>
 {% endblock %}
