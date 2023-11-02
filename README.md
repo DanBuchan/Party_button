@@ -87,8 +87,10 @@ sudo systemctl start party_button.service
 ## TODO
 
 1. refactor django views to correctly use mixins and not have all those single function classes
-2. Spotify integration
-3. Colour bulb 
+2. Music only mode
+3. Lights only mode
+4. Spotify integration (hmmmm)
+5. Smart bulbs 
     - Philips HUE (£70-90) - https://github.com/Q42/hue-libs#python
     - Sylvania smart+ integration (can't find UK, maybe same as OSRAM smart) - pywemo pywemo
     - LIFX (£45-60) - lifxlan package, https://github.com/mclarkk/lifxlan
