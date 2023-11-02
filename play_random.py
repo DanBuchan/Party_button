@@ -19,6 +19,7 @@ if __name__ == '__main__':
     #get the set of track
     track_qset = get_tracks(playtime_obj.playlist_selection)
     #decide what set of tracks we are playing
-    play_music(track_qset, playtime_obj, track_path, pygame)
+    if playtime_obj.lights_only == False:
+        play_music(track_qset, playtime_obj, track_path, pygame)
 
 

@@ -22,23 +22,33 @@ def signal_term_handler(sigNum, frame):
 
 def lets_party(main_lights_channel, disco_lights_channel, spotlights_channel,
                discoball_channel):
-    print("BUTTON: pressed")
-    print("MAIN LIGHTS: off")
-    GPIO.output(main_lights_channel, GPIO.HIGH)
-    print("DISCO BALL: on")
-    print("DISCO LIGHT: on")
-    GPIO.output(disco_lights_channel, GPIO.HIGH)
-    print("MUSIC: on")
-    
     playtime_obj = get_playtime_obj()
-    #get the set of track
-    track_qset = get_tracks(playtime_obj.playlist_selection)
-    #decide what set of tracks we are playing
-    play_music(track_qset, playtime_obj, track_path, pygame)    
+    
+    print("BUTTON: pressed")
+    
+    #possibly there should be some brief pauses before toggling things "on"
+    if playtime_obj.music_only == False:
+        print("MAIN LIGHTS: off")
+        GPIO.output(main_lights_channel, GPIO.HIGH)
+        print("DISCO BALL: on")
+        #GPIO.output(disco_motor_channel, GPIO.HIGH)
+        #GPIO.output(disco_spots_channel, GPIO.HIGH)
+        print("DISCO LIGHT: on")
+        GPIO.output(disco_lights_channel, GPIO.HIGH)
+    
+    if playtime_obj.lights_only == False:
+        # get the set of track
+        track_qset = get_tracks(playtime_obj.playlist_selection)
+        print("MUSIC: on")
+        #decide what set of tracks we are playing
+        play_music(track_qset, playtime_obj, track_path, pygame)    
     
     print("PARTY: off")
     print("MAIN LIGHTS: on\n")
+    # do we need a bit of a pause between these?
     GPIO.output(disco_lights_channel, GPIO.LOW)
+    #GPIO.output(disco_motor_channel, GPIO.LOW)
+    #GPIO.output(disco_spots_channel, GPIO.LOW)
     GPIO.output(main_lights_channel, GPIO.LOW)
     toggle=0
 
