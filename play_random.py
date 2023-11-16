@@ -15,6 +15,7 @@ from mp3_manager.models import Track, Playtime, Playlist
 
 #https://discovery.meethue.com/
 # "192.168.1.112"
+# https://gist.github.com/jiaaro/faa96fabd252b8552066
 
 if __name__ == '__main__':
     pygame.init()
