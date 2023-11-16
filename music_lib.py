@@ -3,6 +3,7 @@ import os
 import django
 import random
 import time
+import colorsys
 
 track_path = './pb_ui/'
 sys.path.append(track_path)
@@ -10,6 +11,56 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'pb_ui.settings')
 django.setup()
 from mp3_manager.models import Track, Playtime, Playlist
+
+def change_colour(pb_lights, party_light_settings, brightness, rand):
+    colours = party_light_settings
+    if rand:
+        while True:
+            set_lights(pb_lights, colours, brightness)
+            for i in range(len(colours)):
+                colours[i][0] = random.randint(0, 65535)
+                colours[i][1] = random.randint(0, 254)
+            time.sleep(0.25)
+    else:
+        set_lights(pb_lights, colours, brightness)
+
+def get_bridge_info():
+    #we'll get this out of the party button UI later
+    brightness = 0.25
+    return "192.168.1.112", "GIRjjwwRjU7If6DYHwnzY2L6qxMOJnimt4Femjvd", int(254*brightness)
+
+def get_light_list(b):
+    light_list = []
+    for light in b.lights:
+        if "PB spot" in light.name:
+            light_list.append(light)
+    return light_list
+
+def get_initial_colours(lights):
+    initial_settings = []
+    for i, light in enumerate(lights):
+        initial_settings.append([light.hue, light.saturation, light.brightness ])
+    return(initial_settings)
+
+def set_lights(lights, settings, brightness):
+
+    for i, light in enumerate(lights):
+        light.hue = settings[i][0]
+        light.saturation = settings[i][1]
+        if brightness:
+            light.brightness = brightness
+        else:
+            light.brightness = settings[i][2]    
+
+def get_light_settings():
+    R = 152
+    G = 52
+    B = 235
+    hsv_values = colorsys.rgb_to_hsv(R/254, G/254, B/254)
+    h = int(65535 * hsv_values[0])
+    s = int(254 * hsv_values[1])
+    v = int(254 * hsv_values[2])
+    return [[h, s, v]]
 
 def get_playtime_obj():
     '''
