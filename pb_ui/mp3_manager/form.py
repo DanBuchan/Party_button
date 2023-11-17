@@ -1,6 +1,18 @@
 from django.forms import ModelForm, TextInput, FileInput, BooleanField
 from django import forms
-from .models import Track, Playtime, Playlist
+from .models import Track, Playtime, Playlist, Bridge, Light
+
+class BridgeForm(ModelForm):
+    class Meta:
+        model = Bridge
+        fields = ['ip', 'user_id', 'name_stub', 'brightness']
+
+class LightForm(ModelForm):
+    class Meta:
+        model = Light
+        fields = ['name', 'primary_R', 'primary_G', 'primary_B', 
+                  'secondary_R', 'secondary_G', 'secondary_B', 
+                  'primary_colour', 'fade', 'random' ]
 
 class TrackForm(ModelForm):
     class Meta:

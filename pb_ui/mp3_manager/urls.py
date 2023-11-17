@@ -15,5 +15,7 @@ urlpatterns = [
     path("addplaylist/", views.PlaylistManagement.as_view(), name="addplaylist"),
     path("removeplaylist/", views.PlaylistManagement.as_view(), name="removeplaylist"),
     path("assignplaylist/", views.PlaylistManagement.as_view(), name="assignplaylist"),    
-    path("unassignplaylist/", views.PlaylistManagement.as_view(), name="unassignplaylist"),    
+    path("unassignplaylist/", views.PlaylistManagement.as_view(), name="unassignplaylist"),   
+    path("lights/", views.LightManagement.as_view(), name="lights"),
+     
 ]

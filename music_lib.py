@@ -15,7 +15,7 @@ from mp3_manager.models import Track, Playtime, Playlist
 def change_colour(pb_lights, party_light_settings, brightness, rand):
     colours = party_light_settings
     # step_interval = 60/bpm
-    # num_steps = playtime/step_intervale
+    # num_steps = playtime/step_interval
 
     # we should loop over the lights, set the solid colour for the fixed ones
     # for the rest enter the infinite while loop and either make a rand change

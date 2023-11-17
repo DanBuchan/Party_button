@@ -1,0 +1,26 @@
+{% extends "./base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="row">
+    <div class="col">
+      <a href="/"><button type="button" class="btn btn-secondary">Play Mode</button></a>&nbsp;
+      <a href="/tracks"><button type="button" class="btn btn-secondary">Track Management</button></a>&nbsp;
+      <a href="/playlists"><button type="button" class="btn btn-secondary">Playlist Management</button></a>
+      <a href="/lights"><button type="button" class="btn btn-success">Light Management</button></a>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col">
+      <h2>Bridge Settings</h2>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col">
+      <h2>Light Config</h2>
+    </div>
+  </div>
+  
+{% endblock %}

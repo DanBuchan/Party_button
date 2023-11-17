@@ -15,7 +15,9 @@ from mp3_manager.models import Track, Playtime, Playlist
 
 #https://discovery.meethue.com/
 # "192.168.1.112"
+# Estimate BPM
 # https://gist.github.com/jiaaro/faa96fabd252b8552066
+# https://essentia.upf.edu/tutorial_rhythm_beatdetection.html
 
 if __name__ == '__main__':
     pygame.init()

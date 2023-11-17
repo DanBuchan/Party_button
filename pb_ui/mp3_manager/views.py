@@ -5,9 +5,11 @@ from django.views.generic.edit import FormMixin
 from django.conf import settings
 
 from pydub import AudioSegment
+import librosa
 
-from .models import Track, Playtime, Playlist
+from .models import Track, Playtime, Playlist, Bridge, Light
 from .form import TrackForm, PlaytimeForm, TrackPlaytimeForm, TrackStartForm
+from .form import BridgeForm, TrackForm
 from .form import PlaylistForm
 
 class TrackManagement(generic.ListView, FormMixin):
@@ -37,6 +39,11 @@ class TrackManagement(generic.ListView, FormMixin):
                 song = AudioSegment.from_mp3(f"{str(settings.BASE_DIR)}/{str(record.mp3_file)}")
                 duration = song.duration_seconds*1000
                 record.mp3_length = duration
+
+                audio_file = librosa.load(f"{str(settings.BASE_DIR)}/{str(record.mp3_file)}")
+                y, sr = audio_file
+                tempo = librosa.beat.tempo(y=y, sr=sr)
+                record.bpm = tempo[0]
                 record.save()
                 return render(request, self.template_name,
                               {"tracks_list": tracks_list,
@@ -262,3 +269,20 @@ class TrackPlaytimeView(generic.ListView, FormMixin):
         
         track = Track.objects.filter(pk=pk)[0]
         return redirect("/tracks")
+
+class LightManagement(generic.ListView, FormMixin):
+    template_name = "mp3_manager/lights.html"
+    model = Bridge
+    form_class = BridgeForm
+
+    def get(self, request):
+        bridge = Bridge.objects.all().first()
+        lights = Light.objects.all()
+        return render(request, self.template_name,
+                      {"bridge": bridge,
+                       "lights": lights,
+                       "bridgeform": BridgeForm(instance=bridge),}) 
+
+class LightUpdate(generic.ListView, FormMixin):
+    template_name = "mp3_manager/lights.html"
+
