@@ -16,6 +16,12 @@ urlpatterns = [
     path("removeplaylist/", views.PlaylistManagement.as_view(), name="removeplaylist"),
     path("assignplaylist/", views.PlaylistManagement.as_view(), name="assignplaylist"),    
     path("unassignplaylist/", views.PlaylistManagement.as_view(), name="unassignplaylist"),   
-    path("lights/", views.LightManagement.as_view(), name="lights"),
+    path("lightupdate/", views.LightUpdate.as_view(), name="lights"),
+    path("lightprimary/<int:pk>/", views.LightPrimary.as_view(), name="lightprimary"),
+    path("lightfade/<int:pk>/", views.LightFade.as_view(), name="lightfade"),
+    path("lightrandom/<int:pk>/", views.LightRandom.as_view(), name="lightrandom"),
+    path("lightinterval/<int:pk>/", views.LightInterval.as_view(), name="lightinterval"),
+    path("lights/", views.BridgeManagement.as_view(), name="bridge"),
+
      
 ]

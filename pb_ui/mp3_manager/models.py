@@ -117,11 +117,38 @@ class Light(models.Model):
                                         default=0,
                                         validators=[MinValueValidator(0),
                                                     MaxValueValidator(254)])
-    primary_colour = models.BooleanField(blank=False, null=False, default=False)
-    fade = models.BooleanField(blank=False, null=False, default=False)
-    random = models.BooleanField(blank=False, null=False, default=False)
-
-    # random_interval = models.BooleanField(blank=False, null=False, default=False)
+    primary_H = models.IntegerField(blank=False, null=False,
+                                    default=0,
+                                    validators=[MinValueValidator(0),
+                                                MaxValueValidator(65535)])
+    primary_S = models.IntegerField(blank=False, null=False,
+                                    default=0,
+                                    validators=[MinValueValidator(0),
+                                                MaxValueValidator(254)])
+    primary_V = models.IntegerField(blank=False, null=False,
+                                    default=0,
+                                    validators=[MinValueValidator(0),
+                                                MaxValueValidator(254)])
+    secondary_H = models.IntegerField(blank=False, null=False,
+                                      default=0,
+                                      validators=[MinValueValidator(0),
+                                                  MaxValueValidator(65535)])
+    secondary_S = models.IntegerField(blank=False, null=False,
+                                      default=0,
+                                      validators=[MinValueValidator(0),
+                                                  MaxValueValidator(254)])
+    secondary_V = models.IntegerField(blank=False, null=False,
+                                        default=0,
+                                        validators=[MinValueValidator(0),
+                                                    MaxValueValidator(254)])
+    primary_colour = models.BooleanField(blank=False, null=False, default=True) # only hold to primary colour
+    fade = models.BooleanField(blank=False, null=False, default=False) # move between primary and secondary colour
+    random_colour = models.BooleanField(blank=False, null=False, default=False) # Change between random colours
+    random_interval = models.BooleanField(blank=False, null=False, default=False) # Only change on random intervals
+    interval_size = models.IntegerField(blank=False, null=False,                # Change interval size
+                                      default=1,
+                                      validators=[MinValueValidator(1),
+                                                  MaxValueValidator(254)])
     
     def __str__(self):
         return(self.name)

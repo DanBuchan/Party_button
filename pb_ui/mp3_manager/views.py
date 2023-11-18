@@ -5,11 +5,13 @@ from django.views.generic.edit import FormMixin
 from django.conf import settings
 
 import librosa
+import phue
+import colorsys
 
 from .models import Track, Playtime, Playlist, Bridge, Light
 from .form import TrackForm, PlaytimeForm, TrackPlaytimeForm, TrackStartForm
 from .form import BridgeForm, TrackForm ,TrackBpmForm
-from .form import PlaylistForm
+from .form import PlaylistForm, BrightnessForm
 
 class TrackManagement(generic.ListView, FormMixin):
     form_class = TrackForm
@@ -187,7 +189,7 @@ class IndexView(generic.ListView, FormMixin):
         print("Handling Playtime")
         playtime = Playtime.objects.all()[0]
         playlists = Playlist.objects.all()
-        print(request.POST)
+        # print(request.POST)
         if "playtime_update" in request.POST:
             print(f"Updating PlayTime")
             form = PlaytimeForm(request.POST)
@@ -291,7 +293,7 @@ class TrackPlaytimeView(generic.ListView, FormMixin):
         track = Track.objects.filter(pk=pk)[0]
         return redirect("/tracks")
 
-class LightManagement(generic.ListView, FormMixin):
+class BridgeManagement(generic.ListView, FormMixin):
     template_name = "mp3_manager/lights.html"
     model = Bridge
     form_class = BridgeForm
@@ -302,8 +304,142 @@ class LightManagement(generic.ListView, FormMixin):
         return render(request, self.template_name,
                       {"bridge": bridge,
                        "lights": lights,
-                       "bridgeform": BridgeForm(instance=bridge),}) 
+                       "bridgeform": BridgeForm(instance=bridge),
+                       "brightnessform": BrightnessForm(instance=bridge),
+                       }) 
+
+    def post(self, request):
+        # print(request.POST)
+        if "bridge_reset" in request.POST:
+            Light.objects.all().delete()
+            form = BridgeForm(request.POST)
+            if form.is_valid():
+                bridge = Bridge.objects.all().first()
+                bridge.ip = request.POST["ip"]
+                bridge.user_id = request.POST["user_id"]
+                bridge.name_stub = request.POST["name_stub"]
+                obj = bridge.save()
+                try: 
+                    b = phue.Bridge(bridge.ip, bridge.user_id)
+                    light_list = []
+                    for light in b.lights:
+                        if bridge.name_stub in light.name:
+                            light_list.append(light)
+                    for light in light_list:
+                        print(light.name, light.hue, light.saturation, light.brightness)
+                        h = light.hue/65535
+                        s = light.saturation/254
+                        v = light.brightness/254
+                        rgb_values = colorsys.hsv_to_rgb(h, s, v)
+                        r = int(254*rgb_values[0])
+                        g = int(254*rgb_values[1])
+                        b = int(254*rgb_values[2])
+                        light_obj = Light.objects.create(name=light.name,
+                                                         primary_R=r, 
+                                                         primary_G=g, 
+                                                         primary_B=b, 
+                                                         secondary_R=r, 
+                                                         secondary_G=g, 
+                                                         secondary_B=b, 
+                                                         primary_H=light.hue, 
+                                                         primary_S=light.saturation, 
+                                                         primary_V=light.brightness, 
+                                                         secondary_H=light.hue, 
+                                                         secondary_S=light.saturation, 
+                                                         secondary_V=light.brightness, 
+                                                         )
+                except Exception as e:
+                    print("CAN'T FIND BRIDGE: "+str(e))
+
+             # find all lights that match tubs
+             # save light record fo each
+        if "brightness_update" in request.POST:
+            form = BrightnessForm(request.POST)
+            if form.is_valid():
+                bridge = Bridge.objects.all().first()
+                bridge.brightness = request.POST["brightness"]
+                bridge.save()
+        return redirect("/lights")
+
 
 class LightUpdate(generic.ListView, FormMixin):
     template_name = "mp3_manager/lights.html"
 
+    def post(self, request):
+        print(request.POST)
+        if [key for key in request.POST.keys() if 'light_update' in key.lower()]:
+            # Should really check this validates with the lightForm
+            light = Light.objects.filter(pk=request.POST['pk'])[0]
+            light.primary_R=int(request.POST['primary_R'])
+            light.primary_G=int(request.POST['primary_G'])
+            light.primary_B=int(request.POST['primary_B'])
+            light.secondary_R=int(request.POST['secondary_R'])
+            light.secondary_G=int(request.POST['secondary_G'])
+            light.secondary_B=int(request.POST['secondary_B'])
+            light.interval_size=int(request.POST['interval_size'])
+            hsv_values = colorsys.rgb_to_hsv(light.primary_R/254, light.primary_G/254, light.primary_B/254)
+            h = int(65535 * hsv_values[0])
+            s = int(254 * hsv_values[1])
+            v = int(254 * hsv_values[2])
+            light.primary_H=h 
+            light.primary_S=s
+            light.primary_V=v
+            hsv_values = colorsys.rgb_to_hsv(light.secondary_R/254, light.secondary_G/254, light.secondary_B/254)
+            h = int(65535 * hsv_values[0])
+            s = int(254 * hsv_values[1])
+            v = int(254 * hsv_values[2])
+            light.secondary_H=h
+            light.secondary_S=s
+            light.secondary_V=s
+            light.save()
+        return redirect("/lights")
+    
+class LightPrimary(generic.ListView, FormMixin):
+    
+    def get(self, request, pk):
+        #get records set solo True and save.
+        print(f"Setting Light to primary colour only: {pk}")
+        light = Light.objects.filter(pk=pk)[0]
+        light.primary_colour = True
+        light.fade = False
+        light.random_colour = False
+        light.save()
+        return redirect("/lights")
+
+class LightFade(generic.ListView, FormMixin):
+    
+    def get(self, request, pk):
+        #get records set solo True and save.
+        print(f"Setting Light to fade: {pk}")
+        light = Light.objects.filter(pk=pk)[0]
+        light.primary_colour = False
+        light.fade = True
+        light.random_colour = False
+        light.save()
+        return redirect("/lights")
+
+class LightRandom(generic.ListView, FormMixin):
+    
+    def get(self, request, pk):
+        #get records set solo True and save.
+        print(f"Setting Light to random: {pk}")
+        light = Light.objects.filter(pk=pk)[0]
+        light.primary_colour = False
+        light.fade = False
+        light.random_colour = True
+        light.save()
+        return redirect("/lights")
+
+class LightInterval(generic.ListView, FormMixin):
+    
+    def get(self, request, pk):
+        #get records set solo True and save.
+        print(f"Setting Change interval to random: {pk}")
+        light = Light.objects.filter(pk=pk)[0]
+        if light.random_interval:
+            light.random_interval=False
+        else:
+            light.random_interval=True
+        light.save()
+        return redirect("/lights")
+    
