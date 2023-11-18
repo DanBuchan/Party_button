@@ -25,7 +25,6 @@ phue==1.1
 platformdirs==4.0.0
 pooch==1.8.0
 pycparser==2.21
-pydub==0.25.1
 pygame==2.5.2
 redis==5.0.1
 requests==2.31.0

@@ -17,7 +17,7 @@ class LightForm(ModelForm):
 class TrackForm(ModelForm):
     class Meta:
         model = Track
-        fields = ["name", "mp3_file", "minutes", "seconds"]
+        fields = ["name", "mp3_file", "minutes", "seconds", "bpm"]
 
 class PlaytimeForm(ModelForm):
     class Meta:
@@ -32,6 +32,16 @@ class TrackPlaytimeForm(ModelForm):
         model = Track
         fields = ["playtime_seconds"]
         exclude = ["name", "mp3_file", "minutes", "seconds"]
+
+class TrackBpmForm(ModelForm):
+    bpm = forms.IntegerField(
+        label='',
+    )
+    class Meta:
+        model = Track
+        fields = ["bpm"]
+        exclude = ["name", "mp3_file", "bpm"]
+
 
 class TrackStartForm(ModelForm):
     class Meta:

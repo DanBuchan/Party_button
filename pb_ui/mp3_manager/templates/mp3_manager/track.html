@@ -70,6 +70,7 @@
                       <a href="{% url 'mp3_manager:override' pk=track.pk %}"><button type="button" class="btn btn-primary">Using Global Play Time</button></a>
                     {% endif %}
                   </td>
+                  
                   <form id="trackplaytime_form_{{ track.pk }}" id="trackplaytime_update_{{ track.pk }}" action={% url 'mp3_manager:tracks' %} method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                   <td>
@@ -80,6 +81,7 @@
                       <input class="btn btn-secondary" type="submit" form="trackplaytime_form_{{ track.pk }}" value="Update" name="trackplaytime_update_{{ track.pk }}">
                   </td>
                   </form>
+                  
                   <form id="trackbpm_form_{{ track.pk }}" id="trackbpm_update_{{ track.pk }}" action={% url 'mp3_manager:tracks' %} method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                   <td>

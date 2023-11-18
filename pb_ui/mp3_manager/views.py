@@ -4,12 +4,11 @@ from django.views import generic
 from django.views.generic.edit import FormMixin
 from django.conf import settings
 
-from pydub import AudioSegment
 import librosa
 
 from .models import Track, Playtime, Playlist, Bridge, Light
 from .form import TrackForm, PlaytimeForm, TrackPlaytimeForm, TrackStartForm
-from .form import BridgeForm, TrackForm
+from .form import BridgeForm, TrackForm ,TrackBpmForm
 from .form import PlaylistForm
 
 class TrackManagement(generic.ListView, FormMixin):
@@ -25,7 +24,8 @@ class TrackManagement(generic.ListView, FormMixin):
         return render(request, self.template_name,
                       {"tracks_list": tracks_list,
                        "form": TrackForm(),
-                       "trackplaytime": TrackPlaytimeForm()})
+                       "trackplaytime": TrackPlaytimeForm(),
+                       "trackbpmform": TrackBpmForm()})
 
     def post(self, request):
         print("Handling Track")
@@ -36,14 +36,11 @@ class TrackManagement(generic.ListView, FormMixin):
             form = self.get_form()
             if form.is_valid():
                 record = form.save()
-                song = AudioSegment.from_mp3(f"{str(settings.BASE_DIR)}/{str(record.mp3_file)}")
-                duration = song.duration_seconds*1000
-                record.mp3_length = duration
-
                 audio_file = librosa.load(f"{str(settings.BASE_DIR)}/{str(record.mp3_file)}")
                 y, sr = audio_file
-                tempo = librosa.beat.tempo(y=y, sr=sr)
+                tempo = librosa.feature.tempo(y=y, sr=sr)
                 record.bpm = tempo[0]
+                record.mp3_length = librosa.get_duration(y=y, sr=sr)*1000
                 record.save()
                 return render(request, self.template_name,
                               {"tracks_list": tracks_list,
@@ -54,7 +51,27 @@ class TrackManagement(generic.ListView, FormMixin):
                               {"tracks_list": tracks_list,
                                "form": TrackForm(),
                                "trackplaytime": TrackPlaytimeForm(),
-                               "form_errors": form.errors})
+                               "trackbpmform": TrackBpmForm(),
+                               "form_errors": form.errors})#
+        if [key for key in request.POST.keys() if 'trackbpm_update' in key.lower()]:
+            print("Updating BPM")
+            thisform = TrackBpmForm(request.POST)
+            if thisform.is_valid():
+                track = Track.objects.filter(pk=request.POST["pk"])[0]
+                track.bpm = request.POST["bpm"]
+                track.save()
+                return render(request, self.template_name,
+                              {"tracks_list": tracks_list,
+                               "form": TrackForm(),
+                               "trackplaytime": TrackPlaytimeForm(),
+                               "trackbpmform": TrackBpmForm()}) 
+            else:
+                return render(request, self.template_name,
+                              {"tracks_list": tracks_list,
+                               "form": TrackForm(),
+                               "trackplaytime": TrackPlaytimeForm(),
+                               "trackbpmform": TrackBpmForm(),
+                               "form_errors": thisform.errors})
         if [key for key in request.POST.keys() if 'trackplaytime_update' in key.lower()]:
             print("Updating track playtime")
             thisform = TrackPlaytimeForm(request.POST)
@@ -66,12 +83,14 @@ class TrackManagement(generic.ListView, FormMixin):
                 return render(request, self.template_name,
                               {"tracks_list": tracks_list,
                                "form": TrackForm(),
-                               "trackplaytime": TrackPlaytimeForm()}) 
+                               "trackplaytime": TrackPlaytimeForm(),
+                               "trackbpmform": TrackBpmForm()}) 
             else:
                 return render(request, self.template_name,
                               {"tracks_list": tracks_list,
                                "form": TrackForm(),
                                "trackplaytime": TrackPlaytimeForm(),
+                               "trackbpmform": TrackBpmForm(),
                                "form_errors": thisform.errors})
         if [key for key in request.POST.keys() if 'trackstart_update' in key.lower()]:
             print("Updating track start")
@@ -84,12 +103,14 @@ class TrackManagement(generic.ListView, FormMixin):
                 return render(request, self.template_name,
                               {"tracks_list": tracks_list,
                                "form": TrackForm(),
-                               "trackplaytime": TrackPlaytimeForm()}) 
+                               "trackplaytime": TrackPlaytimeForm(),
+                               "trackbpmform": TrackBpmForm()}) 
             else:
                 return render(request, self.template_name,
                               {"tracks_list": tracks_list,
                                "form": TrackForm(),
                                "trackplaytime": TrackPlaytimeForm(),
+                               "trackbpmform": TrackBpmForm(),
                                "form_errors": thisform.errors})
 
 class PlaylistManagement(generic.ListView, FormMixin):
