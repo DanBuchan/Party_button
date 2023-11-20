@@ -21,7 +21,7 @@ def change_colour(pb_lights, party_light_settings, brightness, playtime, bpm):
         if party_light_settings[light.name]:
             if party_light_settings.random_colour:
                 random_light_set.append(light)
-            if party_light_settings.random_colour:
+            if party_light_settings.fade:
                 fade_light_set.append(light)
             else:
                 set_light(light, party_light_settings, brightness, playtime)
@@ -35,6 +35,8 @@ def change_colour(pb_lights, party_light_settings, brightness, playtime, bpm):
     steps = bpm*minute_portion
     step_length = playtime/steps
     step_count = 0
+    thirty_secs_steps = int(30/step_length)
+    primary_ctl = True
     #workout number of steps in 
     while True:
         for light in random_light_set:
@@ -52,11 +54,26 @@ def change_colour(pb_lights, party_light_settings, brightness, playtime, bpm):
             else:
                 set_light(light, random_setting, brightness, None)
         for light in fade_light_set:
-            pass
-            # primary_ctl = True
-            # if step_count == 0:
-            # set first fade
-            # else step_count % 30_sec_steps == 0:
+            fade_setting = {}
+            if step_count == 0:
+                primary_ctl = False
+            elif step_count % thirty_secs_steps == 0:
+                if primary_ctl:
+                    fade_setting[light.name]['primary_h'] = party_light_settings[light.name]['primary_h']
+                    fade_setting[light.name]['primary_s'] = party_light_settings[light.name]['primary_s']
+                    fade_setting[light.name]['secondary_h'] = party_light_settings[light.name]['secondary_h']
+                    fade_setting[light.name]['secondary_s'] = party_light_settings[light.name]['secondary_s']
+                    fade_setting[light.name]['fade'] = True
+                    primary_ctl=False
+                else:
+                    fade_setting[light.name]['primary_h'] = party_light_settings[light.name]['secondary_h']
+                    fade_setting[light.name]['primary_s'] = party_light_settings[light.name]['secondary_s']
+                    fade_setting[light.name]['secondary_h'] = party_light_settings[light.name]['primary_h']
+                    fade_setting[light.name]['secondary_s'] = party_light_settings[light.name]['primary_s']
+                    fade_setting[light.name]['fade'] = True
+                    fade_setting[light.name]['fade'] = True
+                    primary_ctl=True  
+            set_light(light, fade_setting, brightness, playtime)
                 # set colours based on primary_ctl
 
         time.sleep(step_length)
@@ -87,6 +104,8 @@ def get_initial_colours(lights):
     return(initial_settings)
 
 def set_light(light, settings, brightness, playtime):
+    if playtime > 30:
+        playtime = 30
     light.hue = settings[light.name]['primary_h']
     light.saturation = settings[light.name]['primary_v']
     light.brightness = brightness
