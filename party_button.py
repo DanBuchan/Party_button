@@ -20,12 +20,26 @@ def signal_term_handler(sigNum, frame):
     GPIO.cleanup()
     exit()
 
-def lets_party(main_lights_channel, disco_lights_channel, spotlights_channel,
-               discoball_channel):
+def lets_party(disco_lights_channel, spotlights_channel, discoball_channel):
+    # Initialise lights:
     playtime_obj = get_playtime_obj()
+    hue_bridge_ip, hue_user_id, brightness = get_bridge_info()
+    b = phue.Bridge(hue_bridge_ip, hue_user_id)
+    party_light_settings = get_light_settings()
+    # Do things, i.e. after button press
+    pb_lights = get_light_list(b)
+    # loop over the lights and their settings and add them to this data
+    # so we only have to do this once
+    light_info = {}
+    for light in pb_lights:
+        for setting in party_light_settings:
+            if light.name == setting.name:
+                light_info[light.name] = {"light": light,
+                                          "setting": setting}
+
+    initial_light_settings = get_initial_colours(pb_lights)
     
     print("BUTTON: pressed")
-    
     #possibly there should be some brief pauses before toggling things "on"
     if playtime_obj.music_only == False:
         print("MAIN LIGHTS: off")
@@ -41,10 +55,11 @@ def lets_party(main_lights_channel, disco_lights_channel, spotlights_channel,
         track_qset = get_tracks(playtime_obj.playlist_selection)
         print("MUSIC: on")
         #decide what set of tracks we are playing
-        play_music(track_qset, playtime_obj, track_path, pygame)    
+        play_music(track_qset, playtime_obj, track_path, pygame, light_info, brightness)
     
     print("PARTY: off")
     print("MAIN LIGHTS: on\n")
+    reset_lights(pb_lights, initial_light_settings)
     # do we need a bit of a pause between these?
     GPIO.output(disco_lights_channel, GPIO.LOW)
     #GPIO.output(disco_motor_channel, GPIO.LOW)
@@ -55,7 +70,6 @@ def lets_party(main_lights_channel, disco_lights_channel, spotlights_channel,
 if __name__ == '__main__':
     GPIO.setmode(GPIO.BCM)
     input_channel = 17
-    main_lights_channel = 22
     disco_lights_channel = 10
     spotlights_channel = None
     discoball_channel = None
@@ -75,5 +89,5 @@ if __name__ == '__main__':
                 print("BUTTON: released\n")
             toggle=1
         else:
-            lets_party(main_lights_channel, disco_lights_channel,
-                       spotlights_channel, discoball_channel)
+            lets_party(disco_lights_channel, spotlights_channel,
+                       discoball_channel)
