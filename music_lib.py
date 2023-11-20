@@ -10,15 +10,19 @@ sys.path.append(track_path)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'pb_ui.settings')
 django.setup()
+
 from mp3_manager.models import Playtime, Playlist, Bridge, Light
 
 def change_colour(pb_lights, party_light_settings, brightness, playtime, bpm):
     # First up change the lights
     random_light_set = []
+    fade_light_set = []
     for light in pb_lights:
         if party_light_settings[light.name]:
             if party_light_settings.random_colour:
                 random_light_set.append(light)
+            if party_light_settings.random_colour:
+                fade_light_set.append(light)
             else:
                 set_light(light, party_light_settings, brightness, playtime)
 
@@ -31,6 +35,7 @@ def change_colour(pb_lights, party_light_settings, brightness, playtime, bpm):
     steps = bpm*minute_portion
     step_length = playtime/steps
     step_count = 0
+    #workout number of steps in 
     while True:
         for light in random_light_set:
             if party_light_settings[light.name]['interval_size'] % step_count != 0:
@@ -46,6 +51,14 @@ def change_colour(pb_lights, party_light_settings, brightness, playtime, bpm):
                     set_light(light, random_setting, brightness, None)
             else:
                 set_light(light, random_setting, brightness, None)
+        for light in fade_light_set:
+            pass
+            # primary_ctl = True
+            # if step_count == 0:
+            # set first fade
+            # else step_count % 30_sec_steps == 0:
+                # set colours based on primary_ctl
+
         time.sleep(step_length)
         step_count += 1
 
