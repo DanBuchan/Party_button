@@ -67,7 +67,7 @@ class Playtime(models.Model):
                                              default=False)
     music_only = models.BooleanField(blank=False, null=False, 
                                              default=False)
-    
+    # lights_only and music_only should really be a enum type
 
     def __str__(self):
         return str(self.playtime_seconds)
@@ -141,9 +141,12 @@ class Light(models.Model):
                                         default=0,
                                         validators=[MinValueValidator(0),
                                                     MaxValueValidator(254)])
+    # primary, fade, randome and alternate should really be an enum class.
     primary_colour = models.BooleanField(blank=False, null=False, default=True) # only hold to primary colour
     fade = models.BooleanField(blank=False, null=False, default=False) # move between primary and secondary colour
     random_colour = models.BooleanField(blank=False, null=False, default=False) # Change between random colours
+    alternate_colour = models.BooleanField(blank=False, null=False, default=False) # Alternate between colours
+
     random_interval = models.BooleanField(blank=False, null=False, default=False) # Only change on random intervals
     interval_size = models.IntegerField(blank=False, null=False,                # Change interval size
                                       default=1,

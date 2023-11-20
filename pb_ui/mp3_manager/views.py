@@ -403,6 +403,7 @@ class LightPrimary(generic.ListView, FormMixin):
         light.primary_colour = True
         light.fade = False
         light.random_colour = False
+        light.alternate_colour = False
         light.save()
         return redirect("/lights")
 
@@ -415,6 +416,7 @@ class LightFade(generic.ListView, FormMixin):
         light.primary_colour = False
         light.fade = True
         light.random_colour = False
+        light.alternate_colour = False
         light.save()
         return redirect("/lights")
 
@@ -427,8 +429,23 @@ class LightRandom(generic.ListView, FormMixin):
         light.primary_colour = False
         light.fade = False
         light.random_colour = True
+        light.alternate_colour = False
         light.save()
         return redirect("/lights")
+
+class LightAlternate(generic.ListView, FormMixin):
+    
+    def get(self, request, pk):
+        #get records set solo True and save.
+        print(f"Setting Light to alternate: {pk}")
+        light = Light.objects.filter(pk=pk)[0]
+        light.primary_colour = False
+        light.fade = False
+        light.random_colour = False
+        light.alternate_colour = True
+        light.save()
+        return redirect("/lights")
+
 
 class LightInterval(generic.ListView, FormMixin):
     
@@ -442,4 +459,3 @@ class LightInterval(generic.ListView, FormMixin):
             light.random_interval=True
         light.save()
         return redirect("/lights")
-    
