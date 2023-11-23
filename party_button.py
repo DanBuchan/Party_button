@@ -61,6 +61,7 @@ def lets_party(disco_lights_channel, spotlights_channel, discoball_channel):
     reset_lights(pb_lights, initial_light_settings)
     # do we need a bit of a pause between these?
     GPIO.output(disco_lights_channel, GPIO.LOW)
+    # GPIO.output(disco_lights_channel2, GPIO.LOW)
     #GPIO.output(disco_motor_channel, GPIO.LOW)
     #GPIO.output(disco_spots_channel, GPIO.LOW)
     return(0)
@@ -89,3 +90,4 @@ if __name__ == '__main__':
         else:
             toggle = lets_party(disco_lights_channel, spotlights_channel,
                        discoball_channel)
+            GPIO.setup(input_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
