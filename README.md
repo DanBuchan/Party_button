@@ -40,7 +40,6 @@ REQUIRES 64BIT OS
 1. Install requirements
 ``` bash
 sudo apt-get install apache2
-sudo apt-get install ffmpeg
 sudo apt-get install apache2-dev
 sudo apt-get install libapache2-mod-wsgi-py3
 sudo apt-get install midori
@@ -56,13 +55,13 @@ brew install httpd
 
 2. Install requirements
 
-On pi you should get wheels of as much as you can especially heavy weight packages like numba, numpy and scipy. You must comment out mod-wsgi
+On pi you could/should comment out mod-wsgi
 
 ``` bash
+python -m venv pb_venv
+source pb_venv/bin/activate
 pip install -r requirements.txt
 ```
-
-If you're using venv you probably want to comment out numba, scipy and numpy in the requirements on pi3
 
 3. collect static assets
 
