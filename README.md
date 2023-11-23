@@ -72,7 +72,7 @@ python manage.py collectstatic
 
 4. Copy httpd.conf
 ``` bash
-cp Party_button/000-default.conf.pi /etc/apache2/sites-available
+cp Party_button/000-default.conf.pi /etc/apache2/sites-available/000-default.conf
 ```
 or OSX
 ``` bash
