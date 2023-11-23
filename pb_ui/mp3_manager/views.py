@@ -4,9 +4,11 @@ from django.views import generic
 from django.views.generic.edit import FormMixin
 from django.conf import settings
 
-import librosa
 import phue
 import colorsys
+from pydub import AudioSegment
+import subprocess
+import re
 
 from .models import Track, Playtime, Playlist, Bridge, Light
 from .form import TrackForm, PlaytimeForm, TrackPlaytimeForm, TrackStartForm
@@ -38,11 +40,23 @@ class TrackManagement(generic.ListView, FormMixin):
             form = self.get_form()
             if form.is_valid():
                 record = form.save()
-                audio_file = librosa.load(f"{str(settings.BASE_DIR)}/{str(record.mp3_file)}")
-                y, sr = audio_file
-                tempo = librosa.feature.tempo(y=y, sr=sr)
-                record.bpm = tempo[0]
-                record.mp3_length = librosa.get_duration(y=y, sr=sr)*1000
+                # command = ['/opt/homebrew/Cellar/bpm-tools/0.3/bin/bpm-tag',
+                command = ['/usr/bin/bpm-tag',
+                           '-f',
+                           '-n',
+                           f"{str(settings.BASE_DIR)}/{str(record.mp3_file)}",
+                           ]
+                result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                output = result.stderr.decode('utf-8')
+                
+                # look for: Trackpath: 146.000 BPM
+                x = re.search("\s(\d+)\.\d+\sBPM", output)
+                if x:
+                    for match in x.groups():
+                        record.bpm = int(match)
+                audio_file = AudioSegment.from_file(f"{str(settings.BASE_DIR)}/{str(record.mp3_file)}")
+                duration = audio_file.duration_seconds
+                record.mp3_length = duration*1000
                 record.save()
                 return render(request, self.template_name,
                               {"tracks_list": tracks_list,

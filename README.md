@@ -46,6 +46,8 @@ sudo apt-get install libapache2-mod-wsgi-py3
 sudo apt-get install llvm
 sudo apt-get install python3-numba python3-numpy python3-scipy
 sudo apt-get install midori
+sudo apt-get install bpm-tools
+sudo apt-get install libsox-fmt-mp3
 ENABLE SSH
 ```
 or OSX
