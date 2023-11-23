@@ -15,8 +15,8 @@ Environment="XDG_RUNTIME_DIR=/run/user/1000"
 Environment="PULSE_RUNTIME_PATH=/run/user/1000/pulse/"
 StandardOutput=null
 StandardError=journal
-WorkingDirectory=/home/partybutton/party_button/
-ExecStart=/usr/bin/python /home/partybutton/party_button/party_button.py
+WorkingDirectory=/home/partybutton/Party_button/
+ExecStart=/usr/bin/python /home/partybutton/Party_button/party_button.py
 
 [Install]
 WantedBy=multi-user.target
