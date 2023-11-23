@@ -4,6 +4,7 @@ import sys
 import django
 import pygame
 import signal
+import phue
 from music_lib import *
 
 print("Setting Up")
