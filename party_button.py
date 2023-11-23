@@ -70,10 +70,10 @@ if __name__ == '__main__':
     GPIO.setmode(GPIO.BCM)
     input_channel = 17
     disco_lights_channel = 10
+    disco_lights_channel_2 = None
     spotlights_channel = None
     discoball_channel = None
     GPIO.setup(input_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.setup(main_lights_channel, GPIO.OUT)
     GPIO.setup(disco_lights_channel, GPIO.OUT)
     
     toggle = 0
