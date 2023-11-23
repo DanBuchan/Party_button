@@ -35,7 +35,7 @@ From here `play_random.py` will interact with the db to play tracks. `gpio.test.
 
 Will add methods for starting system as services under systemctl. 
 
-REQUIRES 64BIT OS
+On Raspberry pi you probably need to increase swap space from 100Meg to 2GB
 
 1. Install requirements
 ``` bash
