@@ -49,12 +49,15 @@ sudo apt-get install midori
 ENABLE SSH
 ```
 or OSX
+
 ``` bash
 brew install httpd
+```
 
 2. Install requirements
 
-Install requirements
+On pi you should get wheels of as much as you can especially heavy weight packages like numba, numpy and scipy. You must comment out mod-wsgi
+
 ``` bash
 pip install -r requirements.txt
 ```
