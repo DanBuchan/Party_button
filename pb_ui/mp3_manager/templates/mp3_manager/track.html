@@ -21,7 +21,7 @@
         <form id="track_form" name="track_form" action={% url 'mp3_manager:tracks' %} method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
-        <input class="btn btn-secondary" type="submit" form="track_form" value="Upload" id="track_upload" name="track_upload"></input>
+        <input class="btn btn-secondary" type="submit" form="track_form" value="Upload (~25 seconds)" id="track_upload" name="track_upload"></input>
         </form>
     </div>
 </div>
