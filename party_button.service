@@ -16,7 +16,7 @@ Environment="PULSE_RUNTIME_PATH=/run/user/1000/pulse/"
 StandardOutput=null
 StandardError=journal
 WorkingDirectory=/home/partybutton/party_button/
-ExecStart=/home/partybutton/party_button/pb_venv/bin/python /home/partybutton/party_button/party_button.py
+ExecStart=/usr/bin/python /home/partybutton/party_button/party_button.py
 
 [Install]
 WantedBy=multi-user.target
