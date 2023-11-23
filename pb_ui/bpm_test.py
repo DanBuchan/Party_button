@@ -12,7 +12,7 @@ def calc_tempo(y, sr, segment_dur_secs):
         end = time.time()
         time_delta=(end-start) % 60
         sum+=time_delta
-       #  print(f"RUN TIME: {end-start}")
+        print(f"RUN TIME: {end-start}")
     print(f"MEAN TIME: {sum/10}")
     print(tempo)
 
