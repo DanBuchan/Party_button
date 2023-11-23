@@ -41,7 +41,7 @@
             </Files>
         </Directory>
 
-        WSGIDaemonProcess pb_ui user=partybutton group=staff threads=5 python-path="/home/partybutton/Party_button/pb_ui/:/home/partybutton/pb_venv/lib/python3.11/site-packages/"
+        WSGIDaemonProcess pb_ui user=partybutton group=staff threads=5 python-path="/home/partybutton/Party_button/pb_ui/:/home/partybutton/Party_button/pb_venv/lib/python3.11/site-packages/"
         WSGIScriptAlias / /home/partybutton/Party_button/pb_ui/pb_ui/wsgi.py
 
 </VirtualHost>
