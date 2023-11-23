@@ -19,6 +19,7 @@ def calc_tempo(y, sr, segment_dur_secs):
 audio_dir = '/Users/dbuchan/Code/Party_button/pb_ui/example_data'
 audio_file = os.path.join(audio_dir, 'katyperry_birthday.mp3')
 y, sr = librosa.load(audio_file, sr=None) 
+print("FILE LOADED")
 calc_tempo(y, sr, 15)
-calc_tempo(y, sr, 30)
+# calc_tempo(y, sr, 30)
 # calc_tempo(y, sr, 120)
