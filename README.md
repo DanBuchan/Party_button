@@ -33,38 +33,51 @@ From here `play_random.py` will interact with the db to play tracks. `gpio.test.
 
 ## Production mode
 
-Will add methods for starting system as services under systemctl
+Will add methods for starting system as services under systemctl. 
 
-1. Install apache
+REQUIRES 64BIT OS
+
+1. Install requirements
 ``` bash
 sudo apt-get install apache2
 sudo apt-get install ffmpeg
 sudo apt-get install apache2-dev
 sudo apt-get install libapache2-mod-wsgi-py3
+sudo apt-get install llvm
+sudo apt-get install python3-numba python3-numpy python3-scipy
+sudo apt-get install midori
 ENABLE SSH
 ```
 or OSX
 ``` bash
 brew install httpd
+
+2. Install requirements
+
+Install requirements
+``` bash
+pip install -r requirements.txt
 ```
 
-2. collect static assets
+If you're using venv you probably want to comment out numba, scipy and numpy in the requirements on pi3
+
+3. collect static assets
 
 ``` bash
 cd Party_button/pb_ui
 python manage.py collectstatic
 ```
 
-3. Copy httpd.conf
+4. Copy httpd.conf
 ``` bash
-cp Party_button/000-deafult.conf.pi /etc/apache2/available-sites
+cp Party_button/000-default.conf.pi /etc/apache2/sites-available
 ```
 or OSX
 ``` bash
 cp Party_button/httpd.conf.osx /opt/homebrew/etc/httpd/httpd.conf
 ```
 
-4. Start apache
+5. Start apache
 ``` bash
 sudo systemctl enable apache2.service
 sudo systemctl start apache2.service
@@ -76,7 +89,7 @@ sudo /opt/homebrew/opt/httpd/bin/httpd -D FOREGROUND
 
 DON'T FORGET IN THE DJANGO APPLICATION THAT ALLOWED_HOSTS MUST REFLECT THE IP OF THE MACHINE
 
-5. Start GPIO listening service
+6. Start GPIO listening service
 
 ``` bash
 sudo cp party_button.service /etc/systemd/system/
@@ -87,12 +100,4 @@ sudo systemctl start party_button.service
 ## TODO
 
 1. refactor django views to correctly use mixins and not have all those single function classes
-2. Music only mode
-3. Lights only mode
-4. Spotify integration (hmmmm)
-5. Smart bulbs 
-    - Philips HUE (£70-90) - https://github.com/Q42/hue-libs#python
-    - Sylvania smart+ integration (can't find UK, maybe same as OSRAM smart) - pywemo pywemo
-    - LIFX (£45-60) - lifxlan package, https://github.com/mclarkk/lifxlan
-    - FLUX WIFI - https://github.com/Danielhiversen/flux_led
-    - lepro pack of 4 (£29)
+2. Spotify integration (hmmmm)

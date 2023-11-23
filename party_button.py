@@ -64,7 +64,6 @@ def lets_party(disco_lights_channel, spotlights_channel, discoball_channel):
     GPIO.output(disco_lights_channel, GPIO.LOW)
     #GPIO.output(disco_motor_channel, GPIO.LOW)
     #GPIO.output(disco_spots_channel, GPIO.LOW)
-    GPIO.output(main_lights_channel, GPIO.LOW)
     toggle=0
 
 if __name__ == '__main__':
