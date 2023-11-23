@@ -43,8 +43,6 @@ def lets_party(disco_lights_channel, spotlights_channel, discoball_channel):
     print("BUTTON: pressed")
     #possibly there should be some brief pauses before toggling things "on"
     if playtime_obj.music_only == False:
-        print("MAIN LIGHTS: off")
-        GPIO.output(main_lights_channel, GPIO.HIGH)
         print("DISCO BALL: on")
         #GPIO.output(disco_motor_channel, GPIO.HIGH)
         #GPIO.output(disco_spots_channel, GPIO.HIGH)
