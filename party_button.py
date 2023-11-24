@@ -98,3 +98,7 @@ if __name__ == '__main__':
             toggle = lets_party(disco_lights_channel, disco_lights_channel_2,
                                 spotlights_channel, discoball_channel)
             GPIO.setup(input_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+            GPIO.setup(disco_lights_channel, GPIO.OUT)
+            GPIO.setup(disco_lights_channel_2, GPIO.OUT)
+            GPIO.setup(spotlights_channel, GPIO.OUT)
+            GPIO.setup(discoball_channel, GPIO.OUT)
