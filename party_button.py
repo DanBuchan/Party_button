@@ -111,15 +111,17 @@ if __name__ == '__main__':
     dip_lights(pb_lights)
     reset_lights(pb_lights, initial_light_settings)
 
-    input_sequence_count = 0
+    input_zero_sequence_count = 0
     while True:
         input_data = GPIO.input(input_channel)
-        print(f"INPUT CHANNEL {input_data}")
+        if input_data == 0:
+            input_zero_sequence_count += 1
+        
         if input_data:
             if toggle == 0:
                 print("BUTTON: released\n")
             toggle=1
-        else:
+        if input_zero_sequence_count == 2:
             print("BUTTON: pressed\n")
             toggle = lets_party(disco_lights_channel, disco_lights_channel_2,
                                 spotlights_channel, discoball_channel, b)
@@ -128,3 +130,4 @@ if __name__ == '__main__':
             GPIO.setup(disco_lights_channel_2, GPIO.OUT)
             GPIO.setup(spotlights_channel, GPIO.OUT)
             GPIO.setup(discoball_channel, GPIO.OUT)
+            input_zero_sequence_count = 0
