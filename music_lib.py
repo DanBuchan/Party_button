@@ -228,7 +228,7 @@ def play_music(track_qset, playtime_obj, track_path, pygame, light_info, brightn
     play_tracks = decide_playing_set(track_qset, playtime_obj)
     for track in play_tracks:
         print(f"PLAYING: {track}")
-        print(f"FILE LOCATIONL: {track_path+str(track.mp3_file)}")
+        print(f"FILE LOCATION: {track_path+str(track.mp3_file)}")
         pygame.mixer.music.load(track_path+str(track.mp3_file))
         play_duration, start_location = calculate_playing_coordinates(track, playtime_obj)
         print(f"STARTING PLAYBACK AT: {start_location} secs")

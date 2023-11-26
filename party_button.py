@@ -5,6 +5,7 @@ import django
 import pygame
 import signal
 import phue
+import time
 from music_lib import *
 
 print("Setting Up")
@@ -25,27 +26,43 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
                spotlights_channel, discoball_channel, b):
     print("Starting partying")
     # Initialise lights:
+    before_func_time = time.time()
     playtime_obj = get_playtime_obj()
-    print("GOT PLAYTIME OBJ")
+    after_func_time = time.time()
+    print(f"get_playtime_obj(): {after_func_time-before_func_time}")
     
+    before_func_time = time.time()
     hue_bridge_ip, hue_user_id, brightness = get_bridge_info()
-    print("GOT BRIGHTNESS")
+    after_func_time = time.time()
+    print(f"get_bridge_info(): {after_func_time-before_func_time}")
+    
+    before_func_time = time.time()
     party_light_settings = get_light_settings()
-    print("GOT LIGHT SETTINGS")
+    after_func_time = time.time()
+    print(f"get_light_settings(): {after_func_time-before_func_time}")
+    
     # Do things, i.e. after button press
+    before_func_time = time.time()
     pb_lights = get_light_list(b)
-    print("GO PB_LIGHTS")
+    after_func_time = time.time()
+    print(f"get_light_list(): {after_func_time-before_func_time}")
+
     # loop over the lights and their settings and add them to this data structure
     # so we only have to do this once
+    before_func_time = time.time()
     light_info = {}
     for light in pb_lights:
         for setting in party_light_settings:
             if light.name == setting.name:
                 light_info[light.name] = {"light": light,
                                           "setting": setting}
-    print("ASSIGNED LIGHT INFO")
+    after_func_time = time.time()
+    print(f"SETTING LIGHT INFO: {after_func_time-before_func_time}")
+
+    before_func_time = time.time()
     initial_light_settings = get_initial_colours(pb_lights)
-    print("GOT INITIAL SETTINGS")
+    after_func_time = time.time()
+    print(f"get_initial_colours(): {after_func_time-before_func_time}")
     
     print("BUTTON: pressed")
     #possibly there should be some brief pauses before toggling things "on"
