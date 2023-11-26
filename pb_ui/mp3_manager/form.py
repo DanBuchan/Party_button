@@ -5,7 +5,7 @@ from .models import Track, Playtime, Playlist, Bridge, Light
 class BridgeForm(ModelForm):
     class Meta:
         model = Bridge
-        fields = ['ip', 'user_id', 'name_stub']
+        fields = ['ip', 'user_id', 'name_stub', 'room']
 
 class BrightnessForm(ModelForm):
     class Meta:

@@ -332,6 +332,7 @@ class BridgeManagement(generic.ListView, FormMixin):
                 bridge.ip = request.POST["ip"]
                 bridge.user_id = request.POST["user_id"]
                 bridge.name_stub = request.POST["name_stub"]
+                bridge.room = request.POST["room"]
                 obj = bridge.save()
                 try: 
                     b = phue.Bridge(bridge.ip, bridge.user_id)

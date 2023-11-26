@@ -30,7 +30,7 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
     hue_bridge_ip, hue_user_id, brightness = get_bridge_info()
     party_light_settings = get_light_settings()
     
-
+    # Get light settings
     before_func_time = time.time()
     pb_lights = get_light_list(b)
     after_func_time = time.time()

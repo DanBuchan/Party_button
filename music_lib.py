@@ -4,6 +4,7 @@ import django
 import random
 import time
 import multiprocessing
+import pprint
 
 track_path = './pb_ui/'
 sys.path.append(track_path)
@@ -104,24 +105,26 @@ def change_colour(light_info, brightness, playtime, bpm):
 
 def get_bridge_info():
     bridge = Bridge.objects.all().first()
-    return bridge.ip, bridge.user_id, int(254*(bridge.brightness/100))
+    return bridge.ip, bridge.user_id, bridge.name_stub, int(254*(bridge.brightness/100))
 
-def get_light_list(b):
-    light_list = []
+def get_light_list(b, name_stub):
+    light_list = [None] * len(b.lights)
     try:
         for light in b.lights:
-            if "PB spot" in light.name:
-                light_list.append(light)
+            if name_stub in light.name:
+                bits = light.name.split()
+                light_list[int(bits[-1])-1] = light
     except Exception as e:
         print("Couldn't get live light list: "+str(e))
-    light_list = sorted(light_list, key=lambda d: d.name) 
     return light_list
 
 def get_initial_colours(lights):
     initial_settings = {}
+    # pprint.pprint(lights)
     try:
         for light in lights:
-            initial_settings[light.name] = [light.hue, light.saturation, light.brightness ]
+            initial_settings[lights[light]["name"]] = [lights[light]["state"]["hue"],
+            lights[light]["state"]["sat"], lights[light]["state"]["bri"] ]
     except Exception as e:
         print("Unable to get initial light information:" + str(e))
     return(initial_settings)

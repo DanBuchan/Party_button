@@ -83,6 +83,8 @@ class Bridge(models.Model):
                                blank=True, null=True)
     name_stub = models.CharField(max_length=200, default="party",
                                  blank=True, null=True)
+    room = models.CharField(max_length=200, default="party",
+                            blank=True, null=True)
     brightness = models.IntegerField(blank=False, null=False,
                                      default=0,
                                      validators=[MinValueValidator(0),
