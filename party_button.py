@@ -25,23 +25,12 @@ def signal_term_handler(sigNum, frame):
 def lets_party(disco_lights_channel, disco_lights_channel_2,
                spotlights_channel, discoball_channel, b):
     print("Starting partying")
-    # Initialise lights:
-    before_func_time = time.time()
+    # Get database info
     playtime_obj = get_playtime_obj()
-    after_func_time = time.time()
-    print(f"get_playtime_obj(): {after_func_time-before_func_time}")
-    
-    before_func_time = time.time()
     hue_bridge_ip, hue_user_id, brightness = get_bridge_info()
-    after_func_time = time.time()
-    print(f"get_bridge_info(): {after_func_time-before_func_time}")
-    
-    before_func_time = time.time()
     party_light_settings = get_light_settings()
-    after_func_time = time.time()
-    print(f"get_light_settings(): {after_func_time-before_func_time}")
     
-    # Do things, i.e. after button press
+
     before_func_time = time.time()
     pb_lights = get_light_list(b)
     after_func_time = time.time()
@@ -122,12 +111,16 @@ if __name__ == '__main__':
     dip_lights(pb_lights)
     reset_lights(pb_lights, initial_light_settings)
 
+    input_sequence_count = 0
     while True:
-        if GPIO.input(input_channel):
+        input_data = GPIO.input(input_channel)
+        print(f"INPUT CHANNEL {input_data}")
+        if input_data:
             if toggle == 0:
                 print("BUTTON: released\n")
             toggle=1
         else:
+            print("BUTTON: pressed\n")
             toggle = lets_party(disco_lights_channel, disco_lights_channel_2,
                                 spotlights_channel, discoball_channel, b)
             GPIO.setup(input_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
