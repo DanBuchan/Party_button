@@ -114,6 +114,7 @@ if __name__ == '__main__':
     input_zero_sequence_count = 0
     while True:
         input_data = GPIO.input(input_channel)
+        
         if input_data == 0:
             input_zero_sequence_count += 1
         
@@ -121,7 +122,7 @@ if __name__ == '__main__':
             if toggle == 0:
                 print("BUTTON: released\n")
             toggle=1
-        if input_zero_sequence_count == 2:
+        if input_zero_sequence_count == 10:
             print("BUTTON: pressed\n")
             toggle = lets_party(disco_lights_channel, disco_lights_channel_2,
                                 spotlights_channel, discoball_channel, b)
