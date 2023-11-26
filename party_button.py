@@ -82,13 +82,24 @@ if __name__ == '__main__':
     GPIO.setup(spotlights_channel, GPIO.OUT)
     GPIO.setup(discoball_channel, GPIO.OUT)
     
-    
     toggle = 0
     pygame.init()
     pygame.mixer.init()
     pygame.mixer.pre_init(44100, -16, 2, 2048)
     signal.signal(signal.SIGTERM, signal_term_handler)
-    
+
+    playtime_obj = get_playtime_obj()
+    hue_bridge_ip, hue_user_id, brightness = get_bridge_info()
+    b = phue.Bridge(hue_bridge_ip, hue_user_id)
+    party_light_settings = get_light_settings()
+    # Do things, i.e. after button press
+    pb_lights = get_light_list(b)
+    # loop over the lights and their settings and add them to this data
+    # so we only have to do this once
+    initial_light_settings = get_initial_colours(pb_lights)
+    dip_lights(pb_lights)
+    reset_lights(pb_lights, initial_light_settings)
+
     while True:
         if GPIO.input(input_channel):
             if toggle == 0:

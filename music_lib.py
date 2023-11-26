@@ -114,6 +114,7 @@ def get_light_list(b):
                 light_list.append(light)
     except Exception as e:
         print("Couldn't get live light list: "+str(e))
+    light_list = sorted(light_list, key=lambda d: d.name) 
     return light_list
 
 def get_initial_colours(lights):
@@ -131,7 +132,7 @@ def set_light(light_setting, brightness, transition_time=1, primary=True):
     if primary:
         light.transitiontime = transition_time 
         light.hue = settings.primary_H
-        light.saturation = settings.primary_S
+        light.saturation = settings.primary_S   
         light.brightness = brightness
     else:
         light.transitiontime = transition_time
@@ -147,8 +148,16 @@ def reset_lights(lights, settings):
             light.saturation = settings[light.name][1]
             light.brightness = settings[light.name][2]    
 
+def dip_lights(lights):
+    for light in lights:
+        print(light.name)
+        light.transitiontime = 3
+        light.hue = 0
+        light.saturation = 0
+        light.brightness = 0            
+
 def get_light_settings():
-    lights = Light.objects.all()
+    lights = Light.objects.all().order_by('name')
     return lights
 
 def get_playtime_obj():
