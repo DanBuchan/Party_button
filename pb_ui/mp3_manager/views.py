@@ -314,7 +314,7 @@ class BridgeManagement(generic.ListView, FormMixin):
 
     def get(self, request):
         bridge = Bridge.objects.all().first()
-        lights = Light.objects.all()
+        lights = Light.objects.all().order_by('name')
         return render(request, self.template_name,
                       {"bridge": bridge,
                        "lights": lights,
