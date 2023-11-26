@@ -105,7 +105,8 @@ def change_colour(light_info, brightness, playtime, bpm):
 
 def get_bridge_info():
     bridge = Bridge.objects.all().first()
-    return bridge.ip, bridge.user_id, bridge.name_stub, int(254*(bridge.brightness/100))
+    return bridge.ip, bridge.user_id, bridge.name_stub, bridge.room, \
+           int(254*(bridge.brightness/100))
 
 def get_light_list(b, name_stub):
     light_list = [None] * len(b.lights)

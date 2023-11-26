@@ -9,6 +9,7 @@ import colorsys
 from pydub import AudioSegment
 import subprocess
 import re
+import pprint
 
 from .models import Track, Playtime, Playlist, Bridge, Light
 from .form import TrackForm, PlaytimeForm, TrackPlaytimeForm, TrackStartForm
@@ -336,33 +337,36 @@ class BridgeManagement(generic.ListView, FormMixin):
                 obj = bridge.save()
                 try: 
                     b = phue.Bridge(bridge.ip, bridge.user_id)
-                    light_list = []
-                    for light in b.lights:
-                        if bridge.name_stub in light.name:
-                            light_list.append(light)
-                    for light in light_list:
-                        print(light.name, light.hue, light.saturation, light.brightness)
-                        h = light.hue/65535
-                        s = light.saturation/254
-                        v = light.brightness/254
-                        rgb_values = colorsys.hsv_to_rgb(h, s, v)
-                        r = int(254*rgb_values[0])
-                        g = int(254*rgb_values[1])
-                        b = int(254*rgb_values[2])
-                        light_obj = Light.objects.create(name=light.name,
-                                                         primary_R=r, 
-                                                         primary_G=g, 
-                                                         primary_B=b, 
-                                                         secondary_R=r, 
-                                                         secondary_G=g, 
-                                                         secondary_B=b, 
-                                                         primary_H=light.hue, 
-                                                         primary_S=light.saturation, 
-                                                         primary_V=light.brightness, 
-                                                         secondary_H=light.hue, 
-                                                         secondary_S=light.saturation, 
-                                                         secondary_V=light.brightness, 
-                                                         )
+                    lights = b.get_api()["lights"]
+                    # pprint.pprint(b.get_api()["lights"])
+
+                    for light_id in lights:
+                        light = lights[light_id]
+                        if bridge.name_stub in light["name"]:
+                            # print(light_id, light["name"], light["state"]["hue"],
+                            #       light["state"]["sat"],  light["state"]["bri"])
+                            h = light["state"]["hue"]/65535
+                            s = light["state"]["sat"]/254
+                            v = light["state"]["bri"]/254
+                            rgb_values = colorsys.hsv_to_rgb(h, s, v)
+                            r = int(254*rgb_values[0])
+                            g = int(254*rgb_values[1])
+                            b = int(254*rgb_values[2])
+                            light_obj = Light.objects.create(name=light["name"],
+                                                             hue_bridge_id = light_id,
+                                                             primary_R=r, 
+                                                             primary_G=g, 
+                                                             primary_B=b, 
+                                                             secondary_R=r, 
+                                                             secondary_G=g, 
+                                                             secondary_B=b, 
+                                                             primary_H=light["state"]["hue"], 
+                                                             primary_S=light["state"]["sat"], 
+                                                             primary_V=light["state"]["bri"], 
+                                                             secondary_H= light["state"]["hue"], 
+                                                             secondary_S=light["state"]["sat"], 
+                                                             secondary_V=light["state"]["bri"], 
+                                                             )
                 except Exception as e:
                     print("CAN'T FIND BRIDGE: "+str(e))
 

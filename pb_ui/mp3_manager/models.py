@@ -95,6 +95,10 @@ class Bridge(models.Model):
 
 class Light(models.Model):
     name = models.CharField(max_length=200, blank=False, null=False)
+    hue_bridge_id = models.IntegerField(blank=False, null=False,
+                                    default=0,
+                                    validators=[MinValueValidator(0),
+                                                MaxValueValidator(254)])
     primary_R = models.IntegerField(blank=False, null=False,
                                     default=0,
                                     validators=[MinValueValidator(0),

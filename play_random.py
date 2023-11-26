@@ -18,14 +18,15 @@ if __name__ == '__main__':
     pygame.mixer.init()
     pygame.mixer.pre_init(44100, -16, 2, 2048)
     playtime_obj = get_playtime_obj()
-    hue_bridge_ip, hue_user_id, name_stub, brightness = get_bridge_info()
+    hue_bridge_ip, hue_user_id, name_stub, room_name, brightness = get_bridge_info()
     b = phue.Bridge(hue_bridge_ip, hue_user_id)
     party_light_settings = get_light_settings()
     
     pb_lights = get_light_list(b, name_stub)
     lights_data = b.get_api()["lights"]
     initial_light_settings = get_initial_colours(lights_data)
-    
+    print(b.get_group())
+    room =  b.get_group(room_name)
     dip_lights(pb_lights)
     reset_lights(pb_lights, initial_light_settings)
 
