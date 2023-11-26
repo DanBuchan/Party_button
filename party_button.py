@@ -26,10 +26,15 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
     print("Starting partying")
     # Initialise lights:
     playtime_obj = get_playtime_obj()
+    print("GOT PLAYTIME OBJ")
+    
     hue_bridge_ip, hue_user_id, brightness = get_bridge_info()
+    print("GOT BRIGHTNESS")
     party_light_settings = get_light_settings()
+    print("GOT LIGHT SETTINGS")
     # Do things, i.e. after button press
     pb_lights = get_light_list(b)
+    print("GO PB_LIGHTS")
     # loop over the lights and their settings and add them to this data structure
     # so we only have to do this once
     light_info = {}
@@ -38,8 +43,9 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
             if light.name == setting.name:
                 light_info[light.name] = {"light": light,
                                           "setting": setting}
-
+    print("ASSIGNED LIGHT INFO")
     initial_light_settings = get_initial_colours(pb_lights)
+    print("GOT INITIAL SETTINGS")
     
     print("BUTTON: pressed")
     #possibly there should be some brief pauses before toggling things "on"
