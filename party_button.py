@@ -23,13 +23,14 @@ def signal_term_handler(sigNum, frame):
 
 def lets_party(disco_lights_channel, disco_lights_channel_2,
                spotlights_channel, discoball_channel, b):
+    print("Starting partying")
     # Initialise lights:
     playtime_obj = get_playtime_obj()
     hue_bridge_ip, hue_user_id, brightness = get_bridge_info()
     party_light_settings = get_light_settings()
     # Do things, i.e. after button press
     pb_lights = get_light_list(b)
-    # loop over the lights and their settings and add them to this data
+    # loop over the lights and their settings and add them to this data structure
     # so we only have to do this once
     light_info = {}
     for light in pb_lights:
