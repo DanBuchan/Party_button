@@ -143,7 +143,7 @@ def set_light(light_setting, brightness, transition_time=1, primary=True):
 def reset_lights(lights, settings):
     for light in lights:
         if light.name in settings:
-            light.transitiontime = 3
+            light.transitiontime = 1
             light.hue = settings[light.name][0]
             light.saturation = settings[light.name][1]
             light.brightness = settings[light.name][2]    
@@ -151,7 +151,7 @@ def reset_lights(lights, settings):
 def dip_lights(lights):
     for light in lights:
         print(light.name)
-        light.transitiontime = 3
+        light.transitiontime = 1
         light.hue = 0
         light.saturation = 0
         light.brightness = 0            

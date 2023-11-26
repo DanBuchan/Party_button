@@ -22,11 +22,10 @@ def signal_term_handler(sigNum, frame):
     exit()
 
 def lets_party(disco_lights_channel, disco_lights_channel_2,
-               spotlights_channel, discoball_channel):
+               spotlights_channel, discoball_channel, b):
     # Initialise lights:
     playtime_obj = get_playtime_obj()
     hue_bridge_ip, hue_user_id, brightness = get_bridge_info()
-    b = phue.Bridge(hue_bridge_ip, hue_user_id)
     party_light_settings = get_light_settings()
     # Do things, i.e. after button press
     pb_lights = get_light_list(b)
@@ -91,7 +90,6 @@ if __name__ == '__main__':
     playtime_obj = get_playtime_obj()
     hue_bridge_ip, hue_user_id, brightness = get_bridge_info()
     b = phue.Bridge(hue_bridge_ip, hue_user_id)
-    party_light_settings = get_light_settings()
     # Do things, i.e. after button press
     pb_lights = get_light_list(b)
     # loop over the lights and their settings and add them to this data
@@ -107,7 +105,7 @@ if __name__ == '__main__':
             toggle=1
         else:
             toggle = lets_party(disco_lights_channel, disco_lights_channel_2,
-                                spotlights_channel, discoball_channel)
+                                spotlights_channel, discoball_channel, b)
             GPIO.setup(input_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
             GPIO.setup(disco_lights_channel, GPIO.OUT)
             GPIO.setup(disco_lights_channel_2, GPIO.OUT)
