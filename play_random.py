@@ -3,8 +3,10 @@ import sys
 import django
 import pygame
 from music_lib import *
-import phue
 import pprint
+import urllib.request
+import ssl
+import json
 
 track_path = './pb_ui/'
 #
@@ -13,39 +15,35 @@ track_path = './pb_ui/'
 
 
 if __name__ == '__main__':
-    # initialise things
+    # initialise pygame things
     pygame.init()
     pygame.mixer.init()
     pygame.mixer.pre_init(44100, -16, 2, 2048)
+    
+    # get information from DB
     playtime_obj = get_playtime_obj()
     hue_bridge_ip, hue_user_id, name_stub, room_name, brightness = get_bridge_info()
-    b = phue.Bridge(hue_bridge_ip, hue_user_id)
     party_light_settings = get_light_settings()
-    
-    pb_lights = get_light_list(b, name_stub)
-    lights_data = b.get_api()["lights"]
-    initial_light_settings = get_initial_colours(lights_data)
-    print(b.get_group())
-    room =  b.get_group(room_name)
-    dip_lights(pb_lights)
-    reset_lights(pb_lights, initial_light_settings)
+    track_qset = get_tracks(playtime_obj.playlist_selection)
+    context = ssl._create_unverified_context()    
 
-    
-    # light_info = {}
-    # for light in pb_lights:
-    #     for setting in party_light_settings:
-    #         if light.name == setting.name:
-    #             light_info[light.name] = {"light": light,
-    #                                       "setting": setting}
+    # Get initial params to control lights
+    initial_light_state = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/lights', context)
+    initial_scene_id = set_initial_scene(hue_bridge_ip, hue_user_id, initial_light_state, context)
+    groups = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups', context)
+    group_id = get_group_id(room_name, groups)
+
+    dip_lights(hue_bridge_ip, hue_user_id, group_id, initial_scene_id, context)
 
     exit()
-    initial_light_settings = get_initial_colours(pb_lights)
     #get the set of tracks
-    track_qset = get_tracks(playtime_obj.playlist_selection)
     #decide what set of tracks we are playing
     if playtime_obj.lights_only == False:
         play_music(track_qset, playtime_obj, track_path, pygame, light_info, brightness)
     else:
         pass
         #SHOULD RUN THE LIGHTS HERE        
-    reset_lights(pb_lights, initial_light_settings)
+    
+    # reset lights to initial state
+    setting_data = f'{{"scene":"{initial_scene_id}", "transitiontime": 1}}'
+    put(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups/{group_id}/action', setting_data, context)
