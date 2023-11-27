@@ -39,11 +39,19 @@ if __name__ == '__main__':
     #get the set of tracks
     #decide what set of tracks we are playing
     if playtime_obj.lights_only == False:
-        play_music(track_qset, playtime_obj, track_path, pygame, light_info, brightness)
+        play_music(track_qset, playtime_obj, track_path, pygame, initial_light_state, brightness)
     else:
         pass
         #SHOULD RUN THE LIGHTS HERE        
     
     # reset lights to initial state
+    
+    # DELETE ALL SCENES
+    scenes_url=f'https://{hue_bridge_ip}/api/{hue_user_id}/scenes'
+    scenes = get_json(scenes_url, context)
+    for id in scenes:
+        req = urllib.request.Request(url=scenes_url+"/"+id, method='DELETE')
+        f = urllib.request.urlopen(req, context=context)
+    # set main lights back where you found them
     setting_data = f'{{"scene":"{initial_scene_id}", "transitiontime": 1}}'
     put(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups/{group_id}/action', setting_data, context)

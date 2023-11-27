@@ -20,6 +20,14 @@ class Object(object):
     pass
 
 def change_colour(light_info, brightness, playtime, bpm):
+
+    #What we should do is set up 3 scenes, constant colour scene, fade scene,
+    # random scene
+    # 
+    # Trigger all three scenes
+    # 
+    # Enter while loop and edit random and fade scene when necessary 
+
     # First up change the lights
     random_light_set = []
     fade_light_set = []
