@@ -17,7 +17,6 @@ lazy_loader==0.3
 mod-wsgi==4.9.4
 msgpack==1.0.7
 packaging==23.2
-phue==1.1
 platformdirs==4.0.0
 pooch==1.8.0
 pycparser==2.21
