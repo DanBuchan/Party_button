@@ -6,6 +6,8 @@ import pygame
 import signal
 import phue
 import time
+import urllib.request
+import ssl
 from music_lib import *
 
 print("Setting Up")
