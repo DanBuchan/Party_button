@@ -30,7 +30,7 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
     # Get database info
     before_func_time = time.time()
     playtime_obj = get_playtime_obj()
-    hue_bridge_ip, hue_user_id, brightness = get_bridge_info()
+    hue_bridge_ip, hue_user_id, name_stub, room_name, brightness = get_bridge_info()
     party_light_settings = get_light_settings()
     groups = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups', context)
     group_id = get_group_id(room_name, groups)
