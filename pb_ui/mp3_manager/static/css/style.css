@@ -27,3 +27,11 @@ a:active {
     color: white;
     text-decoration: none;
 }
+
+.fixed_colour {
+    color: darkred;
+}
+
+.interval_colour {
+    color: CornflowerBlue;
+}

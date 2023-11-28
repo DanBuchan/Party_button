@@ -31,7 +31,7 @@
     <h2>Track List</h2>
     {% if tracks_list %}
         <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-            <thead><tr><th></th><th colspan="3">Start Time</th><th colspan="7">Overrides</th><th></th></tr>
+            <thead><tr><th></th><th colspan="3">Start Time</th><th colspan="5">Overrides</th><th colspan="3"></th></tr>
             <tr><th>Track Name</th><th>Min</th><th>Sec</th><th></th><th>Solo?</th><th>Play Whole Track?</th><th>Override global playtime?</th><th colspan="2">Track playtime (seconds)</th><th colspan="2">BPM (HUE bulb sync)</th><th>Remove</th></tr></thead>
             <tbody>
               {% for track in tracks_list %}
@@ -40,10 +40,10 @@
                   <form id="trackstart_form_{{ track.pk }}" id="trackstart_update_{ track.pk }}" action={% url 'mp3_manager:tracks' %} method="post" enctype="multipart/form-data">
                     {% csrf_token %}  
                   <td>
-                    <input size="4" type="textarea" id="minutes" name="minutes" value={{ track.minutes }}>  
+                    <input size="2" type="textarea" id="minutes" name="minutes" value={{ track.minutes }}>  
                   </td>
                   <td>
-                    <input size="4" type="textarea" id="seconds" name="seconds" value={{ track.seconds }}>    
+                    <input size="2" type="textarea" id="seconds" name="seconds" value={{ track.seconds }}>    
                   </td>
                   <td>
                     <input type="hidden" id="pk" name="pk" value="{{ track.pk }}">  
@@ -74,7 +74,7 @@
                   <form id="trackplaytime_form_{{ track.pk }}" id="trackplaytime_update_{{ track.pk }}" action={% url 'mp3_manager:tracks' %} method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                   <td>
-                      <input size="4" type="textarea" id="playtime_seconds" name="playtime_seconds" value={{ track.playtime_seconds }}>
+                      <input size="2" type="textarea" id="playtime_seconds" name="playtime_seconds" value={{ track.playtime_seconds }}>
                   </td>
                   <td>
                       <input type="hidden" id="pk" name="pk" value="{{ track.pk }}">
@@ -85,7 +85,7 @@
                   <form id="trackbpm_form_{{ track.pk }}" id="trackbpm_update_{{ track.pk }}" action={% url 'mp3_manager:tracks' %} method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                   <td>
-                      <input size="4" type="textarea" id="bpm" name="bpm" value={{ track.bpm }}>
+                      <input size="2" type="textarea" id="bpm" name="bpm" value={{ track.bpm }}>
                   </td>
                   <td>
                       <input type="hidden" id="pk" name="pk" value="{{ track.pk }}">
