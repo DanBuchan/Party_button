@@ -423,6 +423,7 @@ class LightPrimary(generic.ListView, FormMixin):
         light.fade = False
         light.random_colour = False
         light.alternate_colour = False
+        light.random_interval=False
         light.save()
         return redirect("/lights")
 
@@ -436,6 +437,7 @@ class LightFade(generic.ListView, FormMixin):
         light.fade = True
         light.random_colour = False
         light.alternate_colour = False
+        light.random_interval=False
         light.save()
         return redirect("/lights")
 
@@ -475,6 +477,10 @@ class LightInterval(generic.ListView, FormMixin):
         if light.random_interval:
             light.random_interval=False
         else:
-            light.random_interval=True
+            if light.fade or light.primary_colour:
+                light.random_interval=False
+            else:
+                light.random_interval=True
+                
         light.save()
         return redirect("/lights")
