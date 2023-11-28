@@ -89,10 +89,6 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
                                           alternate_scene_data1['modify'], )
     alternate_scene_data2 = prep_scene_data(scenes, 'alternatescene2', light_info,
                                             'alternate_colour', brightness, False)
-    alternate_payload2 = create_scene_payload('alternatecene2',
-                                              alternate_scene_data2['light_list'],
-                                              alternate_scene_data2['light_data'],
-                                              alternate_scene_data2['modify'], )
     random_scene_data = prep_scene_data(scenes, 'randomscene', light_info,
                                         'random_colour', brightness, True, True)
     random_payload = create_scene_payload('randomscene',
@@ -133,12 +129,6 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
             create_response = post(scene_url, alternate_payload1, context)
             alternate_scene_id = create_response[0]['success']['id']
             alternate_scene_data1['scene_id'] = alternate_scene_id
-        if alternate_scene_data2['modify']:
-            put(scene_url+"/"+alternate_scene_data2['scene_id'], alternate_payload2, context)
-        else:
-            create_response = post(scene_url, alternate_payload2, context)
-            alternate_scene_id = create_response[0]['success']['id']
-            alternate_scene_data2['scene_id'] = alternate_scene_id
         scene_id = alternate_scene_data1['scene_id']
         setting_data = f'{{"scene":"{scene_id}", "transitiontime": 1}}'
         put(f'https://{ip}/api/{user}/groups/{group_id}/action', setting_data, context)
@@ -220,15 +210,56 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
             alt_payload = create_scene_payload('alternatescene1',
                                           alternate_scene_data1['light_list'],
                                           alternating_data,
-                                          True, )
+                                          True)
             put(scene_url+"/"+alternate_scene_data1['scene_id'], alt_payload, context)
             scene_id = alternate_scene_data1['scene_id']
             setting_data = f'{{"scene":"{scene_id}", "transitiontime": 1}}'
             put(f'https://{ip}/api/{user}/groups/{group_id}/action', setting_data, context)
         
         # deal with random lights
-
+        random_data = {}
+        if len(random_scene_data['light_list']) > 0:
+            for bulb_id in random_scene_data['light_list']:
+                dice_roll = 1
+                if step_count % random_scene_data['light_data'][bulb_id]['state']['interval_size'] == 0:
+                    if random_scene_data['light_data'][bulb_id]['state']['random_interval']:
+                        dice_roll = random.randint(0, 1)
+                    if dice_roll:
+                        random_data[bulb_id] = {'state': {'hue': random.randint(0, 65535),
+                                                          'sat': random.randint(0, 254),
+                                                          'bri': brightness,}}
+                    else:
+                        random_data[bulb_id] = {'state': {'hue': random_scene_data['light_data'][bulb_id]['state']['hue'],
+                                                          'sat': random_scene_data['light_data'][bulb_id]['state']['sat'],
+                                                          'bri': brightness,}}
+                else:
+                    random_data[bulb_id] = {'state': {'hue': random_scene_data['light_data'][bulb_id]['state']['hue'],
+                                                      'sat': random_scene_data['light_data'][bulb_id]['state']['sat'],
+                                                      'bri': brightness,}}
+            alt_payload = create_scene_payload('alternatescene1',
+                                          random_scene_data['light_list'],
+                                          random_data,
+                                          True)
+            put(scene_url+"/"+random_scene_data['scene_id'], alt_payload, context)
+            scene_id = random_scene_data['scene_id']
+            setting_data = f'{{"scene":"{scene_id}", "transitiontime": 1}}'
+            put(f'https://{ip}/api/{user}/groups/{group_id}/action', setting_data, context)
+        
         # handle fade if greater than 30 seconds
+        if step_count % thirty_secs_steps == 0:
+            if len(fade_scene_data1['light_list']) > 0:
+                if fade_primary:
+                    scene_id = fade_scene_data2['scene_id']
+                    setting_data = f'{{"scene":"{scene_id}", "transitiontime": {transition_length}}}'
+                    put(f'https://{ip}/api/{user}/groups/{group_id}/action', setting_data, context)
+                    fade_primary = False                  
+                else:
+                    scene_id = fade_scene_data1['scene_id']
+                    setting_data = f'{{"scene":"{scene_id}", "transitiontime": {transition_length}}}'
+                    put(f'https://{ip}/api/{user}/groups/{group_id}/action', setting_data, context)
+                    fade_primary = True                 
+                    
+
             
 
 def change_colour_old(light_info, brightness, playtime, bpm):
