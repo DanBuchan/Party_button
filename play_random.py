@@ -33,25 +33,28 @@ if __name__ == '__main__':
     groups = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups', context)
     group_id = get_group_id(room_name, groups)
 
-    dip_lights(hue_bridge_ip, hue_user_id, group_id, initial_scene_id, context)
+    # dip_lights(hue_bridge_ip, hue_user_id, group_id, initial_scene_id, context)
 
-    exit()
     #get the set of tracks
     #decide what set of tracks we are playing
     if playtime_obj.lights_only == False:
-        play_music(track_qset, playtime_obj, track_path, pygame, initial_light_state, brightness)
+        play_music(track_qset, playtime_obj, track_path, pygame,
+                   party_light_settings, brightness, hue_bridge_ip,
+                   hue_user_id, group_id)
     else:
         pass
         #SHOULD RUN THE LIGHTS HERE        
     
     # reset lights to initial state
     
-    # DELETE ALL SCENES
+    # # set main lights back where you found them
+    setting_data = f'{{"scene":"{initial_scene_id}", "transitiontime": 1}}'
+    put(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups/{group_id}/action',
+        setting_data, context)
+
+    # # DELETE ALL SCENES
     scenes_url=f'https://{hue_bridge_ip}/api/{hue_user_id}/scenes'
     scenes = get_json(scenes_url, context)
     for id in scenes:
         req = urllib.request.Request(url=scenes_url+"/"+id, method='DELETE')
         f = urllib.request.urlopen(req, context=context)
-    # set main lights back where you found them
-    setting_data = f'{{"scene":"{initial_scene_id}", "transitiontime": 1}}'
-    put(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups/{group_id}/action', setting_data, context)
