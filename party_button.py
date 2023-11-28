@@ -23,36 +23,20 @@ def signal_term_handler(sigNum, frame):
     exit()
 
 def lets_party(disco_lights_channel, disco_lights_channel_2,
-               spotlights_channel, discoball_channel, b):
+               spotlights_channel, discoball_channel):
     print("Starting partying")
     # Get database info
+    before_func_time = time.time()
     playtime_obj = get_playtime_obj()
     hue_bridge_ip, hue_user_id, brightness = get_bridge_info()
     party_light_settings = get_light_settings()
-    
-    # Get light settings
-    before_func_time = time.time()
-    pb_lights = get_light_list(b)
+    groups = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups', context)
+    group_id = get_group_id(room_name, groups)
+    initial_light_state = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/lights', context)
+    initial_scene_id = set_initial_scene(hue_bridge_ip, hue_user_id, initial_light_state, context)
     after_func_time = time.time()
-    print(f"get_light_list(): {after_func_time-before_func_time}")
+    print(f"GET ALL STATE: {after_func_time-before_func_time}")
 
-    # loop over the lights and their settings and add them to this data structure
-    # so we only have to do this once
-    before_func_time = time.time()
-    light_info = {}
-    for light in pb_lights:
-        for setting in party_light_settings:
-            if light.name == setting.name:
-                light_info[light.name] = {"light": light,
-                                          "setting": setting}
-    after_func_time = time.time()
-    print(f"SETTING LIGHT INFO: {after_func_time-before_func_time}")
-
-    before_func_time = time.time()
-    initial_light_settings = get_initial_colours(pb_lights)
-    after_func_time = time.time()
-    print(f"get_initial_colours(): {after_func_time-before_func_time}")
-    
     print("BUTTON: pressed")
     #possibly there should be some brief pauses before toggling things "on"
     if playtime_obj.music_only == False:
@@ -69,11 +53,29 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
         track_qset = get_tracks(playtime_obj.playlist_selection)
         print("MUSIC: on")
         #decide what set of tracks we are playing
-        play_music(track_qset, playtime_obj, track_path, pygame, light_info, brightness)
-    
+        play_music(track_qset, playtime_obj, track_path, pygame,
+                   party_light_settings, brightness, hue_bridge_ip,
+                   hue_user_id, group_id)
     print("PARTY: off")
     print("MAIN LIGHTS: on\n")
-    reset_lights(pb_lights, initial_light_settings)
+    # # set main lights back where you found them
+    setting_data = f'{{"scene":"{initial_scene_id}", "transitiontime": 1}}'
+    put(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups/{group_id}/action',
+        setting_data, context)
+    # # DELETE ALL SCENES
+    scenes_url=f'https://{hue_bridge_ip}/api/{hue_user_id}/scenes'
+    scenes = get_json(scenes_url, context)
+    for id in scenes:
+        if scenes[id]['name'] == 'initialscene' or \
+           scenes[id]['name'] == 'fadescene1' or \
+           scenes[id]['name'] == 'fadescene2' or \
+           scenes[id]['name'] == 'staticscene' or \
+           scenes[id]['name'] == 'alternatescene1' or \
+           scenes[id]['name'] == 'alternatescene2' or \
+           scenes[id]['name'] == 'randomscene':
+            req = urllib.request.Request(url=scenes_url+"/"+id, method='DELETE')
+            f = urllib.request.urlopen(req, context=context)
+    
     # do we need a bit of a pause between these?
     GPIO.output(disco_lights_channel, GPIO.LOW)
     GPIO.output(disco_lights_channel_2, GPIO.LOW)
@@ -100,17 +102,22 @@ if __name__ == '__main__':
     pygame.mixer.pre_init(44100, -16, 2, 2048)
     signal.signal(signal.SIGTERM, signal_term_handler)
 
-    playtime_obj = get_playtime_obj()
-    hue_bridge_ip, hue_user_id, brightness = get_bridge_info()
-    b = phue.Bridge(hue_bridge_ip, hue_user_id)
-    # Do things, i.e. after button press
-    pb_lights = get_light_list(b)
-    # loop over the lights and their settings and add them to this data
-    # so we only have to do this once
-    initial_light_settings = get_initial_colours(pb_lights)
-    dip_lights(pb_lights)
-    reset_lights(pb_lights, initial_light_settings)
+    # get information from DB
+    hue_bridge_ip, hue_user_id, name_stub, room_name, brightness = get_bridge_info()
+    party_light_settings = get_light_settings()
+    context = ssl._create_unverified_context()    
 
+    # Get initial params to control lights
+    initial_light_state = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/lights', context)
+    initial_scene_id = set_initial_scene(hue_bridge_ip, hue_user_id, initial_light_state, context)
+    groups = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups', context)
+    group_id = get_group_id(room_name, groups)
+
+    pygame.mixer.music.load(track_path+'uploads/alert.mp3')
+    pygame.mixer.music.play()
+    dip_lights(hue_bridge_ip, hue_user_id, group_id, initial_scene_id, context)
+    time.sleep(0.5)
+    
     input_zero_sequence_count = 0
     while True:
         input_data = GPIO.input(input_channel)
@@ -125,7 +132,7 @@ if __name__ == '__main__':
         if input_zero_sequence_count == 10:
             print("BUTTON: pressed\n")
             toggle = lets_party(disco_lights_channel, disco_lights_channel_2,
-                                spotlights_channel, discoball_channel, b)
+                                spotlights_channel, discoball_channel)
             GPIO.setup(input_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
             GPIO.setup(disco_lights_channel, GPIO.OUT)
             GPIO.setup(disco_lights_channel_2, GPIO.OUT)

@@ -33,10 +33,15 @@ if __name__ == '__main__':
     groups = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups', context)
     group_id = get_group_id(room_name, groups)
 
-    # dip_lights(hue_bridge_ip, hue_user_id, group_id, initial_scene_id, context)
-
+    pygame.mixer.music.load(track_path+'uploads/alert.mp3')
+    pygame.mixer.music.play()
+    dip_lights(hue_bridge_ip, hue_user_id, group_id, initial_scene_id, context)
+    time.sleep(0.5)
+    
     #get the set of tracks
     #decide what set of tracks we are playing
+    
+    exit()
     if playtime_obj.lights_only == False:
         play_music(track_qset, playtime_obj, track_path, pygame,
                    party_light_settings, brightness, hue_bridge_ip,
@@ -56,5 +61,13 @@ if __name__ == '__main__':
     scenes_url=f'https://{hue_bridge_ip}/api/{hue_user_id}/scenes'
     scenes = get_json(scenes_url, context)
     for id in scenes:
-        req = urllib.request.Request(url=scenes_url+"/"+id, method='DELETE')
-        f = urllib.request.urlopen(req, context=context)
+        if scenes[id]['name'] == 'initialscene' or \
+           scenes[id]['name'] == 'fadescene1' or \
+           scenes[id]['name'] == 'fadescene2' or \
+           scenes[id]['name'] == 'staticscene' or \
+           scenes[id]['name'] == 'alternatescene1' or \
+           scenes[id]['name'] == 'alternatescene2' or \
+           scenes[id]['name'] == 'randomscene':
+            req = urllib.request.Request(url=scenes_url+"/"+id, method='DELETE')
+            f = urllib.request.urlopen(req, context=context)
+    

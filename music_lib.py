@@ -102,6 +102,7 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
         else:
             create_response = post(scene_url, static_payload, context)
             static_scene_id = create_response[0]['success']['id']
+            static_scene_data['scene_id'] = static_scene_id
         setting_data = f'{{"scene":"{static_scene_id}", "transitiontime": 1}}'
         put(f'https://{ip}/api/{user}/groups/{group_id}/action', setting_data, context)
     
@@ -139,6 +140,7 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
         else:
             create_response = post(scene_url, random_payload, context)
             random_scene_id = create_response[0]['success']['id']
+            random_scene_data['scene_id'] = random_scene_id
         setting_data = f'{{"scene":"{random_scene_id}", "transitiontime": 1}}'
         put(f'https://{ip}/api/{user}/groups/{group_id}/action', setting_data, context)
     
@@ -259,103 +261,6 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
                     put(f'https://{ip}/api/{user}/groups/{group_id}/action', setting_data, context)
                     fade_primary = True                 
                     
-
-            
-
-def change_colour_old(light_info, brightness, playtime, bpm):
-
-    #What we should do is set up 3 scenes, constant colour scene, fade scene,
-    # random scene
-    # 
-    # Trigger all three scenes
-    # 
-    # Enter while loop and edit random and fade scene when necessary 
-
-    # First up change the lights
-    random_light_set = []
-    fade_light_set = []
-    alternate_light_set = []
-    for light_name, light_details in light_info.items():
-        if light_details['setting'].random_colour:
-            random_light_set.append(light_details)
-        elif light_details['setting'].fade:
-            fade_light_set.append(light_details)
-        elif light_details['setting'].alternate_colour:
-            alternate_light_set.append(light_details)    
-        else:
-            set_light(light_details, brightness, 1, True)
-
-    # we should loop over the lights, set the solid colour for the fixed ones
-    # for the rest enter the infinite while loop and either make a rand change
-    # or a stepped change, number of steps. For number of steps work out the
-    # H and S interval and make that step each time
-    # initial steps per minute is the bpm
-    minute_portion=playtime/60
-    steps = bpm*minute_portion
-    step_length = playtime/steps
-    step_count = 0
-    thirty_secs_steps = int(30/step_length)
-    primary_ctl = True
-    #workout number of steps in 
-    alternate_tracker = {}
-    fade_tracker = {}
-    while True:
-        for light_settings in alternate_light_set:
-            dice_roll = 1
-            if light_settings['setting'].random_interval:
-                dice_roll = random.randint(0, 1)
-            
-            if step_count == 0:
-                set_light(light_settings, brightness, 1, True)
-                alternate_tracker[light_settings['setting'].name] = True
-            if step_count % light_settings['setting'].interval_size == 0:
-                if alternate_tracker[light_settings['setting'].name]:
-                    if dice_roll:
-                        set_light(light_settings, brightness, 1, False)
-                        alternate_tracker[light_settings['setting'].name] = False
-                else:
-                    if dice_roll:
-                        set_light(light_settings, brightness, 1, True)
-                        alternate_tracker[light_settings['setting'].name] = True
-        
-        for light_settings in fade_light_set:
-            if step_count == 0:
-                set_light(light_settings, brightness, 1, True)
-                transition_length = playtime*10
-                # currently capping the transition length to 30.
-                if transition_length >= 300:
-                    transition_length = 300
-                set_light(light_settings, brightness, transition_length , False)
-                fade_tracker[light_settings['setting'].name] = False
-            elif step_count % thirty_secs_steps == 0:
-                if fade_tracker[light_settings['setting'].name]:
-                    set_light(light_settings, brightness, transition_length, False)
-                    fade_tracker[light_settings['setting'].name] = False
-                else:
-                    set_light(light_settings, brightness, transition_length, True)
-                    fade_tracker[light_settings['setting'].name] = True
-
-        for light_settings in random_light_set:
-            dice_roll = 1
-            if light_settings['setting'].random_interval:
-                dice_roll = random.randint(0, 1)
-            
-            random_setting = {'light': light_settings['light'],
-                              'setting': Object()}
-            random_setting['setting'].primary_H = random.randint(0, 65535)
-            random_setting['setting'].primary_S = random.randint(0, 254)
-            
-            if step_count == 0:
-                set_light(random_setting, brightness, 1, True)
-            elif step_count % light_settings['setting'].interval_size == 0:
-                random_setting['setting'].primary_H = random.randint(0, 65535)
-                random_setting['setting'].primary_S = random.randint(0, 254)
-                if dice_roll:
-                    set_light(random_setting, brightness, 1, True)
-        time.sleep(step_length)
-        step_count += 1
-
-
 def get_bridge_info():
     bridge = Bridge.objects.all().first()
     return bridge.ip, bridge.user_id, bridge.name_stub, bridge.room, \
