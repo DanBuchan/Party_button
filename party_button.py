@@ -28,7 +28,7 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
                spotlights_channel, discoball_channel):
     print("Starting partying")
     # Get database info
-    before_func_time = time.time()
+    #before_func_time = time.time()
     playtime_obj = get_playtime_obj()
     hue_bridge_ip, hue_user_id, name_stub, room_name, brightness = get_bridge_info()
     party_light_settings = get_light_settings()
@@ -36,8 +36,8 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
     group_id = get_group_id(room_name, groups)
     initial_light_state = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/lights', context)
     initial_scene_id = set_initial_scene(hue_bridge_ip, hue_user_id, initial_light_state, context)
-    after_func_time = time.time()
-    print(f"GET ALL STATE: {after_func_time-before_func_time}")
+    #after_func_time = time.time()
+    #print(f"GET ALL STATE: {after_func_time-before_func_time}")
 
     print("BUTTON: pressed")
     #possibly there should be some brief pauses before toggling things "on"
