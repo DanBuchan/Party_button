@@ -35,7 +35,7 @@
   <hr>
   <div class="row">
       <div class="col">
-         <h2>Set Play Time</h2>
+         <h2>Set Play Conditions</h2>
          <form id="playtime_form" id="name_form" action={% url 'mp3_manager:index' %} method="post" enctype="multipart/form-data">
           {% csrf_token %}
           {{ playtimeform|crispy }}
