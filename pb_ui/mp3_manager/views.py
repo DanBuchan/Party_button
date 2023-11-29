@@ -239,7 +239,6 @@ class IndexView(generic.ListView, FormMixin):
             playtime.save()
             return redirect("/")
         if "musicctl_submit" in request.POST:
-            print("hi")
             if playtime.music_only == True:
                 playtime.music_only = False
                 playtime.lights_only = False
@@ -249,6 +248,14 @@ class IndexView(generic.ListView, FormMixin):
                     playtime.lights_only = False
             playtime.save()
             return redirect("/")
+        if "ghostctl_submit" in request.POST:
+            if playtime.ghost == True:
+                playtime.ghost = False
+            else:
+                playtime.ghost = True
+            playtime.save()
+            return redirect("/")
+        
         
             
     

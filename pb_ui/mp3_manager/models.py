@@ -67,7 +67,10 @@ class Playtime(models.Model):
                                              default=False)
     music_only = models.BooleanField(blank=False, null=False, 
                                              default=False)
+    ghost = models.BooleanField(blank=False, null=False, 
+                                             default=False)
     # lights_only and music_only should really be a enum type
+
 
     def __str__(self):
         return str(self.playtime_seconds)

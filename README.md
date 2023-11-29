@@ -103,5 +103,4 @@ sudo systemctl start party_button.service
 
 1. refactor django views to correctly use mixins and not have all those single function classes
 2. Spotify integration (hmmmm)
-3. Add in party ghost (i.e. whether input_zero_sequence_count is 0 or 10)
 4. Add GPIO pin control UI. So you can turn on or off certainly lights

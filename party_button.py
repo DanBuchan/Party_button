@@ -107,7 +107,8 @@ if __name__ == '__main__':
     # get information from DB
     hue_bridge_ip, hue_user_id, name_stub, room_name, brightness = get_bridge_info()
     party_light_settings = get_light_settings()
-    context = ssl._create_unverified_context()    
+    context = ssl._create_unverified_context()
+    playtime_obj = get_playtime_obj()   
 
     # Get initial params to control lights
     initial_light_state = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/lights', context)
@@ -121,6 +122,9 @@ if __name__ == '__main__':
     time.sleep(0.5)
     
     input_zero_sequence_count = 0
+    debounce_length = 10
+    if playtime_obj.ghost:
+        debounce_length = 1
     while True:
         input_data = GPIO.input(input_channel)
         
@@ -131,7 +135,7 @@ if __name__ == '__main__':
             if toggle == 0:
                 print("BUTTON: released\n")
             toggle=1
-        if input_zero_sequence_count == 10:
+        if input_zero_sequence_count == debounce_length:
             print("BUTTON: pressed\n")
             toggle = lets_party(disco_lights_channel, disco_lights_channel_2,
                                 spotlights_channel, discoball_channel)

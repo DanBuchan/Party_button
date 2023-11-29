@@ -48,6 +48,22 @@
       </div>
   </div>
   <hr>
+
+  <div class="row">
+    <div class="col">
+       <h2>Invite Party Ghost (requires reboot)</h2>
+       <form id="ghostctl_form" id="ghostsctl_form" action={% url 'mp3_manager:index' %} method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if playtime.ghost == True %}
+          <input type="submit" class="btn btn-success" value="Party Haunted" form="ghostctl_form" id="ghostctl_submit" name="ghostctl_submit">
+        {% else %}
+          <input type="submit" class="btn btn-primary" value="Exorcism complete" form="ghostctl_form" id="ghostctl_submit" name="ghostctl_submit">
+        {% endif %}
+      </form>
+    </div>
+  </div>
+  <hr>
+
   <div class="row">
     <div class="col">
       <h2>Scene Control</h2>
