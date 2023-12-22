@@ -52,6 +52,7 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
         # play_music(track_qset, playtime_obj, track_path, pygame,
         #            party_light_settings, brightness, hue_bridge_ip,
         #            hue_user_id, group_id)
+        play_tracks = decide_playing_set(track_qset, playtime_obj)
         for track in play_tracks:
             print(f"PLAYING: {track}")
             print(f"FILE LOCATION: {track_path+str(track.mp3_file)}")
@@ -61,6 +62,7 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
             print(f"PLAYING TRACK FOR: {play_duration} secs")
             proc = multiprocessing.Process(target=change_colour, args=(light_info, brightness, playtime_obj.playtime_seconds, track.bpm, hue_bridge_ip, hue_user_id, group_id))
             proc.start()
+            pygame.mixer.music.set_volume(1.0)
             pygame.mixer.music.play(start=start_location)
             if playtime_obj.music_only == False:
                 print("DISCO BALL: on")
@@ -137,8 +139,7 @@ if __name__ == '__main__':
     pygame.mixer.music.load(track_path+'uploads/alert.mp3')
     pygame.mixer.music.set_volume(0.3)
     pygame.mixer.music.play()
-    time.sleep(1)
-    pygame.mixer.music.set_volume(1.0)
+    time.sleep(2)
     
     input_zero_sequence_count = 0
     debounce_length = 10
