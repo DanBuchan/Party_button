@@ -424,21 +424,20 @@ def calculate_playing_coordinates(track, playtime_obj):
 
     return(play_duration, start_location)
 
-def play_music(track_qset, playtime_obj, track_path, pygame, light_info, brightness, hue_bridge_ip, hue_user_id, group_id):
-    play_tracks = decide_playing_set(track_qset, playtime_obj)
-    for track in play_tracks:
-        print(f"PLAYING: {track}")
-        print(f"FILE LOCATION: {track_path+str(track.mp3_file)}")
-        pygame.mixer.music.load(track_path+str(track.mp3_file))
-        play_duration, start_location = calculate_playing_coordinates(track, playtime_obj)
-        print(f"STARTING PLAYBACK AT: {start_location} secs")
-        print(f"PLAYING TRACK FOR: {play_duration} secs")
-        proc = multiprocessing.Process(target=change_colour, args=(light_info, brightness, playtime_obj.playtime_seconds, track.bpm, hue_bridge_ip, hue_user_id, group_id))
-        proc.start()
-        time.sleep(1)
-        pygame.mixer.music.play(start=start_location)
-        time.sleep(play_duration)
-        pygame.mixer.music.stop()
-        proc.terminate()
-        print(f"PLAY FINISHED: {track}")
-    return()
+# def play_music(track_qset, playtime_obj, track_path, pygame, light_info, brightness, hue_bridge_ip, hue_user_id, group_id):
+#     play_tracks = decide_playing_set(track_qset, playtime_obj)
+#     for track in play_tracks:
+#         print(f"PLAYING: {track}")
+#         print(f"FILE LOCATION: {track_path+str(track.mp3_file)}")
+#         pygame.mixer.music.load(track_path+str(track.mp3_file))
+#         play_duration, start_location = calculate_playing_coordinates(track, playtime_obj)
+#         print(f"STARTING PLAYBACK AT: {start_location} secs")
+#         print(f"PLAYING TRACK FOR: {play_duration} secs")
+#         proc = multiprocessing.Process(target=change_colour, args=(light_info, brightness, playtime_obj.playtime_seconds, track.bpm, hue_bridge_ip, hue_user_id, group_id))
+#         proc.start()
+#         pygame.mixer.music.play(start=start_location)
+#         time.sleep(play_duration)
+#         pygame.mixer.music.stop()
+#         proc.terminate()
+#         print(f"PLAY FINISHED: {track}")
+#     return()

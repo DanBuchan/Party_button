@@ -41,23 +41,38 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
 
     print("BUTTON: pressed")
     #possibly there should be some brief pauses before toggling things "on"
-    if playtime_obj.music_only == False:
-        print("DISCO BALL: on")
-        GPIO.output(discoball_channel, GPIO.HIGH)
-        print("SPOTLIGHTS: on")
-        GPIO.output(spotlights_channel, GPIO.HIGH)
-        print("DISCO LIGHT: on")
-        GPIO.output(disco_lights_channel, GPIO.HIGH)
-        GPIO.output(disco_lights_channel_2, GPIO.HIGH)
     
     if playtime_obj.lights_only == False:
         # get the set of track
         track_qset = get_tracks(playtime_obj.playlist_selection)
         print("MUSIC: on")
         #decide what set of tracks we are playing
-        play_music(track_qset, playtime_obj, track_path, pygame,
-                   party_light_settings, brightness, hue_bridge_ip,
-                   hue_user_id, group_id)
+        # play_music(track_qset, playtime_obj, track_path, pygame,
+        #            party_light_settings, brightness, hue_bridge_ip,
+        #            hue_user_id, group_id)
+        for track in play_tracks:
+            print(f"PLAYING: {track}")
+            print(f"FILE LOCATION: {track_path+str(track.mp3_file)}")
+            pygame.mixer.music.load(track_path+str(track.mp3_file))
+            play_duration, start_location = calculate_playing_coordinates(track, playtime_obj)
+            print(f"STARTING PLAYBACK AT: {start_location} secs")
+            print(f"PLAYING TRACK FOR: {play_duration} secs")
+            proc = multiprocessing.Process(target=change_colour, args=(light_info, brightness, playtime_obj.playtime_seconds, track.bpm, hue_bridge_ip, hue_user_id, group_id))
+            proc.start()
+            pygame.mixer.music.play(start=start_location)
+            if playtime_obj.music_only == False:
+                print("DISCO BALL: on")
+                GPIO.output(discoball_channel, GPIO.HIGH)
+                print("SPOTLIGHTS: on")
+                GPIO.output(spotlights_channel, GPIO.HIGH)
+                print("DISCO LIGHT: on")
+                GPIO.output(disco_lights_channel, GPIO.HIGH)
+                GPIO.output(disco_lights_channel_2, GPIO.HIGH)
+            time.sleep(play_duration)
+            pygame.mixer.music.stop()
+            proc.terminate()
+            print(f"PLAY FINISHED: {track}")
+        
     print("PARTY: off")
     print("MAIN LIGHTS: on\n")
     # # set main lights back where you found them
@@ -116,10 +131,12 @@ if __name__ == '__main__':
     groups = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups', context)
     group_id = get_group_id(room_name, groups)
 
-    pygame.mixer.music.load(track_path+'uploads/alert.mp3')
-    pygame.mixer.music.play()
     dip_lights(hue_bridge_ip, hue_user_id, group_id, initial_scene_id, context)
-    time.sleep(0.5)
+    pygame.mixer.music.load(track_path+'uploads/alert.mp3')
+    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.play()
+    time.sleep(1)
+    pygame.mixer.music.set_volume(1.0)
     
     input_zero_sequence_count = 0
     debounce_length = 10
