@@ -42,8 +42,7 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
     print("BUTTON: pressed")
     #possibly there should be some brief pauses before toggling things "on"
     
-    #time.sleep(0.3) - maybe need to pause here while lights do their thing.
-      
+    time.sleep(0.5)
     if playtime_obj.lights_only == False:
         # get the set of track
         track_qset = get_tracks(playtime_obj.playlist_selection)
