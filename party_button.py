@@ -135,7 +135,7 @@ if __name__ == '__main__':
 
     dip_lights(hue_bridge_ip, hue_user_id, group_id, initial_scene_id, context)
     pygame.mixer.music.load(track_path+'uploads/alert.mp3')
-    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.set_volume(0.4)
     pygame.mixer.music.play()
     time.sleep(2)
     
@@ -161,7 +161,7 @@ if __name__ == '__main__':
     
             setting_data = '{"bri": 0, "transitiontime": 1}'
             put(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups/{group_id}/action', setting_data, context)
-            time.sleep(1.3)
+            time.sleep(1.2)
             toggle = lets_party(party_light_settings, initial_light_state, initial_scene_id, 
                                 disco_lights_channel, disco_lights_channel_2,
                                 spotlights_channel, discoball_channel)
