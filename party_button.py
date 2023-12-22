@@ -23,7 +23,8 @@ def signal_term_handler(sigNum, frame):
     GPIO.cleanup()
     exit()
 
-def lets_party(party_light_settings, disco_lights_channel, disco_lights_channel_2,
+def lets_party(party_light_settings, initial_light_state, initial_scene_id, 
+               disco_lights_channel, disco_lights_channel_2,
                spotlights_channel, discoball_channel):
     print("Starting partying")
     # Get database info
@@ -33,8 +34,6 @@ def lets_party(party_light_settings, disco_lights_channel, disco_lights_channel_
     # party_light_settings = get_light_settings()
     groups = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups', context)
     group_id = get_group_id(room_name, groups)
-    initial_light_state = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/lights', context)
-    initial_scene_id = set_initial_scene(hue_bridge_ip, hue_user_id, initial_light_state, context)
     #after_func_time = time.time()
     #print(f"GET ALL STATE: {after_func_time-before_func_time}")
 
@@ -130,6 +129,7 @@ if __name__ == '__main__':
     # Get initial params to control lights
     initial_light_state = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/lights', context)
     initial_scene_id = set_initial_scene(hue_bridge_ip, hue_user_id, initial_light_state, context)
+    
     groups = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups', context)
     group_id = get_group_id(room_name, groups)
 
@@ -156,10 +156,14 @@ if __name__ == '__main__':
         if input_zero_sequence_count == debounce_length:
             print("BUTTON: pressed\n")
             party_light_settings = get_light_settings()
+            initial_light_state = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/lights', context)
+            initial_scene_id = set_initial_scene(hue_bridge_ip, hue_user_id, initial_light_state, context)
+    
             setting_data = '{"bri": 0, "transitiontime": 1}'
             put(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups/{group_id}/action', setting_data, context)
             
-            toggle = lets_party(party_light_settings, disco_lights_channel, disco_lights_channel_2,
+            toggle = lets_party(party_light_settings, initial_light_state, initial_scene_id, 
+                                disco_lights_channel, disco_lights_channel_2,
                                 spotlights_channel, discoball_channel)
             GPIO.setup(input_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
             GPIO.setup(disco_lights_channel, GPIO.OUT)
