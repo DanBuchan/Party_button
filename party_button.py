@@ -4,7 +4,6 @@ import sys
 import django
 import pygame
 import signal
-import phue
 import time
 import urllib.request
 import ssl
@@ -60,7 +59,7 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
             print(f"PLAYING TRACK FOR: {play_duration} secs")
             proc = multiprocessing.Process(target=change_colour, args=(party_light_settings, brightness, playtime_obj.playtime_seconds, track.bpm, hue_bridge_ip, hue_user_id, group_id))
             proc.start()
-            time.sleep(1.5)
+            time.sleep(0.5)
             pygame.mixer.music.set_volume(1.0)
             pygame.mixer.music.play(start=start_location)
             if playtime_obj.music_only == False:
@@ -156,6 +155,9 @@ if __name__ == '__main__':
             toggle=1
         if input_zero_sequence_count == debounce_length:
             print("BUTTON: pressed\n")
+            setting_data = '{"bri":30, "transitiontime": 1}'
+            put(f'https://{ip}/api/{user}/groups/{group_id}/action', setting_data, context)
+            
             toggle = lets_party(disco_lights_channel, disco_lights_channel_2,
                                 spotlights_channel, discoball_channel)
             GPIO.setup(input_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
