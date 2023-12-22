@@ -60,7 +60,7 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
             play_duration, start_location = calculate_playing_coordinates(track, playtime_obj)
             print(f"STARTING PLAYBACK AT: {start_location} secs")
             print(f"PLAYING TRACK FOR: {play_duration} secs")
-            proc = multiprocessing.Process(target=change_colour, args=(light_info, brightness, playtime_obj.playtime_seconds, track.bpm, hue_bridge_ip, hue_user_id, group_id))
+            proc = multiprocessing.Process(target=change_colour, args=(party_light_settings, brightness, playtime_obj.playtime_seconds, track.bpm, hue_bridge_ip, hue_user_id, group_id))
             proc.start()
             pygame.mixer.music.set_volume(1.0)
             pygame.mixer.music.play(start=start_location)
