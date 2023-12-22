@@ -161,7 +161,7 @@ if __name__ == '__main__':
     
             setting_data = '{"bri": 0, "transitiontime": 1}'
             put(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups/{group_id}/action', setting_data, context)
-            time.sleep(2)
+            time.sleep(1.3)
             toggle = lets_party(party_light_settings, initial_light_state, initial_scene_id, 
                                 disco_lights_channel, disco_lights_channel_2,
                                 spotlights_channel, discoball_channel)
