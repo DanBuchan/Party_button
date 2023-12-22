@@ -42,8 +42,6 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
     print("BUTTON: pressed")
     #possibly there should be some brief pauses before toggling things "on"
     
-    time.sleep(1.5)
-
     if playtime_obj.lights_only == False:
         # get the set of track
         track_qset = get_tracks(playtime_obj.playlist_selection)
@@ -62,6 +60,7 @@ def lets_party(disco_lights_channel, disco_lights_channel_2,
             print(f"PLAYING TRACK FOR: {play_duration} secs")
             proc = multiprocessing.Process(target=change_colour, args=(party_light_settings, brightness, playtime_obj.playtime_seconds, track.bpm, hue_bridge_ip, hue_user_id, group_id))
             proc.start()
+            time.sleep(1.5)
             pygame.mixer.music.set_volume(1.0)
             pygame.mixer.music.play(start=start_location)
             if playtime_obj.music_only == False:
