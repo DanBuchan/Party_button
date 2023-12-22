@@ -156,7 +156,7 @@ if __name__ == '__main__':
         if input_zero_sequence_count == debounce_length:
             print("BUTTON: pressed\n")
             setting_data = '{"bri":30, "transitiontime": 1}'
-            put(f'https://{ip}/api/{user}/groups/{group_id}/action', setting_data, context)
+            put(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups/{group_id}/action', setting_data, context)
             
             toggle = lets_party(disco_lights_channel, disco_lights_channel_2,
                                 spotlights_channel, discoball_channel)
