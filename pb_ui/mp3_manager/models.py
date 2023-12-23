@@ -55,7 +55,6 @@ class Playtime(models.Model):
     playtime_seconds = models.IntegerField(blank=False, null=False,
                                   default=20,
                                   validators=[MinValueValidator(0),
-                                         
                                               MaxValueValidator(600)])
     play_full_override = models.BooleanField(blank=False, null=False, 
                                              default=False)
@@ -69,6 +68,10 @@ class Playtime(models.Model):
                                              default=False)
     ghost = models.BooleanField(blank=False, null=False, 
                                              default=False)
+    pause_length = models.FloatField(blank=False, null=False,
+                                     default=2.0,
+                                     validators=[MinValueValidator(0),
+                                     MaxValueValidator(60)])
     # lights_only and music_only should really be a enum type
 
 

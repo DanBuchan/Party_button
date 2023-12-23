@@ -1,2 +1,3 @@
 pb_venv/*
 *.mp3
+db.sqlite3

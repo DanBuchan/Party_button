@@ -26,7 +26,8 @@ class TrackForm(ModelForm):
 class PlaytimeForm(ModelForm):
     class Meta:
         model = Playtime
-        fields = ["playtime_seconds", "play_full_override", "play_whole_playlist"]
+        fields = ["playtime_seconds", "pause_length", "play_full_override",
+                  "play_whole_playlist"]
 
 class TrackPlaytimeForm(ModelForm):
     playtime_seconds = forms.IntegerField(
