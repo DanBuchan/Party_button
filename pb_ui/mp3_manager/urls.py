@@ -26,4 +26,5 @@ urlpatterns = [
     path("lightbrightnessvalue/", views.LightBrightnessValue.as_view(), name="lightbrightnessvalue"),
     path("lights/", views.BridgeManagement.as_view(), name="bridge"),
     path("disco/", views.DiscoLightManagement.as_view(), name="disco"),
+    path("deletedisco/<int:pk>/", views.DeleteDiscoLight.as_view(), name="deletedisco"),
 ]

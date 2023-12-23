@@ -311,7 +311,7 @@ class IndexView(generic.ListView, FormMixin):
     
 class DeleteTrackView(generic.ListView, FormMixin):
     def get(self, request, pk):
-        print(f"DELETING: {pk}")
+        print(f"DELETING TRACK: {pk}")
         Track.objects.filter(pk=pk).delete()
         return redirect("/tracks")
  
@@ -566,3 +566,11 @@ class LightBrightnessValue(generic.ListView, FormMixin):
         light.brightness=request.POST['brightness']     
         light.save()
         return redirect("/lights")
+    
+    
+class DeleteDiscoLight(generic.ListView, FormMixin):
+    
+    def get(self, request, pk):
+        print(f"DELETING DISCO LIGHT: {pk}")
+        DiscoLight.objects.filter(pk=pk).delete()
+        return redirect("/disco")

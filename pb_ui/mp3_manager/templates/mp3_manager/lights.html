@@ -107,9 +107,9 @@
               </td>
               <td>
                 {% if light.override_brightness %}
-                  <a href="{% url 'mp3_manager:lightbrightness' pk=light.pk %}"><button type="button" class="btn btn-success">Using Light Value</button></a>
+                  <a href="{% url 'mp3_manager:lightbrightness' pk=light.pk %}"><button type="button" class="btn btn-success">Use Light Value</button></a>
                 {% else %}
-                  <a href="{% url 'mp3_manager:lightbrightness' pk=light.pk %}"><button type="button" class="btn btn-secondary">Using Global Value</button></a>
+                  <a href="{% url 'mp3_manager:lightbrightness' pk=light.pk %}"><button type="button" class="btn btn-secondary">Use Global Value</button></a>
                 {% endif %}
               </td>
 
