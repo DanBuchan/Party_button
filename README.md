@@ -105,3 +105,4 @@ sudo systemctl start party_button.service
 2. Spotify integration (hmmmm)
 3. Add GPIO pin control UI. So you can turn on or off certainly lights
 4. Independent brightness for the hue bulbs
+5. darkness length.

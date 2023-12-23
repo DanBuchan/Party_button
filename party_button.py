@@ -158,7 +158,6 @@ if __name__ == '__main__':
             party_light_settings = get_light_settings()
             initial_light_state = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/lights', context)
             initial_scene_id = set_initial_scene(hue_bridge_ip, hue_user_id, initial_light_state, context)
-    
             setting_data = '{"bri": 0, "transitiontime": 1}'
             put(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups/{group_id}/action', setting_data, context)
             time.sleep(2)
