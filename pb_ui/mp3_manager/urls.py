@@ -22,7 +22,8 @@ urlpatterns = [
     path("lightrandom/<int:pk>/", views.LightRandom.as_view(), name="lightrandom"),
     path("lightinterval/<int:pk>/", views.LightInterval.as_view(), name="lightinterval"),
     path("lightalternate/<int:pk>/", views.LightAlternate.as_view(), name="lightalternate"),
+    path("lightbrightness/<int:pk>/", views.LightBrightness.as_view(), name="lightbrightness"),
+    path("lightbrightnessvalue/", views.LightBrightnessValue.as_view(), name="lightbrightnessvalue"),
     path("lights/", views.BridgeManagement.as_view(), name="bridge"),
     path("disco/", views.DiscoLightManagement.as_view(), name="disco"),
-
 ]

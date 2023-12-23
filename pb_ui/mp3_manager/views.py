@@ -541,3 +541,28 @@ class LightInterval(generic.ListView, FormMixin):
                 
         light.save()
         return redirect("/lights")
+
+class LightBrightness(generic.ListView, FormMixin):
+    
+    def get(self, request, pk):
+        #get records set solo True and save.
+        print(f"Setting brightness override for: {pk}")
+        light = Light.objects.filter(pk=pk)[0]
+        if light.override_brightness:
+            light.override_brightness=False
+        else:
+            light.override_brightness=True      
+        light.save()
+        return redirect("/lights")
+    
+class LightBrightnessValue(generic.ListView, FormMixin):
+    
+    def post(self, request):
+        #get records set solo True and save.
+        pk = request.POST["pk"]
+        print(request.POST)
+        print(f"Setting brightness override for: {pk}")
+        light = Light.objects.filter(pk=pk)[0]
+        light.brightness=request.POST['brightness']     
+        light.save()
+        return redirect("/lights")
