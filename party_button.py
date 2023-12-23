@@ -160,7 +160,7 @@ if __name__ == '__main__':
             initial_scene_id = set_initial_scene(hue_bridge_ip, hue_user_id, initial_light_state, context)
             setting_data = '{"bri": 0, "transitiontime": 1}'
             put(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups/{group_id}/action', setting_data, context)
-            print("PAUSING": playtime_obj.pause_length)
+            print("PAUSING:", playtime_obj.pause_length)
             time.sleep(playtime_obj.pause_length)
             print("STARTING")
             toggle = lets_party(party_light_settings, initial_light_state, initial_scene_id, 
