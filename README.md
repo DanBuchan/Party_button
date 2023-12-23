@@ -104,4 +104,3 @@ sudo systemctl start party_button.service
 1. refactor django views to correctly use mixins and not have all those single function classes
 2. Spotify integration (hmmmm)
 4. Independent brightness for the hue bulbs
-5. Add delete for discolight pin ctl
