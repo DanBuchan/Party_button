@@ -23,7 +23,6 @@ urlpatterns = [
     path("lightinterval/<int:pk>/", views.LightInterval.as_view(), name="lightinterval"),
     path("lightalternate/<int:pk>/", views.LightAlternate.as_view(), name="lightalternate"),
     path("lights/", views.BridgeManagement.as_view(), name="bridge"),
-
-
+    path("disco/", views.DiscoLightManagement.as_view(), name="disco"),
 
 ]

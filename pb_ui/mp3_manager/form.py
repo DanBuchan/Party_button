@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Track, Playtime, Playlist, Bridge, Light
+from .models import Track, Playtime, Playlist, Bridge, Light, DiscoLight
 
 class BridgeForm(ModelForm):
     class Meta:
@@ -22,6 +22,11 @@ class TrackForm(ModelForm):
     class Meta:
         model = Track
         fields = ["name", "mp3_file", "minutes", "seconds"]
+
+class DiscoForm(ModelForm):
+    class Meta:
+        model = DiscoLight
+        fields = ["name", "pin_id", "light_on"]
 
 class PlaytimeForm(ModelForm):
     class Meta:

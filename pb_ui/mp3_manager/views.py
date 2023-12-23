@@ -11,10 +11,60 @@ import subprocess
 import re
 import pprint
 
-from .models import Track, Playtime, Playlist, Bridge, Light
+from .models import Track, Playtime, Playlist, Bridge, Light, DiscoLight
 from .form import TrackForm, PlaytimeForm, TrackPlaytimeForm, TrackStartForm
 from .form import BridgeForm, TrackForm ,TrackBpmForm
-from .form import PlaylistForm, BrightnessForm
+from .form import PlaylistForm, BrightnessForm, DiscoForm
+
+
+class DiscoLightManagement(generic.ListView, FormMixin):
+    form_class = DiscoForm
+    template_name = "mp3_manager/disco.html"
+    context_object_name = "disco_light_list"
+    model = DiscoLight
+
+    def get(self, request):
+        print("Getting Disco Light List")
+        disco_light_list = self.get_queryset()
+        return render(request, self.template_name,
+                      {"disco_light_list": disco_light_list,
+                       "form": DiscoForm()
+                       })
+        
+    def post(self, request):
+        print("Handling Disco Light")
+        if "disco_configure" in request.POST:
+            print("Adding Disco Light Configuration")
+            form = self.get_form()
+            if form.is_valid():
+                print("SAVING LIGHT")
+                record = form.save()
+
+            disco_light_list = self.get_queryset()
+            return render(request, self.template_name,
+                          {"disco_light_list": disco_light_list,
+                           "form": DiscoForm()
+                          })
+        if [key for key in request.POST.keys() if 'disco_update' in key.lower()]:
+            print("Updating Disco Light")
+            thisform = DiscoForm(request.POST)
+            if thisform.is_valid():
+                light = DiscoLight.objects.filter(pk=request.POST["pk"])[0]
+            #print(request.POST)
+            light.name = request.POST["name"]
+            light.pin_id = request.POST["pin_id"]
+            toggle_list = request.POST.getlist("light_on")
+            if len(toggle_list) > 0:
+                light.light_on = True
+            else:
+                light.light_on = False
+            light.save()
+            disco_light_list = self.get_queryset()
+            return render(request, self.template_name,
+                          {"disco_light_list": disco_light_list,
+                           "form": DiscoForm()
+                          })
+
 
 class TrackManagement(generic.ListView, FormMixin):
     form_class = TrackForm

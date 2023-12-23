@@ -1,0 +1,69 @@
+{% extends "./base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row">
+  <div class="col">
+    <table>
+    <tr><td NOWRAP>
+    <a href="/"><button type="button" class="btn btn-secondary">Play Mode</button></a>&nbsp;
+    <a  href="/tracks"><button type="button" class="btn btn-secondary">Track Management</button></a>&nbsp;
+    <a href="/playlists"><button type="button" class="btn btn-secondary">Playlist Management</button></a>&nbsp;
+    <a href="/lights"><button type="button" class="btn btn-secondary">Smart Bulbs</button></a>&nbsp;
+    <a href="/disco"><button type="button" class="btn btn-success">Disco Lights</button></a>&nbsp;
+    </td></tr>
+    </table>
+  </div>
+</div>
+<hr>
+
+<div class="row">
+    <div class="col">
+    <h2>Configure Disco Light</h2> 
+    {% if form_errors %}
+        <div class="alert">{{ form_errors }}</div>
+    {% endif %}
+        <form id="disco_form" name="disco_form" action={% url 'mp3_manager:disco' %} method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input class="btn btn-secondary" type="submit" form="disco_form" value="Save" id="disco_configure" name="disco_configure"></input>
+        </form>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col">
+    <h2>Disco Light List</h2>
+    {% if disco_light_list %}
+        <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+            <thead><tr><th>Light Name</th><th>Pin ID</th><th>On?</th><th>Update</th></tr></thead>
+            <tbody>
+              {% for light in disco_light_list %}
+              <tr>
+                  <form id="disco_update_form_{{ light.pk }}" id="disco_update_{ light.pk }}" action={% url 'mp3_manager:disco' %} method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                  <td> <input size="20" type="textarea" id="name" name="name" value={{ light.name }}>  </td>
+                  <td>
+                    <input size="2" type="textarea" id="pin_id" name="pin_id" value={{ light.pin_id }}>  
+                  </td>
+                  <td>
+                    {% if light.light_on %}
+                    <input type="checkbox" id="light_on" name="light_on" value={{ light.pk }} checked> 
+                    {% else%}
+                    <input type="checkbox" id="light_on" name="light_on" value={{ light.pk }}> 
+                    {% endif %}   
+                  </td>
+                  <td>
+                    <input type="hidden" id="pk" name="pk" value="{{ light.pk }}">  
+                    <input class="btn btn-secondary" type="submit" form="disco_update_form_{{ light.pk }}" value="Update" name="disco_update_{{ light.pk }}"></td>
+                </form>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+      <p><h2>No disco lights configured</h2></p>
+    {% endif %}
+    </div>
+</div>
+
+{% endblock %}
