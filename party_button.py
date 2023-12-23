@@ -25,11 +25,11 @@ def signal_term_handler(sigNum, frame):
 
 def lets_party(party_light_settings, initial_light_state, initial_scene_id, 
                disco_lights_channel, disco_lights_channel_2,
-               spotlights_channel, discoball_channel):
+               spotlights_channel, discoball_channel, playtime_obj):
     print("Starting partying")
     # Get database info
     #before_func_time = time.time()
-    playtime_obj = get_playtime_obj()
+    # playtime_obj = get_playtime_obj()
     hue_bridge_ip, hue_user_id, name_stub, room_name, brightness = get_bridge_info()
     # party_light_settings = get_light_settings()
     groups = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups', context)
@@ -156,6 +156,7 @@ if __name__ == '__main__':
         if input_zero_sequence_count == debounce_length:
             print("BUTTON: pressed\n")
             party_light_settings = get_light_settings()
+            playtime_obj = get_playtime_obj() 
             initial_light_state = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/lights', context)
             initial_scene_id = set_initial_scene(hue_bridge_ip, hue_user_id, initial_light_state, context)
             setting_data = '{"bri": 0, "transitiontime": 1}'
@@ -165,7 +166,7 @@ if __name__ == '__main__':
             print("STARTING")
             toggle = lets_party(party_light_settings, initial_light_state, initial_scene_id, 
                                 disco_lights_channel, disco_lights_channel_2,
-                                spotlights_channel, discoball_channel)
+                                spotlights_channel, discoball_channel, playtime_obj)
             GPIO.setup(input_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
             GPIO.setup(disco_lights_channel, GPIO.OUT)
             GPIO.setup(disco_lights_channel_2, GPIO.OUT)
