@@ -15,7 +15,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'pb_ui.settings')
 django.setup()
 
-from mp3_manager.models import Playtime, Playlist, Bridge, Light
+from mp3_manager.models import Playtime, Playlist, Bridge, Light, DiscoLight
 
 class Object(object):
     pass
@@ -374,6 +374,15 @@ def get_tracks(playlist_name):
     playlist = Playlist.objects.filter(name=playlist_name)[0]
     tracks = playlist.track_set.all()
     return(tracks)
+
+def return_active_lights():
+    print(f"RETRIEVING DISCOLIGHTS: {playlist_name}")
+    active_set = []
+    lights = DiscoLight.objects.all()
+    for light in lights:
+        if light.light_on:
+            active_set.append(light.pin_id)
+    return(active_set)
 
 def decide_playing_set(track_qset, playtime_obj):
     '''

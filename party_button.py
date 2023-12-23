@@ -62,13 +62,19 @@ def lets_party(party_light_settings, initial_light_state, initial_scene_id,
             pygame.mixer.music.set_volume(1.0)
             pygame.mixer.music.play(start=start_location)
             if playtime_obj.music_only == False:
-                print("DISCO BALL: on")
-                GPIO.output(discoball_channel, GPIO.HIGH)
-                print("SPOTLIGHTS: on")
-                GPIO.output(spotlights_channel, GPIO.HIGH)
-                print("DISCO LIGHT: on")
-                GPIO.output(disco_lights_channel, GPIO.HIGH)
-                GPIO.output(disco_lights_channel_2, GPIO.HIGH)
+                active_set = return_active_lights()
+                if(discoball_channel in active_set):
+                    print("DISCO BALL: on")
+                    GPIO.output(discoball_channel, GPIO.HIGH)
+                if(spotlights_channel in active_set):
+                    print("SPOTLIGHTS: on")
+                    GPIO.output(spotlights_channel, GPIO.HIGH)
+                if(disco_lights_channel in active_set):
+                    print("DISCO LIGHT: on")
+                    GPIO.output(disco_lights_channel, GPIO.HIGH)
+                if(disco_lights_channel_2 in active_set):
+                    print("DISCO LIGHT: on")
+                    GPIO.output(disco_lights_channel_2, GPIO.HIGH)
             time.sleep(play_duration)
             pygame.mixer.music.stop()
             proc.terminate()

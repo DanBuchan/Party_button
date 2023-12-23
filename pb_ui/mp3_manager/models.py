@@ -164,7 +164,12 @@ class Light(models.Model):
                                       default=1,
                                       validators=[MinValueValidator(1),
                                                   MaxValueValidator(254)])
-    
+    override_brightness = models.BooleanField(blank=False, null=False,
+                                            default=False)
+    brightness = models.IntegerField(blank=False, null=False,
+                                     default=0,
+                                     validators=[MinValueValidator(0),
+                                                 MaxValueValidator(100)])
     def __str__(self):
         return(self.name)
 
