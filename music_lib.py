@@ -30,9 +30,9 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
             scene_id=id
     light_data = {}
     light_list = []
+    print(light_info)
     for light in light_info:
         light_brightness = brightness
-        print("setting brightness")
         if light.override_brightness:
             print("hi")
             light_brightness = light.brightness
