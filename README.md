@@ -103,4 +103,5 @@ sudo systemctl start party_button.service
 
 1. refactor django views to correctly use mixins and not have all those single function classes
 2. Spotify integration (hmmmm)
-4. When smart bulb set to random colour allow fixed or random brightness
+3. When smart bulb set to random colour allow fixed or random brightness
+4. When toggling party ghost have the webserver user restart the partybutton service so you don't have to reboot.
