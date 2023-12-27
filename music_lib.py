@@ -32,7 +32,9 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
     light_list = []
     for light in light_info:
         light_brightness = brightness
+        print("setting brightness")
         if light.override_brightness:
+            print("hi")
             light_brightness = light.brightness
         if getattr(light, control_type):
             light_list.append(light.hue_bridge_id)
