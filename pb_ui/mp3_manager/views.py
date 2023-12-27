@@ -10,6 +10,7 @@ from pydub import AudioSegment
 import subprocess
 import re
 import pprint
+from subprocess import Popen, PIPE
 
 from .models import Track, Playtime, Playlist, Bridge, Light, DiscoLight
 from .form import TrackForm, PlaytimeForm, TrackPlaytimeForm, TrackStartForm
@@ -304,6 +305,10 @@ class IndexView(generic.ListView, FormMixin):
             else:
                 playtime.ghost = True
             playtime.save()
+            cmd = ['/usr/sbin/sudo', 'systemctl', 'restart', 'party_button']
+            print(f'RESTARTING PARTY SERVICE: {" ".join(cmd)}')
+            p = Popen(cmd, stdin=PIPE,stdout=PIPE, stderr=PIPE)
+            out, err = p.communicate()
             return redirect("/")
         
         

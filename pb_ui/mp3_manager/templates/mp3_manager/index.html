@@ -52,7 +52,7 @@
 
   <div class="row">
     <div class="col">
-       <h2>Invite Party Ghost (requires reboot)</h2>
+       <h2>Invite Party Ghost</h2>
        <form id="ghostctl_form" id="ghostsctl_form" action={% url 'mp3_manager:index' %} method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% if playtime.ghost == True %}
