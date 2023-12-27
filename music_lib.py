@@ -376,7 +376,7 @@ def get_tracks(playlist_name):
     return(tracks)
 
 def return_active_lights():
-    print(f"RETRIEVING DISCOLIGHTS: {playlist_name}")
+    print(f"RETRIEVING DISCOLIGHTS")
     active_set = []
     lights = DiscoLight.objects.all()
     for light in lights:
