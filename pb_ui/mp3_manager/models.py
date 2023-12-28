@@ -170,6 +170,9 @@ class Light(models.Model):
                                      default=0,
                                      validators=[MinValueValidator(0),
                                                  MaxValueValidator(100)])
+    randomise_brightness = models.BooleanField(blank=False, null=False,
+                                            default=False)
+    
     def __str__(self):
         return(self.name)
 

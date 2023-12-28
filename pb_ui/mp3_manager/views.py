@@ -245,7 +245,12 @@ class IndexView(generic.ListView, FormMixin):
   
     def get(self, request):
         playlists = Playlist.objects.all()
-        playtime = Playtime.objects.all()[0]
+        playtime = Playtime.objects.all()
+        if not playtime:
+            playlist = Playlist.objects.create(name="default")
+            playtime = Playtime.objects.create(playlist_selection=playlist)
+        else:
+            playtime = playtime[0]
         return render(request, self.template_name,
                       {"playtime": playtime,
                        "playtimeform": PlaytimeForm(instance=playtime),
@@ -311,9 +316,6 @@ class IndexView(generic.ListView, FormMixin):
             out, err = p.communicate()
             return redirect("/")
         
-        
-            
-    
 class DeleteTrackView(generic.ListView, FormMixin):
     def get(self, request, pk):
         print(f"DELETING TRACK: {pk}")
@@ -386,18 +388,24 @@ class BridgeManagement(generic.ListView, FormMixin):
                        }) 
 
     def post(self, request):
-        # print(request.POST)
+        print(request.POST)
         if "bridge_reset" in request.POST:
             Light.objects.all().delete()
             form = BridgeForm(request.POST)
             if form.is_valid():
                 bridge = Bridge.objects.all().first()
-                bridge.ip = request.POST["ip"]
-                bridge.user_id = request.POST["user_id"]
-                bridge.name_stub = request.POST["name_stub"]
-                bridge.room = request.POST["room"]
+                if bridge:
+                    bridge.ip = request.POST["ip"]
+                    bridge.user_id = request.POST["user_id"]
+                    bridge.name_stub = request.POST["name_stub"]
+                    bridge.room = request.POST["room"]
+                else:
+                    bridge = Bridge.objects.create(ip = request.POST["ip"],
+                                                   user_id = request.POST["user_id"],
+                                                   name_stub = request.POST["name_stub"],
+                                                   room = request.POST["room"])
                 obj = bridge.save()
-                try: 
+                try:
                     b = phue.Bridge(bridge.ip, bridge.user_id)
                     lights = b.get_api()["lights"]
                     # pprint.pprint(b.get_api()["lights"])
@@ -572,7 +580,13 @@ class LightBrightnessValue(generic.ListView, FormMixin):
         light.save()
         return redirect("/lights")
     
+class LightRandBri(generic.ListView, FormMixin):
     
+    def post(self, request, pk):
+        #get records set solo True and save.
+        return redirect("/lights")
+    
+
 class DeleteDiscoLight(generic.ListView, FormMixin):
     
     def get(self, request, pk):
