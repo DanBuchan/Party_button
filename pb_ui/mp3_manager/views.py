@@ -305,7 +305,7 @@ class IndexView(generic.ListView, FormMixin):
             else:
                 playtime.ghost = True
             playtime.save()
-            cmd = ['/usr/sbin/sudo', 'systemctl', 'restart', 'party_button']
+            cmd = ['/usr/bin/sudo', '/usr/bin/systemctl', 'restart', 'party_button']
             print(f'RESTARTING PARTY SERVICE: {" ".join(cmd)}')
             p = Popen(cmd, stdin=PIPE,stdout=PIPE, stderr=PIPE)
             out, err = p.communicate()
