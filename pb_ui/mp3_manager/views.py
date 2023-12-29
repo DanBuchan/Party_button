@@ -567,7 +567,8 @@ class LightBrightness(generic.ListView, FormMixin):
         if light.override_brightness:
             light.override_brightness=False
         else:
-            light.override_brightness=True      
+            light.override_brightness=True   
+            light.randomise_brightness=False   
         light.save()
         return redirect("/lights")
     
@@ -593,6 +594,7 @@ class LightRandBri(generic.ListView, FormMixin):
         else:
             if light.random_colour:
                 light.randomise_brightness=True
+                light.override_brightness=False
              
         light.save()
         return redirect("/lights")

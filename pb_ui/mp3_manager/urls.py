@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf.urls.static import static
+from django.conf import settings
 from . import views
 
 app_name = "mp3_manager"
@@ -28,4 +30,4 @@ urlpatterns = [
     path("lights/", views.BridgeManagement.as_view(), name="bridge"),
     path("disco/", views.DiscoLightManagement.as_view(), name="disco"),
     path("deletedisco/<int:pk>/", views.DeleteDiscoLight.as_view(), name="deletedisco"),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
