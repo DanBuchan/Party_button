@@ -34,6 +34,8 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
         light_brightness = brightness
         if light.override_brightness:
             light_brightness = light.brightness
+        if light.randomise_brightness:
+            light_brightness = random.randint(0, 254)
         if getattr(light, control_type):
             light_list.append(light.hue_bridge_id)
             if randomctl:
