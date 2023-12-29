@@ -106,3 +106,4 @@ sudo systemctl start party_button.service
 3. Move track settings to a per-playlist basis
 4. refactor backend to django rest-framework API
 5. refactor frontend to REACT app
+6. Support for single, double click and long press. https://forums.raspberrypi.com/viewtopic.php?t=84763, https://forums.raspberrypi.com/viewtopic.php?f=32&t=76464&p=547071&hilit=+pulse#p547071
