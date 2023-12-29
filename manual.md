@@ -78,7 +78,7 @@ A listing of each playlist and the tracks current associated with them. Use the 
 
 ### Party Time Brightness
 
-1. Brightness - The global brightness that all lights should change to when the party button is pressed
+1. Brightness - The global brightness that all lights should change to when the party button is pressed. 0-100
 
 Click "Updated" to save or update this value
 
@@ -98,7 +98,7 @@ A listing of all lights that the system was able to discover and their possible 
 10. & Inc. Bri. toggle - Light colour randomisatiomn will also randomise brightness
 11. Randomise intervale toggle - Whether a light changes on a given "beat" is randomised
 12. Brightness Override toggle - "Use Global Value" uses the brightness set in Party Time Brightness, "Use Light Value" uses the per light brightness value
-13. Brightness Value - The per light brightness value the light should take if the brightness toggle is on, value 0-254
+13. Brightness Value - The per light brightness value the light should take if the brightness toggle is on, value 0-100
 14. 'Update button' - Updates the per light brightness value
 
 
