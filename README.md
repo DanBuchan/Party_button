@@ -103,4 +103,6 @@ sudo systemctl start party_button.service
 
 1. refactor django views to correctly use mixins and not have all those single function classes
 2. Spotify integration (hmmmm)
-3. When smart bulb set to random colour allow fixed or random brightness
+3. Move track settings to a per-playlist basis
+4. refactor backend REST API
+5. refactor frontend to REACT app
