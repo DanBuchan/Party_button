@@ -235,7 +235,7 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
                     if dice_roll:
                         random_data[bulb_id] = {'state': {'hue': random.randint(0, 65535),
                                                           'sat': random.randint(0, 254),
-                                                          'bri': random_scene_data['light_data'][bulb_id]['state']['bri'],}}
+                                                          'bri': random.randint(0, 254),}}
                     else:
                         random_data[bulb_id] = {'state': {'hue': random_scene_data['light_data'][bulb_id]['state']['hue'],
                                                           'sat': random_scene_data['light_data'][bulb_id]['state']['sat'],
