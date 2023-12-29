@@ -126,3 +126,8 @@ For the first time, click 'RESET LIGHTS' to attach to the bridge and get a list 
 3. On toggle - Toggles whether the disco light should come on when the party button is pressed
 3. Update button - update the settings to new value
 4. Remove - remove the disco light
+5. Add double-click and long press functionality - Can have different actions while music is or isn't playing
+
+## Current installation location
+
+http://192.168.0.233/
