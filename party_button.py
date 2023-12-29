@@ -146,7 +146,7 @@ if __name__ == '__main__':
     time.sleep(2)
     
     input_zero_sequence_count = 0
-    debounce_length = 10
+    debounce_length = 15
     if playtime_obj.ghost:
         debounce_length = 1
     while True:
