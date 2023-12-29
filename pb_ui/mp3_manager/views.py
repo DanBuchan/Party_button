@@ -92,7 +92,7 @@ class TrackManagement(generic.ListView, FormMixin):
             form = self.get_form()
             if form.is_valid():
                 record = form.save()
-                # command = ['/opt/homebrew/Cellar/bpm-tools/0.3/bin/bpm-tag',
+                #command = ['/opt/homebrew/Cellar/bpm-tools/0.3/bin/bpm-tag',
                 command = ['/usr/bin/bpm-tag',
                            '-f',
                            '-n',
@@ -494,6 +494,7 @@ class LightPrimary(generic.ListView, FormMixin):
         light.random_colour = False
         light.alternate_colour = False
         light.random_interval=False
+        light.randomise_brightness=False
         light.save()
         return redirect("/lights")
 
@@ -508,6 +509,7 @@ class LightFade(generic.ListView, FormMixin):
         light.random_colour = False
         light.alternate_colour = False
         light.random_interval=False
+        light.randomise_brightness=False
         light.save()
         return redirect("/lights")
 
@@ -534,6 +536,7 @@ class LightAlternate(generic.ListView, FormMixin):
         light.fade = False
         light.random_colour = False
         light.alternate_colour = True
+        light.randomise_brightness=False
         light.save()
         return redirect("/lights")
 
@@ -582,8 +585,16 @@ class LightBrightnessValue(generic.ListView, FormMixin):
     
 class LightRandBri(generic.ListView, FormMixin):
     
-    def post(self, request, pk):
-        #get records set solo True and save.
+    def get(self, request, pk):
+        print(f"Setting brightness to randomise: {pk}")
+        light = Light.objects.filter(pk=pk)[0]
+        if light.randomise_brightness:
+            light.randomise_brightness=False
+        else:
+            if light.random_colour:
+                light.randomise_brightness=True
+             
+        light.save()
         return redirect("/lights")
     
 
