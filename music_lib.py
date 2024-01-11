@@ -279,7 +279,17 @@ def put(url, content, context):
     """
     req = urllib.request.Request(url=url,
         data=content.encode('UTF-8'), method='PUT')
-    f = urllib.request.urlopen(req, context=context)
+    while True:
+        try:
+            f = urllib.request.urlopen(req, context=context)
+            break
+        except Exception as e:
+            print("Failed to put URL", str(e))
+            print("URL: ", url)
+            print("CONTENT": content)
+            
+
+
     #print(f.status, f.reason, f.read())
     return json.loads(f.read())
 
