@@ -302,7 +302,6 @@ def post(url, content, context):
     """
     req = urllib.request.Request(url=url,
         data=content.encode('UTF-8'), method='POST')
-    f = urllib.request.urlopen(req, context=context)
     try_count = 0
     while True:
         if try_count == 30:
@@ -324,7 +323,6 @@ def get_json(url, context):
     """
     # print(url)
     req = urllib.request.Request(url=url, method='GET')
-    f = urllib.request.urlopen(req, context=context)
     try_count = 0
     while True:
         if try_count == 30:
