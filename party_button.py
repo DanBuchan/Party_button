@@ -49,6 +49,9 @@ def lets_party(party_light_settings, initial_light_state, initial_scene_id,
         #            party_light_settings, brightness, hue_bridge_ip,
         #            hue_user_id, group_id)
         play_tracks = decide_playing_set(track_qset, playtime_obj)
+        #maybe we should just randomise the order of the list, and wrap all this in a while loop
+        # Then music.load and music.play are wrapped in a try:except and if they fail they move on
+        # to the next track.
         for track in play_tracks:
             print(f"PLAYING: {track}")
             print(f"FILE LOCATION: {track_path+str(track.mp3_file)}")
