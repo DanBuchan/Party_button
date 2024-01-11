@@ -279,16 +279,18 @@ def put(url, content, context):
     """
     req = urllib.request.Request(url=url,
         data=content.encode('UTF-8'), method='PUT')
+    try_count = 0
     while True:
+        if try_count == 30:
+            break
         try:
             f = urllib.request.urlopen(req, context=context)
             break
         except Exception as e:
-            print("Failed to put URL", str(e))
+            try_count += 1
+            print("Failed to PUT URL", str(e))
             print("URL: ", url)
-            print("CONTENT": content)
-            
-
+            print("CONTENT", content.encode('UTF-8'))
 
     #print(f.status, f.reason, f.read())
     return json.loads(f.read())
@@ -301,6 +303,18 @@ def post(url, content, context):
     req = urllib.request.Request(url=url,
         data=content.encode('UTF-8'), method='POST')
     f = urllib.request.urlopen(req, context=context)
+    try_count = 0
+    while True:
+        if try_count == 30:
+            break
+        try:
+            f = urllib.request.urlopen(req, context=context)
+            break
+        except Exception as e:
+            try_count += 1
+            print("Failed to POST URL", str(e))
+            print("URL: ", url)
+            print("CONTENT", content.encode('UTF-8'))
     #print(f.status, f.reason, f.read())
     return json.loads(f.read())
 
@@ -311,6 +325,17 @@ def get_json(url, context):
     # print(url)
     req = urllib.request.Request(url=url, method='GET')
     f = urllib.request.urlopen(req, context=context)
+    try_count = 0
+    while True:
+        if try_count == 30:
+            break
+        try:
+            f = urllib.request.urlopen(req, context=context)
+            break
+        except Exception as e:
+            try_count += 1
+            print("Failed to GET URL", str(e))
+            print("URL: ", url)
     #print(f.status, f.reason)
     return json.loads(f.read())
 
