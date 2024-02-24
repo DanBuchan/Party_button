@@ -152,7 +152,16 @@ if __name__ == '__main__':
     debounce_length = 15
     if playtime_obj.ghost:
         debounce_length = 1
+
+    input_data = None
+    # start_time = time.time()
     while True:
+        # stop_time = time.time()
+        
+        # if stop_time - start_time >= 0.1:
+        #     time.sleep(0.1)
+        #     start_time = time.time()
+
         input_data = GPIO.input(input_channel)
         
         if input_data == 0:
