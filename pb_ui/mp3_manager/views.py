@@ -598,7 +598,19 @@ class LightRandBri(generic.ListView, FormMixin):
              
         light.save()
         return redirect("/lights")
+
+class LightOff(generic.ListView, FormMixin):
     
+    def get(self, request, pk):
+        print(f"Setting Light Off: {pk}")
+        light = Light.objects.filter(pk=pk)[0]
+        if light.off:
+            light.off=False
+        else:
+            light.off=True
+             
+        light.save()
+        return redirect("/lights") 
 
 class DeleteDiscoLight(generic.ListView, FormMixin):
     
