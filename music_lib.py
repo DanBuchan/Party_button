@@ -199,31 +199,38 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
                         if light_primary_states[bulb_id]:
                             alternating_data[bulb_id] = {'state': { 'hue': alternate_scene_data2['light_data'][bulb_id]['state']['hue'],
                                                                     'sat': alternate_scene_data2['light_data'][bulb_id]['state']['sat'],
-                                                                    'bri': alternate_scene_data2['light_data'][bulb_id]['state']['bri'],}}
+                                                                    'bri': alternate_scene_data2['light_data'][bulb_id]['state']['bri'],
+                                                                    'on': alternate_scene_data2['light_data'][bulb_id]['state']['on'],
+                                                                    }}
                             light_primary_states[bulb_id] = False
                         else:
                             alternating_data[bulb_id] = {'state': { 'hue': alternate_scene_data1['light_data'][bulb_id]['state']['hue'],
                                                                     'sat': alternate_scene_data1['light_data'][bulb_id]['state']['sat'],
-                                                                    'bri': alternate_scene_data1['light_data'][bulb_id]['state']['bri'],}}
+                                                                    'bri': alternate_scene_data1['light_data'][bulb_id]['state']['bri'],
+                                                                    'on': alternate_scene_data1['light_data'][bulb_id]['state']['on'],}}
                             light_primary_states[bulb_id] = True
                     else:
                         if light_primary_states[bulb_id]:
                             alternating_data[bulb_id] = {'state': { 'hue': alternate_scene_data1['light_data'][bulb_id]['state']['hue'],
                                                                 'sat': alternate_scene_data1['light_data'][bulb_id]['state']['sat'],
-                                                                'bri': alternate_scene_data1['light_data'][bulb_id]['state']['bri'],}}
+                                                                'bri': alternate_scene_data1['light_data'][bulb_id]['state']['bri'],
+                                                                'on': alternate_scene_data1['light_data'][bulb_id]['state']['on'],}}
                         else:
                             alternating_data[bulb_id] = {'state': { 'hue': alternate_scene_data2['light_data'][bulb_id]['state']['hue'],
                                                      'sat': alternate_scene_data2['light_data'][bulb_id]['state']['sat'],
-                                                     'bri': alternate_scene_data2['light_data'][bulb_id]['state']['bri'],}}
+                                                     'bri': alternate_scene_data2['light_data'][bulb_id]['state']['bri'],
+                                                     'on': alternate_scene_data2['light_data'][bulb_id]['state']['on'],}}
                 else:
                     if light_primary_states[bulb_id]:
                          alternating_data[bulb_id] = {'state': { 'hue': alternate_scene_data1['light_data'][bulb_id]['state']['hue'],
                                                                 'sat': alternate_scene_data1['light_data'][bulb_id]['state']['sat'],
-                                                                'bri': alternate_scene_data1['light_data'][bulb_id]['state']['bri'],}}
+                                                                'bri': alternate_scene_data1['light_data'][bulb_id]['state']['bri'],
+                                                                'on': alternate_scene_data1['light_data'][bulb_id]['state']['on'],}}
                     else:
                         alternating_data[bulb_id] = {'state': { 'hue': alternate_scene_data2['light_data'][bulb_id]['state']['hue'],
                                                      'sat': alternate_scene_data2['light_data'][bulb_id]['state']['sat'],
-                                                     'bri': alternate_scene_data2['light_data'][bulb_id]['state']['bri'],}}
+                                                     'bri': alternate_scene_data2['light_data'][bulb_id]['state']['bri'],
+                                                     'on': alternate_scene_data2['light_data'][bulb_id]['state']['on'],}}
 
             alt_payload = create_scene_payload('alternatescene1',
                                           alternate_scene_data1['light_list'],
@@ -245,15 +252,18 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
                     if dice_roll:
                         random_data[bulb_id] = {'state': {'hue': random.randint(0, 65535),
                                                           'sat': random.randint(0, 254),
-                                                          'bri': random.randint(0, 254),}}
+                                                          'bri': random.randint(0, 254),
+                                                          'on': random_scene_data['light_data'][bulb_id]['state']['on']}}
                     else:
                         random_data[bulb_id] = {'state': {'hue': random_scene_data['light_data'][bulb_id]['state']['hue'],
                                                           'sat': random_scene_data['light_data'][bulb_id]['state']['sat'],
-                                                          'bri': random_scene_data['light_data'][bulb_id]['state']['bri'],}}
+                                                          'bri': random_scene_data['light_data'][bulb_id]['state']['bri'],
+                                                          'on': random_scene_data['light_data'][bulb_id]['state']['on'],}}
                 else:
                     random_data[bulb_id] = {'state': {'hue': random_scene_data['light_data'][bulb_id]['state']['hue'],
                                                       'sat': random_scene_data['light_data'][bulb_id]['state']['sat'],
-                                                      'bri': random_scene_data['light_data'][bulb_id]['state']['bri'],}}
+                                                      'bri': random_scene_data['light_data'][bulb_id]['state']['bri'],
+                                                      'on': random_scene_data['light_data'][bulb_id]['state']['on'],}}
             alt_payload = create_scene_payload('alternatescene1',
                                           random_scene_data['light_list'],
                                           random_data,
