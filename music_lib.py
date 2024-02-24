@@ -32,9 +32,9 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
     light_list = []
     for light in light_info:
         light_brightness = brightness
-        light_on = True
+        light_on = 'true'
         if light.off:
-            light_on = False
+            light_on = 'false'
         if light.override_brightness:
             light_brightness = int(254*(light.brightness/100))
         if light.randomise_brightness:
@@ -52,11 +52,11 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
                 continue
             if primary_ctl:
                 light_data[light.hue_bridge_id] = {'state': {
-                                                #    'hue': light.primary_H,
-                                                #    'sat': light.primary_S,
-                                                #    'bri': light_brightness,
-                                                #    'interval_size': light.interval_size,
-                                                #    'random_interval': light.random_interval,
+                                                   'hue': light.primary_H,
+                                                   'sat': light.primary_S,
+                                                   'bri': light_brightness,
+                                                   'interval_size': light.interval_size,
+                                                   'random_interval': light.random_interval,
                                                    'on': light_on,
                                                    }}
             else:
