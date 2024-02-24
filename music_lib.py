@@ -51,15 +51,16 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
                                                    }}
                 continue
             if primary_ctl:
-                light_data[light.hue_bridge_id] = {'state': { 'hue': light.primary_H,
-                                                   'sat': light.primary_S,
-                                                   'bri': light_brightness,
-                                                   'interval_size': light.interval_size,
-                                                   'random_interval': light.random_interval,
+                light_data[light.hue_bridge_id] = {'state': {
+                                                #    'hue': light.primary_H,
+                                                #    'sat': light.primary_S,
+                                                #    'bri': light_brightness,
+                                                #    'interval_size': light.interval_size,
+                                                #    'random_interval': light.random_interval,
                                                    'on': light_on,
                                                    }}
             else:
-                light_data[light.hue_bridge_id] = {'state': { 'hue': light.secondary_H,
+                light_data[light.hue_bridge_id] = {'state': {'hue': light.secondary_H,
                                                    'sat': light.secondary_S,
                                                    'bri': light_brightness,
                                                    'interval_size': light.interval_size,
