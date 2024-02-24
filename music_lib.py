@@ -30,11 +30,11 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
             scene_id=id
     light_data = {}
     light_list = []
-    light_on = True
+    light_on = "true"
     for light in light_info:
         light_brightness = brightness
         if light.off:
-            light_on = False
+            light_on = "false"
         if light.override_brightness:
             light_brightness = int(254*(light.brightness/100))
         if light.randomise_brightness:
@@ -363,9 +363,9 @@ def create_scene_payload(scene_name, light_ids, light_data, modify):
         bri=light_data[light_id]['state']['bri']
         hue=light_data[light_id]['state']['hue'] 
         sat=light_data[light_id]['state']['sat']
-        # on=light_data[light_id]['state']['on']
+        on=light_data[light_id]['state']['on']
         # lightstates += f'"{light_id}": {{"bri": {bri}, "sat": {sat}, "hue": {hue}, "on": {on}}}, '
-        lightstates += f'"{light_id}": {{"on":true, "bri": {bri}, "sat": {sat}, "hue": {hue}}}, '
+        lightstates += f'"{light_id}": {{"on": {on}, "bri": {bri}, "sat": {sat}, "hue": {hue}}}, '
     payload += lightstates[:-2]+' } }'
     print(payload)
     return payload
