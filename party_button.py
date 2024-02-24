@@ -86,6 +86,10 @@ def lets_party(party_light_settings, initial_light_state, initial_scene_id,
     print("PARTY: off")
     print("MAIN LIGHTS: on\n")
     # # set main lights back where you found them
+    # for light in light_info:
+    #     if light.off:
+    #         put(f'https://{ip}/api/{user}/lights/{light.hue_bridge_id}/state', {'on': True}, context)
+    
     setting_data = f'{{"scene":"{initial_scene_id}", "transitiontime": 1}}'
     put(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups/{group_id}/action',
         setting_data, context)
