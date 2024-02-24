@@ -116,7 +116,7 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
             put(scene_url+"/"+static_scene_data['scene_id'], static_payload, context)
         else:
             create_response = post(scene_url, static_payload, context)
-            print(create_response)
+            # print(create_response)
             static_scene_id = create_response[0]['success']['id']
             static_scene_data['scene_id'] = static_scene_id
         setting_data = f'{{"scene":"{static_scene_id}", "transitiontime": 1}}'
@@ -359,15 +359,16 @@ def create_scene_payload(scene_name, light_ids, light_data, modify):
     payload = payload[:-2]+'], '
     payload += '"lightstates": {'
     lightstates = ''
+    print(light_data)
     for light_id in light_ids:
         bri=light_data[light_id]['state']['bri']
         hue=light_data[light_id]['state']['hue'] 
         sat=light_data[light_id]['state']['sat']
-        on="true"
-        if light_data[light_id]['state']['on']:
-            on="false"
+        # on="false"
+        # if light_data[light_id]['state']['on']:
+        #     on="true"
         # lightstates += f'"{light_id}": {{"bri": {bri}, "sat": {sat}, "hue": {hue}, "on": {on}}}, '
-        lightstates += f'"{light_id}": {{"on": {on}, "bri": {bri}, "sat": {sat}, "hue": {hue}}}, '
+        lightstates += f'"{light_id}": {{"bri": {bri}, "sat": {sat}, "hue": {hue}}}, '
     payload += lightstates[:-2]+' } }'
     print(payload)
     return payload
