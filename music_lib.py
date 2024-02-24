@@ -74,7 +74,7 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
 
     for light in light_info:
         if light.off:
-            put(f'https://{ip}/api/{user}/lights/{light.hue_bridge_id}/state', {'on': False}, context)
+            put(f'https://{ip}/api/{user}/lights/{light.hue_bridge_id}/state', {'on': 'false'}, context)
     
     static_scene_data = prep_scene_data(scenes, 'staticscene', light_info,
                                         'primary_colour', brightness, True)
