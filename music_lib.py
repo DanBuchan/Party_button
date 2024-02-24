@@ -30,11 +30,11 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
             scene_id=id
     light_data = {}
     light_list = []
-    light_on = "true"
+    light_off = "false"
     for light in light_info:
         light_brightness = brightness
         if light.off:
-            light_on = "false"
+            light_off = "true"
         if light.override_brightness:
             light_brightness = int(254*(light.brightness/100))
         if light.randomise_brightness:
@@ -47,7 +47,7 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
                                                    'bri': light_brightness,
                                                    'interval_size': light.interval_size,
                                                    'random_interval': light.random_interval,
-                                                   'on': light_on,
+                                                   'on': light_off,
                                                    }}
                 continue
             if primary_ctl:
@@ -57,7 +57,7 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
                                                    'bri': light_brightness,
                                                    'interval_size': light.interval_size,
                                                    'random_interval': light.random_interval,
-                                                   'on': light_on,
+                                                   'on': light_off,
                                                    }}
             else:
                 light_data[light.hue_bridge_id] = {'state': {'hue': light.secondary_H,
@@ -65,7 +65,7 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
                                                    'bri': light_brightness,
                                                    'interval_size': light.interval_size,
                                                    'random_interval': light.random_interval,
-                                                   'on': light_on,
+                                                   'on': light_off,
                                                     }}
                 
     return {'modify': modify,
