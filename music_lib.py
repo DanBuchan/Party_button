@@ -381,7 +381,7 @@ def create_scene_payload(scene_name, light_ids, light_data, modify):
         # lightstates += f'"{light_id}": {{"bri": {bri}, "sat": {sat}, "hue": {hue}, "on": {on}}}, '
         lightstates += f'"{light_id}": {{"on": {on}, "bri": {bri}, "sat": {sat}, "hue": {hue}}}, '
     payload += lightstates[:-2]+' } }'
-    print(payload)
+    # print(payload)
     return payload
 
 def set_initial_scene(ip, user, initial_lights, context):
