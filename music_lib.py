@@ -32,10 +32,9 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
     light_list = []
     for light in light_info:
         light_brightness = brightness
-        light_on = 'true'
+        light_on = True
         if light.off:
-            print("hi", light)
-            light_on = 'false'
+            light_on = False
         if light.override_brightness:
             light_brightness = int(254*(light.brightness/100))
         if light.randomise_brightness:
