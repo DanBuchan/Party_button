@@ -57,7 +57,7 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
                                                    'bri': light_brightness,
                                                    'interval_size': light.interval_size,
                                                    'random_interval': light.random_interval,
-                                                   'on': light_off,
+                                                   'on': 'false',
                                                    }}
             else:
                 light_data[light.hue_bridge_id] = {'state': {'hue': light.secondary_H,
