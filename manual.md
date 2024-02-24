@@ -13,7 +13,7 @@ Use drop down and 'Select' button to set the Current Playlist
 ### Set Play Conditions
 
 1. Playtime seconds - The number of seconds a track play for
-2. Pause Length - The party button goes dark then take half a second to initialise on pressing. This adds additional darkness time.
+2. Pause Length (seconds)- The party button goes dark then take half a second to initialise on pressing. This adds additional darkness time.
 3. Play full override - Overrides "Playtime Seconds" and plays tracks in full
 4. Play whole playlist - Overrides playing one random tune and plays the whole playlist in random order
 
