@@ -364,6 +364,7 @@ def create_scene_payload(scene_name, light_ids, light_data, modify):
         hue=light_data[light_id]['state']['hue'] 
         sat=light_data[light_id]['state']['sat']
         on=light_data[light_id]['state']['on']
+        print("on state", on)
         # lightstates += f'"{light_id}": {{"bri": {bri}, "sat": {sat}, "hue": {hue}, "on": {on}}}, '
         lightstates += f'"{light_id}": {{"bri": {bri}, "sat": {sat}, "hue": {hue}}}, '
     payload += lightstates[:-2]+' } }'
