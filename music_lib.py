@@ -32,9 +32,9 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
     light_list = []
     for light in light_info:
         light_brightness = brightness
-        light_on = 'true'
+        light_on = True
         if light.off:
-            light_on = 'false'
+            light_on = False
         if light.override_brightness:
             light_brightness = int(254*(light.brightness/100))
         if light.randomise_brightness:
@@ -80,7 +80,6 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
 
     static_scene_data = prep_scene_data(scenes, 'staticscene', light_info,
                                         'primary_colour', brightness, True)
-    print(static_scene_data)
     static_payload = create_scene_payload('staticscene',
                                           static_scene_data['light_list'],
                                           static_scene_data['light_data'],
@@ -117,7 +116,7 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
             put(scene_url+"/"+static_scene_data['scene_id'], static_payload, context)
         else:
             create_response = post(scene_url, static_payload, context)
-            # print(create_response)
+            print(create_response)
             static_scene_id = create_response[0]['success']['id']
             static_scene_data['scene_id'] = static_scene_id
         setting_data = f'{{"scene":"{static_scene_id}", "transitiontime": 1}}'
