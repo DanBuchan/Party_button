@@ -106,7 +106,6 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
                                             'alternate_colour', brightness, False)
     random_scene_data = prep_scene_data(scenes, 'randomscene', light_info,
                                         'random_colour', brightness, True, True)
-    print(random_scene_data)
     random_payload = create_scene_payload('randomscene',
                                           random_scene_data['light_list'],
                                           random_scene_data['light_data'],
