@@ -116,6 +116,7 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
             put(scene_url+"/"+static_scene_data['scene_id'], static_payload, context)
         else:
             create_response = post(scene_url, static_payload, context)
+            print(create_response)
             static_scene_id = create_response[0]['success']['id']
             static_scene_data['scene_id'] = static_scene_id
         setting_data = f'{{"scene":"{static_scene_id}", "transitiontime": 1}}'
