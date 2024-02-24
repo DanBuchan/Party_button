@@ -30,8 +30,11 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
             scene_id=id
     light_data = {}
     light_list = []
+    light_on = True
     for light in light_info:
         light_brightness = brightness
+        if light.off:
+            light_on = False
         if light.override_brightness:
             light_brightness = int(254*(light.brightness/100))
         if light.randomise_brightness:
@@ -44,6 +47,7 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
                                                    'bri': light_brightness,
                                                    'interval_size': light.interval_size,
                                                    'random_interval': light.random_interval,
+                                                   'on': light_on,
                                                    }}
                 continue
             if primary_ctl:
@@ -53,6 +57,7 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
                                                    'bri': light_brightness,
                                                    'interval_size': light.interval_size,
                                                    'random_interval': light.random_interval,
+                                                   'on': light_on,
                                                    }}
             else:
                 light_data[light.hue_bridge_id] = {'state': {'hue': light.secondary_H,
@@ -60,7 +65,8 @@ def prep_scene_data(scenes, scene_name, light_info, control_type, brightness,
                                                    'bri': light_brightness,
                                                    'interval_size': light.interval_size,
                                                    'random_interval': light.random_interval,
-                                                   }}
+                                                   'on': light_on,
+                                                    }}
                 
     return {'modify': modify,
             'scene_id': scene_id,
@@ -72,10 +78,6 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
     scene_url=f'https://{ip}/api/{user}/scenes'
     scenes = get_json(scene_url, context)
 
-    for light in light_info:
-        if light.off:
-            put(f'https://{ip}/api/{user}/lights/{light.hue_bridge_id}/state', {'on': 'false'}, context)
-    
     static_scene_data = prep_scene_data(scenes, 'staticscene', light_info,
                                         'primary_colour', brightness, True)
     static_payload = create_scene_payload('staticscene',
@@ -360,7 +362,8 @@ def create_scene_payload(scene_name, light_ids, light_data, modify):
         bri=light_data[light_id]['state']['bri']
         hue=light_data[light_id]['state']['hue'] 
         sat=light_data[light_id]['state']['sat']
-        lightstates += f'"{light_id}": {{"bri": {bri}, "sat": {sat}, "hue": {hue}}}, '
+        on=light_data[light_id]['state']['on']
+        lightstates += f'"{light_id}": {{"bri": {bri}, "sat": {sat}, "hue": {hue}, "on": {on}}}, '
     payload += lightstates[:-2]+' } }'
     return payload
 
