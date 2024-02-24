@@ -101,9 +101,10 @@ sudo systemctl start party_button.service
 
 ## TODO
 
-1. refactor django views to correctly use mixins and not have all those single function classes
-2. Spotify integration (hmmmm)
-3. Move track settings to a per-playlist basis
-4. refactor backend to django rest-framework API
-5. refactor frontend to REACT app
-6. Support for single, double click and long press. https://forums.raspberrypi.com/viewtopic.php?t=84763, https://forums.raspberrypi.com/viewtopic.php?f=32&t=76464&p=547071&hilit=+pulse#p547071
+1. On the lights control add the ability to flash a light so you know which it is (such as by clicking the name)
+2. refactor django views to correctly use mixins and not have all those single function classes
+3. Spotify integration (hmmmm)
+4. Move track settings to a per-playlist basis
+5. refactor backend to django rest-framework API
+6. refactor frontend to REACT app
+7. Support for single, double click and long press. https://forums.raspberrypi.com/viewtopic.php?t=84763, https://forums.raspberrypi.com/viewtopic.php?f=32&t=76464&p=547071&hilit=+pulse#p547071

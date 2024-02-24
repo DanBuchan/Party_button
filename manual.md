@@ -100,7 +100,7 @@ A listing of all lights that the system was able to discover and their possible 
 12. Brightness Override toggle - "Use Global Value" uses the brightness set in Party Time Brightness, "Use Light Value" uses the per light brightness value
 13. Brightness Value - The per light brightness value the light should take if the brightness toggle is on, value 0-100
 14. 'Update button' - Updates the per light brightness value
-
+15. 'Off?' - Set whether a light should turn off during the party button
 
 ### Bridge Settings
 
