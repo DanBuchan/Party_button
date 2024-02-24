@@ -141,7 +141,6 @@ if __name__ == '__main__':
 
     # Get initial params to control lights
     initial_light_state = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/lights', context)
-    print(initial_light_state)
     initial_scene_id = set_initial_scene(hue_bridge_ip, hue_user_id, initial_light_state, context)
     
     groups = get_json(f'https://{hue_bridge_ip}/api/{hue_user_id}/groups', context)
