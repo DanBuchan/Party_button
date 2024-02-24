@@ -79,6 +79,7 @@ def change_colour(light_info, brightness, playtime, bpm, ip, user, group_id):
 
     static_scene_data = prep_scene_data(scenes, 'staticscene', light_info,
                                         'primary_colour', brightness, True)
+    print(static_scene_data)
     static_payload = create_scene_payload('staticscene',
                                           static_scene_data['light_list'],
                                           static_scene_data['light_data'],
