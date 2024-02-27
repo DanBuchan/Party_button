@@ -108,3 +108,4 @@ sudo systemctl start party_button.service
 5. refactor backend to django rest-framework API
 6. refactor frontend to REACT app
 7. Support for single, double click and long press. https://forums.raspberrypi.com/viewtopic.php?t=84763, https://forums.raspberrypi.com/viewtopic.php?f=32&t=76464&p=547071&hilit=+pulse#p547071
+8. Consider "playlists"/scenes for the hue lights, i.e. saving/storing a setting and being able to switch between them
